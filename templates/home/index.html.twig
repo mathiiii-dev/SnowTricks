@@ -3,7 +3,7 @@
 {% block title %}Snowtricks{% endblock %}
 
 {% block body %}
-    <div id="top" class="w-full bg-cover bg-center h-screen"
+    <div class="w-full bg-cover bg-center h-screen"
          style="background-image: url('{{ asset('/image/img-header.jpg') }}');">
         <div class="flex items-center justify-center h-full w-full bg-gray-900 bg-opacity-30">
             <div class="text-center">
@@ -20,7 +20,8 @@
     <div class="container my-12 mx-auto px-4 md:px-12" id="tricks">
         <div class="flex flex-wrap -mx-1 lg:-mx-4">
             {% for i in 0..10 %}
-                <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto my-8 {% if i >= 6 %} hidden {% endif %} ">
+                <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto my-8 {% if i >= 6 %} hidden {% endif %}"
+                     {% if i >= 6 %}id="hidden-cards"{% endif %}>
                     <img class="w-full" src="{{ asset('/image/big-air.jpg') }}" alt="Sunset in the mountains">
                     <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">Big Air
@@ -40,7 +41,7 @@
             {% endfor %}
         </div>
         <div class="text-center">
-            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ">
+            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onclick="showMore()" id="show-more">
                 Voir plus <i class="fas fa-spinner fa-spin"></i>
             </button>
         </div>
@@ -50,4 +51,16 @@
             </a>
         </div>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        function showMore() {
+            let el = document.querySelectorAll('*[id^="hidden-cards"]');
+            document.getElementById('show-more').classList.add('hidden');
+            let index = 0, length = el.length;
+            for ( ; index < length; index++) {
+                el[index].classList.remove('hidden');
+            }
+        }
+    </script>
 {% endblock %}
