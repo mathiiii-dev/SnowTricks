@@ -42,7 +42,10 @@
         </div>
         <div class="text-center">
             <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" onclick="showMore()" id="show-more">
-                Voir plus <i class="fas fa-spinner fa-spin"></i>
+                Voir plus <i class="fas fa-plus"></i>
+            </button>
+            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded hidden" onclick="showLess()" id="show-less">
+                Voir moins <i class="fas fa-minus"></i>
             </button>
         </div>
         <div class="float-right">
@@ -57,9 +60,20 @@
         function showMore() {
             let el = document.querySelectorAll('*[id^="hidden-cards"]');
             document.getElementById('show-more').classList.add('hidden');
+            document.getElementById('show-less').classList.remove('hidden');
             let index = 0, length = el.length;
             for ( ; index < length; index++) {
                 el[index].classList.remove('hidden');
+            }
+        }
+
+        function showLess() {
+            let el = document.querySelectorAll('*[id^="hidden-cards"]');
+            document.getElementById('show-more').classList.remove('hidden');
+            document.getElementById('show-less').classList.add('hidden');
+            let index = 0, length = el.length;
+            for ( ; index < length; index++) {
+                el[index].classList.add('hidden');
             }
         }
     </script>
