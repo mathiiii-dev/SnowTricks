@@ -1,7 +1,16 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+@import '~@fortawesome/fontawesome-free/css/all.css';
 
-body {
-    background-color: lightgray;
+html {
+    scroll-behavior: smooth;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+p, a, span {
+    font-family: 'Noto Sans KR', sans-serif;
 }
