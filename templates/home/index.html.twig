@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Snowtricks{% endblock %}
+
+{% block body %}
+    <div class="w-full bg-cover bg-center h-screen"
+         style="background-image: url('{{ asset('/image/img-header.jpg') }}');">
+        <div class="flex items-center justify-center h-full w-full bg-gray-900 bg-opacity-30">
+            <div class="text-center">
+                <h1 class="text-white lg:text-7xl text-5xl uppercase font-bold">SnowTricks</h1>
+                <p class="text-white text-2xl">Le site du snowboard</p>
+                <div class="pt-44">
+                    <a href="#tricks">
+                        <i class="fa fa-arrow-down fa-3x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container my-12 mx-auto px-4 md:px-12" id="tricks">
+        <div class="flex flex-wrap -mx-1 lg:-mx-4">
+            {% for i in 0..10 %}
+                <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto my-8 {% if i >= 6 %} hidden {% endif %}"
+                     {% if i >= 6 %}id="hidden-cards"{% endif %}>
+                    <img class="w-full" src="{{ asset('/image/big-air.jpg') }}" alt="Sunset in the mountains">
+                    <div class="px-6 py-4">
+                        <div class="font-bold text-xl mb-2">Big Air
+                            <span class="float-right space-x-3">
+                                <a href="">
+                                    <span class="hidden">Modifier</span>
+                                    <i class="fa fa-pen"></i>
+                                </a>
+                                <a href="">
+                                    <span class="hidden">Supprimer</span>
+                                    <i class="fa fa-trash"></i>
+                                </a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="text-center">
+            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" id="show-more">
+                Voir plus <i class="fas fa-plus"></i>
+            </button>
+            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded hidden" id="show-less">
+                Voir moins <i class="fas fa-minus"></i>
+            </button>
+        </div>
+        <div class="float-right">
+            <a href="#top">
+                <i class="fa fa-arrow-up fa-3x"></i>
+            </a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    {{ encore_entry_script_tags('home') }}
+{% endblock %}

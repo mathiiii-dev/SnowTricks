@@ -1,14 +1,20 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
     <head>
         <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>
+            {% block title %}{% endblock %}
+        </title>
         {% block stylesheets %}
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
             {{ encore_entry_link_tags('app') }}
+            <link rel="icon" href="{{ asset('/image/favicon.ico') }}">
         {% endblock %}
     </head>
     <body>
+        {% include 'component/navbar.html.twig' %}
         {% block body %}{% endblock %}
+        {% include 'component/footer.html.twig' %}
         {% block javascripts %}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
