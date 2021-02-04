@@ -4,13 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Figure;
 use App\Entity\User;
-use App\Form\Type\FigureType;
-use App\Form\Type\FigureValidator;
+use App\Form\Figure\FigureType;
+use App\Form\Figure\FigureValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +17,7 @@ class FigureController extends AbstractController
     /**
      * @Route("/figure/{id}", name="snowtricks_figure")
      */
-    public function index(int $id): Response
+    public function index($id): Response
     {
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
@@ -33,13 +30,17 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/create-figure", name="snowtricks_createfigure")
+     * @Route("/edit-figure/{id}", name="snowtricks_editfigure")
+     * @param Figure|null $figure
      * @param Request $request
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function createFigure(Request $request, EntityManagerInterface $em): Response
+    public function formFigure(Figure $figure = null, Request $request, EntityManagerInterface $em): Response
     {
-        $figure = new Figure();
+        if(!$figure) {
+            $figure = new Figure();
+        }
 
         $form = $this->createForm(FigureType::class,$figure);
         $form->handleRequest($request);
@@ -47,11 +48,13 @@ class FigureController extends AbstractController
         $formValidator = new FigureValidator();
         $repository = $this->getDoctrine()->getRepository(User::class);
         if ($formValidator->validator($form, $figure, $em, $repository)) {
-            return $this->redirectToRoute('snowtricks_home');
+            $id = $figure->getId();
+            return $this->redirectToRoute('snowtricks_figure', ['id' => $id]);
         }
 
-        return $this->render('figure/createFigure.html.twig', [
-            'formFigure' => $form->createView()
+        return $this->render('figure/formFigure.html.twig', [
+            'formFigure' => $form->createView(),
+            'editMode' => $figure->getId() !== null
         ]);
     }
 }
