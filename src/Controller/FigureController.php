@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Figure;
 use App\Entity\User;
+use App\Form\Type\FigureType;
+use App\Form\Type\FigureValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -18,7 +20,7 @@ class FigureController extends AbstractController
     /**
      * @Route("/figure/{id}", name="snowtricks_figure")
      */
-    public function index($id): Response
+    public function index(int $id): Response
     {
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
@@ -39,56 +41,12 @@ class FigureController extends AbstractController
     {
         $figure = new Figure();
 
-        $form = $this->createFormBuilder($figure)
-            ->add('name', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'Nom',
-                    'class' =>'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'
-                ]
-            ])
-            ->add('description', TextareaType::class, [
-                'attr' => [
-                    'placeholder' => 'Description',
-                    'class' => 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'
-                ]
-            ])
-            ->add('figure_group', TextType::class, [
-                'attr' => [
-                    'placeholder' => 'Figure group',
-                    'class' => 'block appearance-none text-gray-600 w-full bg-white border border-gray-400 shadow-inner px-4 py-2 pr-8 rounded',
-                ]
-            ])
-            ->add('picture', TextType::class,
-                [
-                    'attr' => [
-                        'placeholder' => 'Photos',
-                        'class' => 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'
-                    ]
-                ])
-            ->add('video', TextType::class,
-                [
-                    'attr' => [
-                        'placeholder' => 'Videos',
-                        'class' => 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'
-                    ]
-                ])
-            ->add('save', SubmitType::class, [
-                'label' => 'Enregistrer',
-                'attr' => [
-                    'class' => 'appearance-none bg-gray-200 text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3'
-                ]
-            ])
-            ->getForm();
+        $form = $this->createForm(FigureType::class,$figure);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
-            $figure->setCreatedAt(new \DateTime());
-            $repository = $this->getDoctrine()->getRepository(User::class);
-            $user = $repository->findOneBy(['pseudo' => 'admin']);
-            $figure->setUser($user);
-            $em->persist($figure);
-            $em->flush();
-
+        $formValidator = new FigureValidator();
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        if ($formValidator->validator($form, $figure, $em, $repository)) {
             return $this->redirectToRoute('snowtricks_home');
         }
 
