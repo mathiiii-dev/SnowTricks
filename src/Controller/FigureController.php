@@ -50,6 +50,18 @@ class FigureController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(User::class);
         if ($formValidator->validator($form, $figure, $em, $repository)) {
             $id = $figure->getId();
+            if($figure->getModifiedAt()) {
+                $this->addFlash(
+                    'success',
+                    'Modification enregistrée !'
+                );
+            } else {
+                $this->addFlash(
+                    'success',
+                    'Création réussite !'
+                );
+            }
+
             return $this->redirectToRoute('snowtricks_figure', ['id' => $id]);
         }
 
@@ -72,6 +84,11 @@ class FigureController extends AbstractController
         $figure = $repository->find($id);
         $em->remove($figure);
         $em->flush();
+
+        $this->addFlash(
+            'success',
+        'Suppresion réussite !'
+        );
 
         return $this->redirectToRoute('snowtricks_home');
     }

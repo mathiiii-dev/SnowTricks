@@ -10,6 +10,9 @@
     {% endfor %}
     <div class="w-full bg-cover bg-center h-screen"
          style="background-image: url('{{ asset('/image/img-header.jpg') }}');">
+        {% for message in app.flashes('success') %}
+            {% include 'component/flashSuccess.html.twig' with {message}%}
+        {% endfor %}
         <div class="flex items-center justify-center h-full w-full bg-gray-900 bg-opacity-30">
             <div class="text-center">
                 <h1 class="text-white lg:text-7xl text-5xl uppercase font-bold">SnowTricks</h1>
@@ -25,8 +28,8 @@
     <div class="container my-12 mx-auto px-4 md:px-12" id="tricks">
         <div class="flex flex-wrap -mx-1 lg:-mx-4">
             {% for figure in figures %}
-                <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto my-8 {% if figure.id >= 9 %} hidden {% endif %}"
-                     {% if figure.id >= 9 %}id="hidden-cards"{% endif %}>
+                <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto my-8 {% if loop.index >= 7 %} hidden {% endif %}"
+                     {% if loop.index >= 7 %}id="hidden-cards"{% endif %}>
                     <a href="{{ path('snowtricks_figure', {'id': figure.id}) }}">
                         <img class="w-full" src="{{ figure.picture }}" alt="{{ figure.name }}">
                     </a>

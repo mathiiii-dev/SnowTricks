@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\FigureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
@@ -19,25 +20,30 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=5, max=255, minMessage="Le nom de la figure est trop court", maxMessage="Le titre de la figure est trop long.")
      */
     private $name;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Length(min=5, minMessage="La description est trop courte (min 5 caractère).")
      */
     private $description;
 
     /**
      * @ORM\Column(type="string", length=50)
+     * @Assert\Length(min=3, max=50, minMessage="Le groupe de la figure est trop court.", maxMessage="Le groupe de la figure est trop long.")
      */
     private $figure_group;
 
     /**
      * @ORM\Column(type="text")
+     * @Assert\Url(message="Ce champ doit être une url valide")
      */
     private $picture;
 
     /**
+     * @Assert\Url(message="Ce champ doit être une url valide")
      * @ORM\Column(type="text", nullable=true)
      */
     private $video;

@@ -2,50 +2,35 @@
 
 {% block title %}Tricks{% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
-    <div class="bg-gradient-to-b from-blue-100 min-h-screen pt-2">
+    <div class="min-h-screen pt-2 bg-form">
     <div class="container mx-auto my-16">
         <div class="inputs w-full max-w-2xl p-6 mx-auto">
-            <h2 class="text-2xl text-gray-900">Création d'une figure</h2>
-            <div class="mt-6 border-t border-gray-400 pt-4">
+            <h2 class="text-3xl text-gray-900 font-bold">Création d'une figure</h2>
+            <div class="mt-6 border-t border-white pt-4">
                 {{ form_start(formFigure) }}
                 <div class='flex flex-wrap -mx-3 mb-6'>
                     <div class='w-full md:w-full px-3 mb-6'>
-                        <label class='block uppercase tracking-wide text-xs font-bold mb-2'
-                               for='nom'>Nom</label>
-                        <div id='nom'>
-                            {{ form_widget(formFigure.name, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                        </div>
+                        {{ form_row(formFigure.name, {'label': 'Nom' ,'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
                     </div>
                     <div class='w-full md:w-full px-3 mb-6'>
-                        <label class='block uppercase tracking-wide text-xs font-bold mb-2'
-                               for='description'>Description</label>
-                        <div id='description'>
-                            {{ form_widget(formFigure.description, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                        </div>
+                        {{ form_row(formFigure.description, {'label': 'Description' ,'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
                     </div>
                     <div class='w-full md:w-full px-3 mb-6'>
-                        <label class='block uppercase tracking-wide text-xs font-bold mb-2'
-                               for='figure_group'>Figure Group</label>
-                        <div id='figure_group'>
-                            {{ form_widget(formFigure.figure_group, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                        </div>
+                        {{ form_row(formFigure.figure_group, {'label': 'Groupe' , 'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
                     </div>
                     <div class='w-full md:w-full px-3 mb-6'>
-                        <label class='block uppercase tracking-wide text-xs font-bold mb-2'
-                               for='photo'>Photos</label>
-                        <div id='photo'>{{ form_widget(formFigure.picture, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                        </div>
+                        {{ form_row(formFigure.picture, {'label': 'Photo' ,'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
                     </div>
                     <div class='w-full md:w-full px-3 mb-6'>
-                        <label class='block uppercase tracking-wide text-xs font-bold mb-2'
-                               for='video'>Videos</label>
-                        <div id='video'>
-                            {{ form_widget(formFigure.video, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                        </div>
+                        {{ form_row(formFigure.video, {'label': 'Video' ,'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
                     </div>
                     <div class="flex justify-end">
-                        <button class="appearance-none bg-gray-200 text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3"
+                        <button class="appearance-none bg-gray-200 text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3 font-bold"
                                 type="submit">
                             {% if editMode %}
                                 Modifier
