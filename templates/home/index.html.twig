@@ -3,6 +3,11 @@
 {% block title %}Snowtricks{% endblock %}
 
 {% block body %}
+    {% for figure in figures %}
+        <div class="hidden" id="hidden-modal" data-id="{{ figure.id }}">
+            {% include 'component/modal.html.twig' with {figure} %}
+        </div>
+    {% endfor %}
     <div class="w-full bg-cover bg-center h-screen"
          style="background-image: url('{{ asset('/image/img-header.jpg') }}');">
         <div class="flex items-center justify-center h-full w-full bg-gray-900 bg-opacity-30">
@@ -35,10 +40,10 @@
                                     <span class="hidden">Modifier</span>
                                     <i class="fa fa-pen"></i>
                                 </a>
-                                <a href="">
+                                <button id="delete-figure" data-id="{{ figure.id }}">
                                     <span class="hidden">Supprimer</span>
                                     <i class="fa fa-trash"></i>
-                                </a>
+                                </button>
                             </span>
                         </div>
                     </div>
@@ -64,4 +69,5 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('home') }}
+    {{ encore_entry_script_tags('figure') }}
 {% endblock %}

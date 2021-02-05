@@ -9,7 +9,6 @@ function showMore() {
     for ( ; index < length; index++) {
         el[index].classList.remove('hidden');
     }
-
 }
 
 function showLess() {
@@ -22,5 +21,7 @@ function showLess() {
     }
 }
 
+
 btnMore.addEventListener("click", showMore);
 btnLess.addEventListener("click", showLess);
+
