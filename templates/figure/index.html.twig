@@ -6,9 +6,14 @@
 
 {% block body %}
     <div class="min-h-screen pt-2">
-        <div class="container mx-auto my-24 relative text-center bg-blue-100 rounded">
+        {% for message in app.flashes('success') %}
+            {% include 'component/flashSuccess.html.twig' with {message}%}
+        {% endfor %}
+        <div class="container mx-auto md:my-24 relative text-center bg-blue-200 rounded">
             <img src="{{ figure.picture }}" alt="" class="object-cover h-96 w-full rounded-t">
-            <p class="text-uppercase text-3xl -mt-48 -mx-68 text-white">{{ figure.name }}</p>
+            <div class="bg-white">
+                <p class="text-uppercase text-3xl -mt-48 -mx-68 text-black">{{ figure.name }}</p>
+            </div>
             <div class="flex flex-wrap -mx-2 overflow-hidden mt-44">
                 <div class="my-2 px-2 w-full overflow-hidden xl:w-1/2">
                     <img src="{{ figure.picture }}" alt="" class="w-94 h-64 mx-auto rounded">
@@ -19,17 +24,17 @@
                     </iframe>
                 </div>
             </div>
-            <p class="text-base font-light leading-relaxed mt-12 mb-2 text-justify px-6">{{ figure.description }}</p>
+            <p class="leading-relaxed mt-12 mb-2 text-justify px-6 py-6">{{ figure.description }}</p>
             <div class="mt-6 pb-6">
                 <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
                 <i class="fa fa-snowboarding pr-1"></i>{{ figure.figureGroup }}
             </span>
                 <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
-                <i class="fa fa-calendar pr-1"></i>{{ figure.createdAt | date('d m Y') }}
+                <i class="fa fa-calendar pr-1"></i> Créer le {{ figure.createdAt | date('d m Y') }}
             </span>
                 {% if figure.modifiedAt %}
                     <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
-                    {{ figure.modifiedAt | date }}
+                     <i class="fa fa-calendar pr-1"></i> Modifier le {{ figure.modifiedAt | date('d m Y') }}
                 </span>
                 {% endif %}
             </div>

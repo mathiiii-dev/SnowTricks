@@ -1,0 +1,15 @@
+.bg-form{
+    background-image: url('/image/cool-background.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #fefefe;
+}
+
+.bg-figure{
+    background-image: url('/image/cool-background.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-color: #fefefe;
+}
