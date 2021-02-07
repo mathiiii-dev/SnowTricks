@@ -33,6 +33,7 @@ class Discussion
      */
     private $user;
 
+
     /**
      * @ORM\OneToOne(targetEntity=Figure::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
@@ -80,6 +81,7 @@ class Discussion
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
 
         return $this;
     }
