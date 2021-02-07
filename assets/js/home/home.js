@@ -10,8 +10,6 @@ function showMore() {
         el[index].classList.remove('hidden');
     }
 
-}
-
 function showLess() {
     let el = document.querySelectorAll('*[id^="hidden-cards"]');
     document.getElementById('show-more').classList.remove('hidden');
@@ -24,3 +22,4 @@ function showLess() {
 
 btnMore.addEventListener("click", showMore);
 btnLess.addEventListener("click", showLess);
+

@@ -8,6 +8,7 @@ use App\Form\Figure\FigureType;
 use App\Form\Figure\FigureValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -56,5 +57,22 @@ class FigureController extends AbstractController
             'formFigure' => $form->createView(),
             'editMode' => $figure->getId() !== null
         ]);
+    }
+
+    /**
+     * @Route("/delete-figure/{id}", name="snowtricks_deletefigure")
+     * @param $id
+     * @param EntityManagerInterface $em
+     * @return RedirectResponse
+     */
+    public function deleteFigure($id, EntityManagerInterface $em)
+    {
+        $repository = $this->getDoctrine()->getRepository(Figure::class);
+
+        $figure = $repository->find($id);
+        $em->remove($figure);
+        $em->flush();
+
+        return $this->redirectToRoute('snowtricks_home');
     }
 }
