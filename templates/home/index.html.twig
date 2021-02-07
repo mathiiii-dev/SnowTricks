@@ -22,16 +22,16 @@
             {% for figure in figures %}
                 <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto my-8 {% if figure.id >= 9 %} hidden {% endif %}"
                      {% if figure.id >= 9 %}id="hidden-cards"{% endif %}>
-                    <a href="/figure/{{ figure.id }}">
+                    <a href="{{ path('snowtricks_figure', {'id': figure.id}) }}">
                         <img class="w-full" src="{{ figure.picture }}" alt="{{ figure.name }}">
                     </a>
                     <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">
-                            <a href="/figure/{{ figure.id }}">
+                            <a href="{{ path('snowtricks_figure', {'id': figure.id})}}">
                                 {{ figure.name }}
                             </a>
                             <span class="float-right space-x-3">
-                                <a href="">
+                                <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}">
                                     <span class="hidden">Modifier</span>
                                     <i class="fa fa-pen"></i>
                                 </a>
