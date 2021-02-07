@@ -104,7 +104,7 @@ class Figure
 
         return $this;
     }
-
+  
     public function getPicture(): ?string
     {
         return $this->picture;
