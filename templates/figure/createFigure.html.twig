@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Tricks{% endblock %}
+
+{% block body %}
+    <div class="bg-gradient-to-b from-blue-100 min-h-screen pt-2">
+    <div class="container mx-auto my-16">
+        <div class="inputs w-full max-w-2xl p-6 mx-auto">
+            <h2 class="text-2xl text-gray-900">Création d'une figure</h2>
+            <div class="mt-6 border-t border-gray-400 pt-4">
+                {{ form_start(formFigure) }}
+                <div class='flex flex-wrap -mx-3 mb-6'>
+                    <div class='w-full md:w-full px-3 mb-6'>
+                        <label class='block uppercase tracking-wide text-xs font-bold mb-2'
+                               for='nom'>Nom</label>
+                        <div id='nom'>
+                            {{ form_widget(formFigure.name) }}
+                        </div>
+                    </div>
+                    <div class='w-full md:w-full px-3 mb-6'>
+                        <label class='block uppercase tracking-wide text-xs font-bold mb-2'
+                               for='description'>Description</label>
+                        <div id='description'>
+                            {{ form_widget(formFigure.description) }}
+                        </div>
+                    </div>
+                    <div class='w-full md:w-full px-3 mb-6'>
+                        <label class='block uppercase tracking-wide text-xs font-bold mb-2'
+                               for='figure_group'>Figure Group</label>
+                        <div id='figure_group'>
+                            {{ form_widget(formFigure.figure_group) }}
+                        </div>
+                    </div>
+                    <div class='w-full md:w-full px-3 mb-6'>
+                        <label class='block uppercase tracking-wide text-xs font-bold mb-2'
+                               for='photo'>Photos</label>
+                        <div id='photo'>{{ form_widget(formFigure.picture) }}
+                        </div>
+                    </div>
+                    <div class='w-full md:w-full px-3 mb-6'>
+                        <label class='block uppercase tracking-wide text-xs font-bold mb-2'
+                               for='video'>Videos</label>
+                        <div id='video'>
+                            {{ form_widget(formFigure.video) }}
+                        </div>
+                    </div>
+                    {{ form_widget(formFigure.save) }}
+                    {{ form_end(formFigure) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

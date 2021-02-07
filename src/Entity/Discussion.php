@@ -31,13 +31,14 @@ class Discussion
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user;
+
 
     /**
      * @ORM\OneToOne(targetEntity=Figure::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private $figure_id;
+    private $figure;
 
     public function getId(): ?int
     {
@@ -72,26 +73,27 @@ class Discussion
         $this->createdAt = $createdAt;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
+
 
         return $this;
     }
 
-    public function getFigureId(): ?Figure
+    public function getFigure(): ?Figure
     {
-        return $this->figure_id;
+        return $this->figure;
     }
 
-    public function setFigureId(Figure $figure_id): self
+    public function setFigure(Figure $figure): self
     {
-        $this->figure_id = $figure_id;
+        $this->figure = $figure;
 
         return $this;
     }

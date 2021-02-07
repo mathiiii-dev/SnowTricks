@@ -20,7 +20,7 @@ class Figure
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $nom;
+    private $name;
 
     /**
      * @ORM\Column(type="text")
@@ -33,14 +33,14 @@ class Figure
     private $figure_group;
 
     /**
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="text")
      */
-    private $picture = [];
+    private $picture;
 
     /**
-     * @ORM\Column(type="array", nullable=true)
+     * @ORM\Column(type="text", nullable=true)
      */
-    private $video = [];
+    private $video;
 
     /**
      * @ORM\Column(type="date")
@@ -56,21 +56,21 @@ class Figure
      * @ORM\ManyToOne(targetEntity=User::class)
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user_id;
+    private $user;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getName(): ?string
     {
-        return $this->nom;
+        return $this->name;
     }
 
-    public function setNom(string $nom): self
+    public function setName(string $name): self
     {
-        $this->nom = $nom;
+        $this->name = $name;
 
         return $this;
     }
@@ -98,25 +98,25 @@ class Figure
 
         return $this;
     }
-
-    public function getPicture(): ?array
+  
+    public function getPicture(): ?string
     {
         return $this->picture;
     }
 
-    public function setPicture(array $picture): self
+    public function setPicture(string $picture): self
     {
         $this->picture = $picture;
 
         return $this;
     }
 
-    public function getVideo(): ?array
+    public function getVideo(): ?string
     {
         return $this->video;
     }
 
-    public function setVideo(?array $video): self
+    public function setVideo(?string $video): self
     {
         $this->video = $video;
 
@@ -147,14 +147,14 @@ class Figure
         return $this;
     }
 
-    public function getUserId(): ?User
+    public function getUser(): ?User
     {
-        return $this->user_id;
+        return $this->user;
     }
 
-    public function setUserId(?User $user_id): self
+    public function setUser(?User $user): self
     {
-        $this->user_id = $user_id;
+        $this->user = $user;
 
         return $this;
     }

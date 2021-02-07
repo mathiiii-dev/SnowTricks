@@ -1,4 +1,4 @@
-<nav class="bg-transparent">
+<nav>
     <div class="hidden sm:block sm:ml-6 sm:mr-6 flex">
         <div class="float-left">
             <a href="/">
@@ -6,21 +6,21 @@
             </a>
         </div>
         <div class="float-right pt-2">
-            <a href="/" class="hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Home</a>
-            <a href="#" class="hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Tricks</a>
-            <a href="#" class="hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Sign In</a>
-            <a href="#" class="hover:bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Sign Up</a>
+            <a href="{{ path('snowtricks_home') }}" class="hover:bg-gray-700 text-black px-3 py-2 hover:text-white rounded-md text-sm font-medium">Home</a>
+            <a href="{{ path('snowtricks_createfigure') }}" class="hover:bg-gray-700 hover:text-white text-black px-3 py-2 rounded-md text-sm font-medium">Tricks</a>
+            <a href="#" class="hover:bg-gray-700 text-black hover:text-white px-3 py-2 rounded-md text-sm font-medium">Sign In</a>
+            <a href="#" class="hover:bg-gray-700 text-black px-3 hover:text-white py-2 rounded-md text-sm font-medium">Sign Up</a>
         </div>
     </div>
     <div class="lg:hidden md:hidden xl:hidden block fixed inset-x-0 bottom-0 z-10 bg-white shadow">
         <ul class="text-center m-2 space-x-6">
             <li class="inline">
-                <a href="">
+                <a href="{{ path('snowtricks_home') }}">
                     <i class="fa fa-home fa-3x"></i>
                 </a>
             </li>
             <li class="inline">
-                <a href="">
+                <a href="{{ path('snowtricks_createfigure') }}">
                     <i class="fa fa-snowboarding fa-3x"></i>
                 </a>
             </li>
