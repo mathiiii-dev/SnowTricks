@@ -14,11 +14,11 @@ class FigureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class)
-            ->add('description', TextareaType::class)
-            ->add('figure_group', TextType::class)
-            ->add('picture', TextType::class)
-            ->add('video', TextType::class)
+            ->add('name', TextType::class, ['label' => 'Nom'])
+            ->add('description', TextareaType::class, ['label' => 'Description'])
+            ->add('figure_group', TextType::class, ['label' => 'Groupe'])
+            ->add('picture', TextType::class, ['label' => 'Photo'])
+            ->add('video', TextType::class, ['label' => 'Video'])
         ;
     }
 

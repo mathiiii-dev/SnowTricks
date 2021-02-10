@@ -17,8 +17,10 @@ class FigureController extends AbstractController
 {
     /**
      * @Route("/figure/{id}", name="snowtricks_figure")
+     * @param $id
+     * @return Response
      */
-    public function index($id): Response
+    public function index(int $id): Response
     {
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
@@ -77,7 +79,7 @@ class FigureController extends AbstractController
      * @param EntityManagerInterface $em
      * @return RedirectResponse
      */
-    public function deleteFigure($id, EntityManagerInterface $em)
+    public function deleteFigure($id, EntityManagerInterface $em): RedirectResponse
     {
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
