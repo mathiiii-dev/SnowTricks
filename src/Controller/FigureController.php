@@ -47,18 +47,18 @@ class FigureController extends AbstractController
         $formValidator = new FigureValidator();
         $repository = $this->getDoctrine()->getRepository(User::class);
         if ($formValidator->validator($form)) {
-            $id = $figure->getId();
             $figure->setCreatedAt(new \DateTime());
             $user = $repository->findOneBy(['pseudo' => 'admin']);
             $figure->setUser($user);
             $em->persist($figure);
             $em->flush();
+
             $this->addFlash(
                 'success',
                 'Création réussite !'
             );
 
-            return $this->redirectToRoute('snowtricks_figure', ['id' => $id]);
+            return $this->redirectToRoute('snowtricks_figure', ['id' => $figure->getId()]);
         }
 
         return $this->render('figure/formFigure.html.twig', [

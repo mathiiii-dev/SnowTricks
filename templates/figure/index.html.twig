@@ -30,11 +30,11 @@
                 <i class="fa fa-snowboarding pr-1"></i>{{ figure.figureGroup }}
             </span>
                 <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
-                <i class="fa fa-calendar pr-1"></i> Créer le {{ figure.createdAt | date('d m Y') }}
+                <i class="fa fa-calendar pr-1"></i> Créer le {{ figure.createdAt | date('d/m/Y') }}
             </span>
                 {% if figure.modifiedAt %}
                     <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
-                     <i class="fa fa-calendar pr-1"></i> Modifier le {{ figure.modifiedAt | date('d m Y') }}
+                     <i class="fa fa-calendar pr-1"></i> Modifier le {{ figure.modifiedAt | date('d/m/Y') }}
                 </span>
                 {% endif %}
             </div>
