@@ -15,7 +15,11 @@ class FigureType extends AbstractType
     {
         $builder
             ->add('name', TextType::class, ['label' => 'Nom'])
-            ->add('description', TextareaType::class, ['label' => 'Description'])
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+                'row_attr' => [
+                    'rows' => '6'
+            ]])
             ->add('figure_group', TextType::class, ['label' => 'Groupe'])
             ->add('picture', TextType::class, ['label' => 'Photo'])
             ->add('video', TextType::class, ['label' => 'Video'])
