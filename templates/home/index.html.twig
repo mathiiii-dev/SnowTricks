@@ -3,11 +3,9 @@
 {% block title %}Snowtricks{% endblock %}
 
 {% block body %}
-    {% for figure in figures %}
-        <div class="hidden" id="hidden-modal" data-id="{{ figure.id }}">
-            {% include 'component/modal.html.twig' with {figure} %}
+        <div class="hidden" id="hidden-modal">
+            {% include 'component/modal.html.twig' %}
         </div>
-    {% endfor %}
     <div class="w-full bg-cover bg-center h-screen"
          style="background-image: url('{{ asset('/image/img-header.jpg') }}');">
         {% for message in app.flashes('success') %}
@@ -43,7 +41,7 @@
                                     <span class="hidden">Modifier</span>
                                     <i class="fa fa-pen"></i>
                                 </a>
-                                <button id="delete-figure" data-id="{{ figure.id }}">
+                                <button id="delete-figure" data-id="{{ figure.id }}" data-name="{{ figure.name }}">
                                     <span class="hidden">Supprimer</span>
                                     <i class="fa fa-trash"></i>
                                 </button>
