@@ -4,11 +4,18 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(
+ *     fields={"username"},
+ *     message="Le pseudo est déja utilisé"
+ * )
  */
-class User
+class User implements UserInterface
 {
     /**
      * @ORM\Id
@@ -18,32 +25,31 @@ class User
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=50)
+     * @Assert\Length(min=3, max=180, minMessage="Le pseudo est trop court", maxMessage="Le pseudo est trop long")
+     * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $pseudo;
+    private $username;
 
     /**
+     * @ORM\Column(type="json")
+     */
+    private $roles = [];
+
+    /**
+     * @Assert\Length(min=8, max=255, minMessage="Le mot de passe est trop court", maxMessage="Le mot de passe est trop long")
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
+
+    /**
+     * @Assert\Email(message="L'email n'est pas un email valide")
      * @ORM\Column(type="string", length=150)
      */
     private $email;
 
     /**
-     * @ORM\Column(type="string", length=150)
-     */
-    private $password;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $picture;
-
-    /**
-     * @ORM\Column(type="string", length=50)
-     */
-    private $type;
-
-    /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
@@ -52,16 +58,72 @@ class User
         return $this->id;
     }
 
-    public function getPseudo(): ?string
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
     {
-        return $this->pseudo;
+        return (string) $this->username;
     }
 
-    public function setPseudo(string $pseudo): self
+    public function setUsername(string $username): self
     {
-        $this->pseudo = $pseudo;
+        $this->username = $username;
 
         return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt()
+    {
+        // not needed when using the "bcrypt" algorithm in security.yaml
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getEmail(): ?string
@@ -72,42 +134,6 @@ class User
     public function setEmail(string $email): self
     {
         $this->email = $email;
-
-        return $this;
-    }
-
-    public function getPassword(): ?string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-    public function getType(): ?string
-    {
-        return $this->type;
-    }
-
-    public function setType(string $type): self
-    {
-        $this->type = $type;
 
         return $this;
     }

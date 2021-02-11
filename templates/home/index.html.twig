@@ -3,13 +3,18 @@
 {% block title %}Snowtricks{% endblock %}
 
 {% block body %}
-        <div class="hidden" id="hidden-modal">
-            {% include 'component/modal.html.twig' %}
-        </div>
+    <div class="hidden" id="hidden-modal">
+        {% include 'component/modal.html.twig' %}
+    </div>
     <div class="w-full bg-cover bg-center h-screen"
          style="background-image: url('{{ asset('/image/img-header.jpg') }}');">
-        {% for message in app.flashes('success') %}
-            {% include 'component/flashSuccess.html.twig' with {message} %}
+        {% for message in app.flashes %}
+            {% if app.flashes('success') %}
+                {% include 'component/flashSuccess.html.twig' with {message} %}
+            {% endif %}
+            {% if app.flashes('error') %}
+                {% include 'component/flashError.html.twig' with {message} %}
+            {% endif %}
         {% endfor %}
         <div class="flex items-center justify-center h-full w-full bg-gray-900 bg-opacity-30">
             <div class="text-center">

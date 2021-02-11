@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\Figure\FigureType;
-use App\Form\Figure\FigureValidator;
+use App\Form\FormValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -44,7 +44,7 @@ class FigureController extends AbstractController
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        $formValidator = new FigureValidator();
+        $formValidator = new FormValidator();
         $repository = $this->getDoctrine()->getRepository(User::class);
         if ($formValidator->validator($form)) {
             $figure->setCreatedAt(new \DateTime());
