@@ -5,10 +5,14 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\FormValidator;
 use App\Form\SignUpType;
+use App\Repository\UserRepository;
+use App\Services\MailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -19,9 +23,10 @@ class SignUpController extends AbstractController
      * @param Request $request
      * @param EntityManagerInterface $em
      * @param UserPasswordEncoderInterface $encoder
+     * @param $mailer
      * @return Response
      */
-    public function signUp(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder): Response
+    public function signUp(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, MailerInterface $mailer): Response
     {
         $user = new User();
 
@@ -34,12 +39,16 @@ class SignUpController extends AbstractController
             $user->setPassword($hash);
             $user->setRoles(['ROLE_USER']);
             $user->setCreatedAt(new \DateTime());
+            $user->setToken(md5(uniqid()));
             $em->persist($user);
             $em->flush();
 
+            $mail = new MailService();
+            $mail->send($mailer, $user);
+
             $this->addFlash(
                 'success',
-                'Inscription réussite !'
+                "Inscription réussite ! Un mail vous à été envoyé pour validé votre compte. "
             );
             return $this->redirectToRoute('snowtricks_home');
         }
@@ -48,5 +57,32 @@ class SignUpController extends AbstractController
             'formSignUp' => $form->createView() ]
         );
 
+    }
+
+    /**
+     * @Route("/confirm-account/{token}", name="snowtricks_confirmaccount")
+     * @param $token
+     * @param UserRepository $users
+     * @return RedirectResponse
+     */
+    public function activation($token, UserRepository $users): RedirectResponse
+    {
+        $user = $users->findOneBy(['token' => $token]);
+
+        if(!$user){
+            throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
+        }
+
+        $user->setToken(null);
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        $this->addFlash(
+            'success',
+            'Votre compte à bien été activé !'
+        );
+
+        return $this->redirectToRoute('snowtricks_home');
     }
 }

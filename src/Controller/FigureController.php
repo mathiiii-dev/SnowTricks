@@ -79,7 +79,7 @@ class FigureController extends AbstractController
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        $formValidator = new FigureValidator();
+        $formValidator = new FormValidator();
 
         if ($formValidator->validator($form)) {
             $id = $figure->getId();

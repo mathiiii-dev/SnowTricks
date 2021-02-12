@@ -1,0 +1,10 @@
+<h1>Bienvenue sur SnowTricks ! </h1>
+
+<p>
+    Vous vous êtes inscrit en tant que {{ username }} avec le mail suivant :
+</p>
+<p><code>{{ email.to[0].address }}</code></p>
+
+<p>
+    <a href="{{ absolute_url(path('snowtricks_confirmaccount', {'token': token})) }}">Cliquer ici pour confirmer votre compte</a>
+</p>
