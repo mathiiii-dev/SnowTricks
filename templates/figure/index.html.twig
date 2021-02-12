@@ -9,8 +9,8 @@
         {% for message in app.flashes('success') %}
             {% include 'component/flashSuccess.html.twig' with {message}%}
         {% endfor %}
-        <div class="container mx-auto md:my-24 relative text-center bg-blue-200 rounded">
-            <img src="{{ figure.picture }}" alt="" class="object-cover h-96 w-full rounded-t">
+        <div class="container mx-auto md:my-24 relative text-center bg-gray-100  rounded shadow-2xl">
+            <img src="{{ figure.picture }}" alt="" class="object-cover h-80 w-full rounded-t">
             <div class="bg-white">
                 <p class="text-uppercase text-3xl -mt-48 -mx-68 text-black">{{ figure.name }}</p>
             </div>
