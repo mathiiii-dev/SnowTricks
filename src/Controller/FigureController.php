@@ -39,6 +39,8 @@ class FigureController extends AbstractController
      */
     public function createFigure(Request $request, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $figure = new Figure();
 
         $form = $this->createForm(FigureType::class, $figure);
@@ -76,6 +78,8 @@ class FigureController extends AbstractController
      */
     public function modifyFigure(Figure $figure, Request $request, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
@@ -108,6 +112,8 @@ class FigureController extends AbstractController
      */
     public function deleteFigure($id, EntityManagerInterface $em): RedirectResponse
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
         $figure = $repository->find($id);
