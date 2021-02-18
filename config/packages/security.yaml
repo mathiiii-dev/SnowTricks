@@ -23,7 +23,7 @@ security:
                 authenticators:
                     - App\Security\SignInAuthenticator
             logout:
-                path: app_logout
+                path: snowtricks_logout
                 # where to redirect after logout
                 # target: app_any_route
 

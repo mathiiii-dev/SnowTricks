@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Uid\Uuid;
 
 class SignUpController extends AbstractController
 {
@@ -37,9 +38,10 @@ class SignUpController extends AbstractController
         if ($formValidator->validator($form)) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
-            $user->setRoles(['ROLE_USER']);
-            $user->setCreatedAt(new \DateTime());
-            $user->setToken(md5(uniqid()));
+
+            $uuid = Uuid::v4();
+            $user->setToken($uuid);
+
             $em->persist($user);
             $em->flush();
 
@@ -60,14 +62,18 @@ class SignUpController extends AbstractController
     }
 
     /**
-     * @Route("/confirm-account/{token}", name="snowtricks_confirmaccount")
+     * @Route("/confirm-account/{pseudo}/{token}", name="snowtricks_confirmaccount")
      * @param $token
      * @param UserRepository $users
+     * @param $pseudo
      * @return RedirectResponse
      */
-    public function activation($token, UserRepository $users): RedirectResponse
+    public function activation($token, UserRepository $users, $pseudo): RedirectResponse
     {
-        $user = $users->findOneBy(['token' => $token]);
+        $user = $users->findOneBy([
+            'token' => $token,
+            'username' => $pseudo
+        ]);
 
         if(!$user){
             throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
@@ -83,6 +89,6 @@ class SignUpController extends AbstractController
             'Votre compte à bien été activé !'
         );
 
-        return $this->redirectToRoute('snowtricks_home');
+        return $this->redirectToRoute('snowtricks_signin');
     }
 }

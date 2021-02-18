@@ -14,6 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     fields={"username"},
  *     message="Le pseudo est déja utilisé"
  * )
+ * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface
 {
@@ -148,9 +149,12 @@ class User implements UserInterface
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime();
 
         return $this;
     }

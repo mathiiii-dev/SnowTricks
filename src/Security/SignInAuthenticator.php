@@ -24,7 +24,7 @@ class SignInAuthenticator extends AbstractFormLoginAuthenticator implements Pass
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'app_login';
+    public const LOGIN_ROUTE = 'snowtricks_signin';
 
     private $entityManager;
     private $urlGenerator;
@@ -71,7 +71,7 @@ class SignInAuthenticator extends AbstractFormLoginAuthenticator implements Pass
 
         if (!$user) {
             // fail authentication with a custom error
-            throw new CustomUserMessageAuthenticationException('Username could not be found.');
+            throw new CustomUserMessageAuthenticationException("Le pseudo n'éxiste pas");
         }
 
         if($user->getToken()) {
@@ -98,6 +98,7 @@ class SignInAuthenticator extends AbstractFormLoginAuthenticator implements Pass
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey): RedirectResponse
     {
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $providerKey)) {
             return new RedirectResponse($targetPath);
         }

@@ -37,14 +37,16 @@
                                 {{ figure.name }}
                             </a>
                             <span class="float-right space-x-3">
-                                <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}">
-                                    <span class="hidden">Modifier</span>
-                                    <i class="fa fa-pen"></i>
-                                </a>
-                                <button id="delete-figure" data-id="{{ figure.id }}" data-name="{{ figure.name }}">
-                                    <span class="hidden">Supprimer</span>
-                                    <i class="fa fa-trash"></i>
-                                </button>
+                                {% if app.user %}
+                                    <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}">
+                                        <span class="hidden">Modifier</span>
+                                        <i class="fa fa-pen"></i>
+                                    </a>
+                                    <button id="delete-figure" data-id="{{ figure.id }}" data-name="{{ figure.name }}">
+                                        <span class="hidden">Supprimer</span>
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                {% endif %}
                             </span>
                         </div>
                     </div>
