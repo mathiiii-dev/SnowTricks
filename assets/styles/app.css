@@ -19,3 +19,92 @@ p, a, span {
     color: white;
     background-color: #5799fe;
 }
+
+.carousel {
+    height: 50%;
+}
+.item,
+.active,
+.carousel-inner {
+    height: 100%;
+}
+.fill {
+    width: 100%;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+    -o-background-size: cover;
+}
+.carousel-control.left {
+    background-image: none;
+    width: 54px;
+    height: 54px;
+    top: 50%;
+    left: 20px;
+    margin-top: -27px;
+    line-height: 54px;
+    border: 0 none;
+    opacity: 2;
+    text-shadow: none;
+    -webkit-transition: all 0.2s ease-in-out 0s;
+    transition: all 0.2s ease-in-out 0s;
+}
+.carousel-control.right {
+    background-image: none;
+    width: 54px;
+    height: 54px;
+    top: 50%;
+    right: 20px;
+    margin-top: -27px;
+    line-height: 54px;
+    border: 0 none;
+    opacity: 2;
+    text-shadow: none;
+    -webkit-transition: all 0.2s ease-in-out 0s;
+    transition: all 0.2s ease-in-out 0s;
+}
+.carousel-indicators {
+    right: 50%;
+    top: auto;
+    bottom: 0px;
+    margin-right: -19px;
+}
+.carousel-indicators li {
+    background: #c0c0c0;
+}
+.carousel-indicators .active {
+    background: #1f1f21;
+}
+.carousel-indicators li {
+    border: 0 none;
+}
+.carousel-control.right:hover,
+.carousel-control.left:hover {
+    opacity: 0.56;
+    border: 1px solid #fff;
+}
+.carousel-fade .carousel-inner .item {
+    -webkit-transition-property: opacity;
+    transition-property: opacity;
+}
+.carousel-fade .carousel-control {
+    z-index: 2;
+}
+.carousel-fade .carousel-inner .item,
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+    opacity: 0;
+}
+.carousel-fade .carousel-inner .active,
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+    opacity: 1;
+}
+.carousel-fade .carousel-inner .next,
+.carousel-fade .carousel-inner .prev,
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+    left: 0;
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}

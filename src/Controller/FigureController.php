@@ -26,6 +26,10 @@ class FigureController extends AbstractController
 
         $figure = $repository->find($id);
 
+        if($figure == null){
+            http_response_code(404);
+        }
+
         return $this->render('figure/index.html.twig', [
             'figure' => $figure
         ]);
@@ -50,7 +54,7 @@ class FigureController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(User::class);
         if ($formValidator->validator($form)) {
             $figure->setCreatedAt(new \DateTime());
-            $user = $repository->findOneBy(['pseudo' => 'admin']);
+            $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
             $figure->setUser($user);
             $em->persist($figure);
             $em->flush();
