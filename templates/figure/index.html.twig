@@ -25,7 +25,7 @@
                             <i class="fa fa-pen fa-2x"></i>
                         </a>
                         <button id="delete-figure"
-                                class="pl-3 hover:text-red-600" data-id="{{ figure.id }}" data-name="{{ figure.name }}">
+                                class="pl-3 hover:text-red-600" data-id="{{ figure.id }}" data-name="{{ figure.name }}" data-url="{{ path('snowtricks_deletefigure', {'id': figure.id}) }}">
                             <span class="hidden">Supprimer</span>
                             <i class="fa fa-trash fa-2x"></i>
                         </button>
