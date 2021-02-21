@@ -25,7 +25,7 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=5, max=255, minMessage="Le nom de la figure est trop court", maxMessage="Le titre de la figure est trop long.")
+     * @Assert\Length(min=3, max=255, minMessage="Le nom de la figure est trop court", maxMessage="Le titre de la figure est trop long.")
      */
     private $name;
 

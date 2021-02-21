@@ -18,8 +18,8 @@ class FigureType extends AbstractType
             ->add('name', TextType::class, ['label' => 'Nom'])
             ->add('description', TextareaType::class, ['label' => 'Description'])
             ->add('figure_group', TextType::class, ['label' => 'Groupe'])
-            ->add('pictures', TextType::class, ['label' => 'Photo'])
-            ->add('videos', TextType::class, ['label' => 'Video']);
+            ->add('pictures', TextType::class, ['label' => 'Photo (Lien d\'image uniquement)'])
+            ->add('videos', TextType::class, ['label' => 'Video (Lien YouTube uniquement)']);
 
         $builder->get('pictures')
             ->addModelTransformer(new CallbackTransformer(

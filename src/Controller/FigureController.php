@@ -6,8 +6,10 @@ use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\Figure\FigureType;
 use App\Form\FormValidator;
+use App\Services\UrlService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -56,6 +58,25 @@ class FigureController extends AbstractController
             $figure->setCreatedAt(new \DateTime());
             $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
             $figure->setUser($user);
+            $urlCheck = new UrlService();
+            $pictures = $urlCheck->checkImageUrl($figure);
+            if(!$pictures){
+                $form->get('pictures')->addError(new FormError('Les liens donnés ne sont pas des images.'));
+                return $this->render('figure/formFigure.html.twig', [
+                    'formFigure' => $form->createView(),
+                    'editMode' => null
+                ]);
+            }
+            $videos = $urlCheck->checkVideoUrl($figure);
+            if(!$videos){
+                $form->get('videos')->addError(new FormError('Les liens donnés ne proviennent pas de YouTube.'));
+                return $this->render('figure/formFigure.html.twig', [
+                    'formFigure' => $form->createView(),
+                    'editMode' => null
+                ]);
+            }
+            $figure->setVideos($videos);
+
             $em->persist($figure);
             $em->flush();
 
