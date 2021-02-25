@@ -103,7 +103,6 @@ class FigureController extends AbstractController
 
         $originalPictures = new ArrayCollection();
 
-        // Create an ArrayCollection of the current Tag objects in the database
         foreach ($figure->getPictures() as $picture) {
             $originalPictures->add($picture);
         }
@@ -112,10 +111,12 @@ class FigureController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
             foreach ($originalPictures as $picture) {
-                if ($figure->getPictures()->contains($picture)) {
+                if (false === $figure->getPictures()->contains($picture)) {
                     $picture->setFigure(null);
-                    $em->remove($picture);
+
+                    $em->persist($picture);
                 }
             }
 
