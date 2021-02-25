@@ -33,43 +33,70 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/create-figure", name="snowtricks_createfigure")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @return Response
+     */
+    public function createFigure(Request $request, EntityManagerInterface $em): Response
+    {
+        $figure = new Figure();
+
+        $form = $this->createForm(FigureType::class, $figure);
+        $form->handleRequest($request);
+
+        $formValidator = new FigureValidator();
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        if ($formValidator->validator($form)) {
+            $figure->setCreatedAt(new \DateTime());
+            $user = $repository->findOneBy(['pseudo' => 'admin']);
+            $figure->setUser($user);
+            $em->persist($figure);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Création réussite !'
+            );
+
+            return $this->redirectToRoute('snowtricks_figure', ['id' => $figure->getId()]);
+        }
+
+        return $this->render('figure/formFigure.html.twig', [
+            'formFigure' => $form->createView(),
+            'editMode' => null
+        ]);
+    }
+
+    /**
      * @Route("/edit-figure/{id}", name="snowtricks_editfigure")
      * @param Figure|null $figure
      * @param Request $request
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function formFigure(Figure $figure = null, Request $request, EntityManagerInterface $em): Response
+    public function modifyFigure(Figure $figure, Request $request, EntityManagerInterface $em): Response
     {
-        if(!$figure) {
-            $figure = new Figure();
-        }
-
-        $form = $this->createForm(FigureType::class,$figure);
+        $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
         $formValidator = new FigureValidator();
-        $repository = $this->getDoctrine()->getRepository(User::class);
-        if ($formValidator->validator($form, $figure, $em, $repository)) {
+
+        if ($formValidator->validator($form)) {
             $id = $figure->getId();
-            if($figure->getModifiedAt()) {
-                $this->addFlash(
-                    'success',
-                    'Modification enregistrée !'
-                );
-            } else {
-                $this->addFlash(
-                    'success',
-                    'Création réussite !'
-                );
-            }
+            $figure->setModifiedAt(new \DateTime());
+            $em->persist($figure);
+            $em->flush();
+            $this->addFlash(
+                'success',
+                'Modification enregistrée !'
+            );
 
             return $this->redirectToRoute('snowtricks_figure', ['id' => $id]);
         }
 
         return $this->render('figure/formFigure.html.twig', [
             'formFigure' => $form->createView(),
-            'editMode' => $figure->getId() !== null
+            'editMode' => $figure->getId()
         ]);
     }
 
@@ -89,7 +116,7 @@ class FigureController extends AbstractController
 
         $this->addFlash(
             'success',
-        'Suppresion réussite !'
+            'Suppresion réussite !'
         );
 
         return $this->redirectToRoute('snowtricks_home');
