@@ -14,3 +14,8 @@ h1, h2, h3, h4, h5, h6 {
 p, a, span {
     font-family: 'Montserrat', sans-serif;
 }
+
+::selection{
+    color: white;
+    background-color: #5799fe;
+}

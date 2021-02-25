@@ -3,9 +3,9 @@
 {% block title %}Snowtricks{% endblock %}
 
 {% block body %}
-        <div class="hidden" id="hidden-modal">
-            {% include 'component/modal.html.twig' %}
-        </div>
+    <div class="hidden" id="hidden-modal">
+        {% include 'component/modal.html.twig' %}
+    </div>
     <div class="w-full bg-cover bg-center h-screen"
          style="background-image: url('{{ asset('/image/img-header.jpg') }}');">
         {% for message in app.flashes('success') %}
@@ -15,7 +15,7 @@
             <div class="text-center">
                 <h1 class="text-white lg:text-7xl text-5xl uppercase font-bold">SnowTricks</h1>
                 <p class="text-white text-2xl">Le site du snowboard</p>
-                <div class="pt-44">
+                <div class="absolute bottom-5 right-5">
                     <a href="#tricks">
                         <i class="fa fa-arrow-down fa-3x"></i>
                     </a>
@@ -37,14 +37,16 @@
                                 {{ figure.name }}
                             </a>
                             <span class="float-right space-x-3">
-                                <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}">
-                                    <span class="hidden">Modifier</span>
-                                    <i class="fa fa-pen"></i>
-                                </a>
-                                <button id="delete-figure" data-id="{{ figure.id }}" data-name="{{ figure.name }}">
-                                    <span class="hidden">Supprimer</span>
-                                    <i class="fa fa-trash"></i>
-                                </button>
+                                {% if app.user %}
+                                    <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}">
+                                        <span class="hidden">Modifier</span>
+                                        <i class="fa fa-pen"></i>
+                                    </a>
+                                    <button id="delete-figure" data-id="{{ figure.id }}" data-name="{{ figure.name }}">
+                                        <span class="hidden">Supprimer</span>
+                                        <i class="fa fa-trash"></i>
+                                    </button>
+                                {% endif %}
                             </span>
                         </div>
                     </div>
@@ -70,5 +72,5 @@
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('home') }}
-    {{ encore_entry_script_tags('figure') }}
+    {{ encore_entry_script_tags('figures') }}
 {% endblock %}

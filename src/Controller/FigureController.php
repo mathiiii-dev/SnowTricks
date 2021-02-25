@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\Figure\FigureType;
-use App\Form\Figure\FigureValidator;
+use App\Form\FormValidator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -39,12 +39,14 @@ class FigureController extends AbstractController
      */
     public function createFigure(Request $request, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $figure = new Figure();
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        $formValidator = new FigureValidator();
+        $formValidator = new FormValidator();
         $repository = $this->getDoctrine()->getRepository(User::class);
         if ($formValidator->validator($form)) {
             $figure->setCreatedAt(new \DateTime());
@@ -76,10 +78,12 @@ class FigureController extends AbstractController
      */
     public function modifyFigure(Figure $figure, Request $request, EntityManagerInterface $em): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        $formValidator = new FigureValidator();
+        $formValidator = new FormValidator();
 
         if ($formValidator->validator($form)) {
             $id = $figure->getId();
@@ -108,6 +112,8 @@ class FigureController extends AbstractController
      */
     public function deleteFigure($id, EntityManagerInterface $em): RedirectResponse
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
         $figure = $repository->find($id);

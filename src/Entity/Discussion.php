@@ -23,7 +23,7 @@ class Discussion
     private $message;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 

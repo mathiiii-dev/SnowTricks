@@ -1,11 +1,11 @@
 <?php
 
 
-namespace App\Form\Figure;
+namespace App\Form;
 
 use Symfony\Component\Form\FormInterface;
 
-class FigureValidator
+class FormValidator
 {
     public function validator(FormInterface $form): bool
     {

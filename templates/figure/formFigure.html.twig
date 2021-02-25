@@ -7,42 +7,41 @@
 {% endblock %}
 
 {% block body %}
-    <div class="min-h-screen pt-2 bg-indigo-200">
-    <div class="container mx-auto my-16">
-        <div class="inputs w-full max-w-2xl p-6 mx-auto">
-            <h2 class="text-3xl text-gray-900 font-bold">Création d'une figure</h2>
-            <div class="mt-6 border-t border-white pt-4">
-                {{ form_start(formFigure) }}
-                <div class='flex flex-wrap -mx-3 mb-6'>
-                    <div class='w-full md:w-full px-3 mb-6'>
-                        {{ form_row(formFigure.name, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
+    <div class="h-screen pt-6 bg-gray-100">
+        <div class="container mx-auto mt-16 bg-gray-100">
+            <div class="inputs w-full max-w-2xl p-6 mx-auto">
+                <h2 class="text-3xl text-gray-900 font-bold text-center">Création d'une figure</h2>
+                <div class="mt-6 bg-white p-8 shadow relative">
+                    {{ form_start(formFigure) }}
+                    <div class='flex flex-wrap -mx-3 mb-6'>
+                        <div class='w-full md:w-full px-3 mb-6'>
+                            {{ form_row(formFigure.name, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
+                        </div>
+                        <div class='w-full md:w-full px-3 mb-6'>
+                            {{ form_row(formFigure.description, {'row_attr' : {'rows' : '4'}, 'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
+                        </div>
+                        <div class='w-full md:w-full px-3 mb-6'>
+                            {{ form_row(formFigure.figure_group, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
+                        </div>
+                        <div class='w-full md:w-full px-3 mb-6'>
+                            {{ form_row(formFigure.picture, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
+                        </div>
+                        <div class='w-full md:w-full px-3 mb-6'>
+                            {{ form_row(formFigure.video, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
+                        </div>
+                        <div class="absolute bottom-5 right-5">
+                            <button class="appearance-none bg-gray-200 hover:bg-gray-400 hover:text-white text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3 font-bold"
+                                    type="submit">
+                                {% if editMode %}
+                                    Modifier
+                                {% else %}
+                                    Enregistrer
+                                {% endif %}
+                            </button>
+                        </div>
+                        {{ form_end(formFigure) }}
                     </div>
-                    <div class='w-full md:w-full px-3 mb-6'>
-                        {{ form_row(formFigure.description, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                    </div>
-                    <div class='w-full md:w-full px-3 mb-6'>
-                        {{ form_row(formFigure.figure_group, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                    </div>
-                    <div class='w-full md:w-full px-3 mb-6'>
-                        {{ form_row(formFigure.picture, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                    </div>
-                    <div class='w-full md:w-full px-3 mb-6'>
-                        {{ form_row(formFigure.video, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                    </div>
-                    <div class="flex justify-end">
-                        <button class="appearance-none bg-gray-200 text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3 font-bold"
-                                type="submit">
-                            {% if editMode %}
-                                Modifier
-                            {% else %}
-                                Enregistrer
-                            {% endif %}
-                        </button>
-                    </div>
-                    {{ form_end(formFigure) }}
                 </div>
             </div>
         </div>
-    </div>
-
 {% endblock %}
