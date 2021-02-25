@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Entity\Figure;
+use App\Entity\Picture;
 use App\Entity\User;
 use App\Form\Figure\FigureType;
 use App\Services\ErrorService;
 use App\Services\UrlService;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -27,7 +29,6 @@ class FigureController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
         $figure = $repository->find($id);
-
         if ($figure == null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
         }
@@ -52,7 +53,6 @@ class FigureController extends AbstractController
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
-
         $repository = $this->getDoctrine()->getRepository(User::class);
         if ($form->isSubmitted() && $form->isValid()) {
             $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
@@ -93,16 +93,32 @@ class FigureController extends AbstractController
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function modifyFigure(Figure $figure, Request $request, EntityManagerInterface $em): Response
+    public function modifyFigure($id, Figure $figure, Request $request, EntityManagerInterface $em): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+        if (null === $figure = $em->getRepository(Figure::class)->find($id)) {
+            throw $this->createNotFoundException('No figure found for id '.$id);
+        }
+
+        $originalPictures = new ArrayCollection();
+
+        // Create an ArrayCollection of the current Tag objects in the database
+        foreach ($figure->getPictures() as $picture) {
+            $originalPictures->add($picture);
+        }
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $id = $figure->getId();
-            $figure->setModifiedAt(new \DateTime());
+            foreach ($originalPictures as $picture) {
+                if ($figure->getPictures()->contains($picture)) {
+                    $picture->setFigure(null);
+                    $em->remove($picture);
+                }
+            }
+
             $em->persist($figure);
             $em->flush();
             $this->addFlash(

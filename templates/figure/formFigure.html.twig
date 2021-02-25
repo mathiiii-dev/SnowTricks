@@ -24,7 +24,13 @@
                             {{ form_row(formFigure.figure_group, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
                         </div>
                         <div class='w-full md:w-full px-3 mb-6'>
-                            {{ form_row(formFigure.pictures, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
+                            <h3>Photos</h3>
+                            <ul class="tags " data-prototype="{{ form_widget(formFigure.pictures.vars.prototype)|e('html_attr') }}">
+                                {% for picture in formFigure.pictures %}
+                                    <li>{{ form_row(picture.picture) }}</li>
+                                {% endfor %}
+                            </ul>
+                            <button type="button" class="add_item_link font-bold text-blue-600" data-collection-holder-class="tags"> <i class="fa fa-plus pr-2"></i>Ajouter une photo</button>
                         </div>
                         <div class='w-full md:w-full px-3 mb-6'>
                             {{ form_row(formFigure.videos, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
@@ -44,4 +50,48 @@
                 </div>
             </div>
         </div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+<script >
+    $(document).ready(function() {
+
+        var $tagsCollectionHolder = $('ul.tags');
+        $tagsCollectionHolder.data('index', $tagsCollectionHolder.find('input').length);
+        $collectionHolder = $('ul.tags');
+
+        $collectionHolder.find('li').each(function() {
+            addTagFormDeleteLink($(this));
+        });
+
+        $('body').on('click', '.add_item_link', function(e) {
+            var $collectionHolderClass = $(e.currentTarget).data('collectionHolderClass');
+            addFormToCollection($collectionHolderClass);
+        })
+    });
+
+    function addFormToCollection($collectionHolderClass) {
+        var $collectionHolder = $('.' + $collectionHolderClass);
+        var prototype = $collectionHolder.data('prototype');
+        var index = $collectionHolder.data('index');
+        var newForm = prototype;
+
+        newForm = newForm.replace(/__name__/g, index);
+        $collectionHolder.data('index', index + 1);
+        var $newFormLi = $('<li></li>').append(newForm);
+        $collectionHolder.append($newFormLi)
+        addTagFormDeleteLink($newFormLi);
+    }
+
+    function addTagFormDeleteLink($tagFormLi) {
+    var $removeFormButton = $('<button type="button" class="font-bold text-red-600 float-right">Supprimer cette photo</button>');
+    $tagFormLi.append($removeFormButton);
+
+    $removeFormButton.on('click', function(e) {
+        // remove the li for the tag form
+        $tagFormLi.remove();
+    });
+}
+</script>
 {% endblock %}

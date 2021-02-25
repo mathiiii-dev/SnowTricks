@@ -35,8 +35,7 @@ class UrlService
     public function checkImageUrl(Figure $figure): bool
     {
         foreach ($figure->getPictures() as $picture) {
-
-            $headers = get_headers($picture, 1);
+            $headers = get_headers($picture->getPicture(), 1);
             if (!str_contains($headers['Content-Type'], 'image/')) {
                 return false;
             }

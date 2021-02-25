@@ -10,8 +10,7 @@
             {% include 'component/modal.html.twig' %}
         </div>
     {% endif %}
-    <div class="w-full bg-cover bg-center h-full"
-         style="background-image: url('{{ figure.pictures|first }}');">
+    <div class="w-full bg-cover bg-center h-full">
         {% for message in app.flashes('success') %}
             {% include 'component/flashSuccess.html.twig' with {message} %}
         {% endfor %}
@@ -33,8 +32,8 @@
                 {% endif %}
                 <p class="text-uppercase text-5xl text-black font-bold md:mb-28 md:pt-8">{{ figure.name }}</p>
                 <div class="flex flex-wrap content-center gap-4 justify-center p-2">
-                    {% for picture in figure.pictures %}
-                        <img src="{{ picture }}" alt="" class="md:w-1/4 hidden md:block" id="media">
+                    {% for i in figure.pictures%}
+                        <img src="{{ i.picture }}" alt="" class="md:w-1/4 hidden md:block" id="media">
                     {% endfor %}
                     {% for video in figure.videos %}
                         <iframe width="340" height="230" src="{{ video }}" frameborder="0"

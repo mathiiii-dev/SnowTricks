@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\FigureRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,6 +19,16 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Figure
 {
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Picture", cascade="persist", mappedBy="figure")
+     */
+    private $pictures;
+
+    public function __construct()
+    {
+        $this->pictures = new ArrayCollection();
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -57,11 +69,6 @@ class Figure
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
-
-    /**
-     * @ORM\Column(type="array")
-     */
-    private $pictures = [];
 
     /**
      * @ORM\Column(type="array", nullable=true)
@@ -151,16 +158,21 @@ class Figure
         return $this;
     }
 
-    public function getPictures(): ?array
+    public function getPictures(): Collection
     {
         return $this->pictures;
     }
 
-    public function setPictures(array $pictures): self
+    public function addPicture(Picture $picture): void
     {
-        $this->pictures = $pictures;
+        $picture->setFigure($this);
 
-        return $this;
+        $this->pictures->add($picture);
+    }
+
+    public function removePicture(Picture $picture): void
+    {
+        $this->pictures->removeElement($picture);
     }
 
     public function getVideos(): ?array
