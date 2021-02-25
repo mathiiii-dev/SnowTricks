@@ -25,11 +25,12 @@
     </div>
     <div class="container my-12 mx-auto px-4 md:px-12" id="tricks">
         <div class="flex flex-wrap -mx-1 lg:-mx-4">
+            {% if figures %}
             {% for figure in figures %}
                 <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto my-8 {% if loop.index >= 7 %} hidden {% endif %}"
                      {% if loop.index >= 7 %}id="hidden-cards"{% endif %}>
                     <a href="{{ path('snowtricks_figure', {'id': figure.id}) }}">
-                        <img class="w-full" src="{{ figure.picture }}" alt="{{ figure.name }}">
+                        <img class="w-full" src="{{ figure.pictures|first }}" alt="{{ figure.name }}">
                     </a>
                     <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">
@@ -37,35 +38,49 @@
                                 {{ figure.name }}
                             </a>
                             <span class="float-right space-x-3">
-                                {% if app.user %}
-                                    <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}">
-                                        <span class="hidden">Modifier</span>
-                                        <i class="fa fa-pen"></i>
-                                    </a>
-                                    <button id="delete-figure" data-id="{{ figure.id }}" data-name="{{ figure.name }}">
-                                        <span class="hidden">Supprimer</span>
-                                        <i class="fa fa-trash"></i>
-                                    </button>
-                                {% endif %}
-                            </span>
+                                    {% if app.user %}
+                                        <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}">
+                                            <span class="hidden">Modifier</span>
+                                            <i class="fa fa-pen"></i>
+                                        </a>
+                                        <button id="delete-figure" data-id="{{ figure.id }}"
+                                                data-name="{{ figure.name }}">
+                                            <span class="hidden">Supprimer</span>
+                                            <i class="fa fa-trash"></i>
+                                        </button>
+                                    {% endif %}
+                                </span>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
-        <div class="text-center">
-            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" id="show-more">
-                Voir plus <i class="fas fa-plus"></i>
-            </button>
-            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded hidden" id="show-less">
-                Voir moins <i class="fas fa-minus"></i>
-            </button>
-        </div>
+        {% if figures|length >= 7 %}
+            <div class="text-center">
+                <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded" id="show-more">
+                    Voir plus <i class="fas fa-plus"></i>
+                </button>
+                <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded hidden"
+                        id="show-less">
+                    Voir moins <i class="fas fa-minus"></i>
+                </button>
+            </div>
+        {% endif %}
         <div class="float-right">
             <a href="#top">
                 <i class="fa fa-arrow-up fa-3x"></i>
             </a>
         </div>
+        {% else %}
+            <div class="max-w-sm overflow-hidden mx-auto my-8 text-center p-4">
+                <h1 class="font-bold text-3xl text-center mb-4">Aucune figures.</h1>
+                <p>Pour créer une figure, connectez-vous et cliquez sur le bouton ci-dessous :</p>
+                <div class="pt-6">
+                    <a href="{{ path('snowtricks_createfigure') }}"
+                       class="bg-gray-700 rounded text-white p-3 hover:bg-gray-500">Ajouter une figure</a></p>
+                </div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}
 

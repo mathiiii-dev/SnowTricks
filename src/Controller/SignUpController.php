@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\FormValidator;
 use App\Form\SignUpType;
 use App\Repository\UserRepository;
 use App\Services\MailService;
@@ -34,8 +33,7 @@ class SignUpController extends AbstractController
         $form = $this->createForm(SignUpType::class, $user);
         $form->handleRequest($request);
 
-        $formValidator = new FormValidator();
-        if ($formValidator->validator($form)) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
 
