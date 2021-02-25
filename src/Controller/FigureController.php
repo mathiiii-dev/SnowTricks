@@ -5,11 +5,11 @@ namespace App\Controller;
 use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\Figure\FigureType;
-use App\Form\FormValidator;
+use App\Services\ErrorService;
 use App\Services\UrlService;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,8 +28,8 @@ class FigureController extends AbstractController
 
         $figure = $repository->find($id);
 
-        if($figure == null){
-            http_response_code(404);
+        if ($figure == null) {
+            throw $this->createNotFoundException('La figure n\'a pas été trouvée');
         }
 
         return $this->render('figure/index.html.twig', [
@@ -39,41 +39,33 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/create-figure", name="snowtricks_createfigure")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @param Request $request
      * @param EntityManagerInterface $em
+     * @param UrlService $urlCheck
+     * @param ErrorService $error
      * @return Response
      */
-    public function createFigure(Request $request, EntityManagerInterface $em): Response
+    public function createFigure(Request $request, EntityManagerInterface $em, UrlService $urlCheck, ErrorService $error): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
         $figure = new Figure();
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        $formValidator = new FormValidator();
         $repository = $this->getDoctrine()->getRepository(User::class);
-        if ($formValidator->validator($form)) {
-            $figure->setCreatedAt(new \DateTime());
+        if ($form->isSubmitted() && $form->isValid()) {
             $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
             $figure->setUser($user);
-            $urlCheck = new UrlService();
-            $pictures = $urlCheck->checkImageUrl($figure);
-            if(!$pictures){
-                $form->get('pictures')->addError(new FormError('Les liens donnés ne sont pas des images.'));
-                return $this->render('figure/formFigure.html.twig', [
-                    'formFigure' => $form->createView(),
-                    'editMode' => null
-                ]);
+
+            if(!$urlCheck->checkImageUrl($figure)) {
+                return $error->errorForm('pictures', $form, 'Les liens données ne sont pas des images.');
             }
+
             $videos = $urlCheck->checkVideoUrl($figure);
-            if(!$videos){
-                $form->get('videos')->addError(new FormError('Les liens donnés ne proviennent pas de YouTube.'));
-                return $this->render('figure/formFigure.html.twig', [
-                    'formFigure' => $form->createView(),
-                    'editMode' => null
-                ]);
+
+            if(!$videos) {
+                return $error->errorForm('videos', $form, 'Les vidéos données ne proviennent pas de Youtube.');
             }
             $figure->setVideos($videos);
 
@@ -108,9 +100,7 @@ class FigureController extends AbstractController
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        $formValidator = new FormValidator();
-
-        if ($formValidator->validator($form)) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $id = $figure->getId();
             $figure->setModifiedAt(new \DateTime());
             $em->persist($figure);

@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     fields={"name"},
  *     message="La figure existe déjà."
  * )
+ * @ORM\HasLifecycleCallbacks()
  */
 class Figure
 {
@@ -113,9 +114,12 @@ class Figure
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime();
 
         return $this;
     }
@@ -125,9 +129,12 @@ class Figure
         return $this->modifiedAt;
     }
 
-    public function setModifiedAt(?\DateTimeInterface $modifiedAt): self
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function setModifiedAt(): self
     {
-        $this->modifiedAt = $modifiedAt;
+        $this->createdAt = new \DateTime();
 
         return $this;
     }
