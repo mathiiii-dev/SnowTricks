@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Accès refusé | Erreur 403{% endblock %}
+
+{% block body %}
+    <div class="h-screen pt-6">
+        <div class="container mx-auto my-16">
+            <img src="{{ asset('../image/403.jpg') }}" class="md:w-1/3 mx-auto" alt="Image 403">
+            <h1 class="font-bold text-3xl text-green-500 text-center">Accès refusé.</h1>
+            <p class="text-center md:px-64 px-2 py-2">L'accès a cette vous a été refusé. Revenez à la page d'accueil en
+                cliquant sur le bouton ci-dessous. Si vous pensez qu'il s'agit d'une erreur, veuillez contacter un administrateur.</p>
+            <div class="flex justify-center">
+                <a href="{{ path('snowtricks_home') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-4 rounded">Accueil</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

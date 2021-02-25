@@ -5,8 +5,10 @@ namespace App\Controller;
 use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\Figure\FigureType;
-use App\Form\Figure\FigureValidator;
+use App\Services\ErrorService;
+use App\Services\UrlService;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,6 +28,10 @@ class FigureController extends AbstractController
 
         $figure = $repository->find($id);
 
+        if ($figure == null) {
+            throw $this->createNotFoundException('La figure n\'a pas été trouvée');
+        }
+
         return $this->render('figure/index.html.twig', [
             'figure' => $figure
         ]);
@@ -33,43 +39,83 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/create-figure", name="snowtricks_createfigure")
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param UrlService $urlCheck
+     * @param ErrorService $error
+     * @return Response
+     */
+    public function createFigure(Request $request, EntityManagerInterface $em, UrlService $urlCheck, ErrorService $error): Response
+    {
+        $figure = new Figure();
+
+        $form = $this->createForm(FigureType::class, $figure);
+        $form->handleRequest($request);
+
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
+            $figure->setUser($user);
+
+            if(!$urlCheck->checkImageUrl($figure)) {
+                return $error->errorForm('pictures', $form, 'Les liens données ne sont pas des images.');
+            }
+
+            $videos = $urlCheck->checkVideoUrl($figure);
+
+            if(!$videos) {
+                return $error->errorForm('videos', $form, 'Les vidéos données ne proviennent pas de Youtube.');
+            }
+            $figure->setVideos($videos);
+
+            $em->persist($figure);
+            $em->flush();
+
+            $this->addFlash(
+                'success',
+                'Création réussite !'
+            );
+
+            return $this->redirectToRoute('snowtricks_figure', ['id' => $figure->getId()]);
+        }
+
+        return $this->render('figure/formFigure.html.twig', [
+            'formFigure' => $form->createView(),
+            'editMode' => null
+        ]);
+    }
+
+    /**
      * @Route("/edit-figure/{id}", name="snowtricks_editfigure")
      * @param Figure|null $figure
      * @param Request $request
      * @param EntityManagerInterface $em
      * @return Response
      */
-    public function formFigure(Figure $figure = null, Request $request, EntityManagerInterface $em): Response
+    public function modifyFigure(Figure $figure, Request $request, EntityManagerInterface $em): Response
     {
-        if(!$figure) {
-            $figure = new Figure();
-        }
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
-        $form = $this->createForm(FigureType::class,$figure);
+        $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        $formValidator = new FigureValidator();
-        $repository = $this->getDoctrine()->getRepository(User::class);
-        if ($formValidator->validator($form, $figure, $em, $repository)) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $id = $figure->getId();
-            if($figure->getModifiedAt()) {
-                $this->addFlash(
-                    'success',
-                    'Modification enregistrée !'
-                );
-            } else {
-                $this->addFlash(
-                    'success',
-                    'Création réussite !'
-                );
-            }
+            $figure->setModifiedAt(new \DateTime());
+            $em->persist($figure);
+            $em->flush();
+            $this->addFlash(
+                'success',
+                'Modification enregistrée !'
+            );
 
             return $this->redirectToRoute('snowtricks_figure', ['id' => $id]);
         }
 
         return $this->render('figure/formFigure.html.twig', [
             'formFigure' => $form->createView(),
-            'editMode' => $figure->getId() !== null
+            'editMode' => $figure->getId()
         ]);
     }
 
@@ -81,6 +127,8 @@ class FigureController extends AbstractController
      */
     public function deleteFigure($id, EntityManagerInterface $em): RedirectResponse
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
         $figure = $repository->find($id);
@@ -89,7 +137,7 @@ class FigureController extends AbstractController
 
         $this->addFlash(
             'success',
-        'Suppresion réussite !'
+            'Suppresion réussite !'
         );
 
         return $this->redirectToRoute('snowtricks_home');

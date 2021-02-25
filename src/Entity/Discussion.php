@@ -14,6 +14,7 @@ class Discussion
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     * @ORM\HasLifecycleCallbacks()
      */
     private $id;
 
@@ -23,7 +24,7 @@ class Discussion
     private $message;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
@@ -66,11 +67,13 @@ class Discussion
     }
 
     /**
-     * @param mixed $createdAt
+     * @ORM\PrePersist
      */
-    public function setCreatedAt($createdAt): void
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime();
+
+        return $this;
     }
 
     public function getUser(): ?User

@@ -4,10 +4,16 @@ namespace App\Entity;
 
 use App\Repository\FigureRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
+ * @UniqueEntity(
+ *     fields={"name"},
+ *     message="La figure existe déjà."
+ * )
+ * @ORM\HasLifecycleCallbacks()
  */
 class Figure
 {
@@ -20,7 +26,7 @@ class Figure
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\Length(min=5, max=255, minMessage="Le nom de la figure est trop court", maxMessage="Le titre de la figure est trop long.")
+     * @Assert\Length(min=3, max=255, minMessage="Le nom de la figure est trop court", maxMessage="Le titre de la figure est trop long.")
      */
     private $name;
 
@@ -37,24 +43,12 @@ class Figure
     private $figure_group;
 
     /**
-     * @ORM\Column(type="text")
-     * @Assert\Url(message="Ce champ doit être une url valide")
-     */
-    private $picture;
-
-    /**
-     * @Assert\Url(message="Ce champ doit être une url valide")
-     * @ORM\Column(type="text", nullable=true)
-     */
-    private $video;
-
-    /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="datetime")
      */
     private $createdAt;
 
     /**
-     * @ORM\Column(type="date", nullable=true)
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $modifiedAt;
 
@@ -63,6 +57,16 @@ class Figure
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\Column(type="array")
+     */
+    private $pictures = [];
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $videos = [];
 
     public function getId(): ?int
     {
@@ -104,39 +108,18 @@ class Figure
 
         return $this;
     }
-  
-    public function getPicture(): ?string
-    {
-        return $this->picture;
-    }
-
-    public function setPicture(string $picture): self
-    {
-        $this->picture = $picture;
-
-        return $this;
-    }
-
-    public function getVideo(): ?string
-    {
-        return $this->video;
-    }
-
-    public function setVideo(?string $video): self
-    {
-        $this->video = $video;
-
-        return $this;
-    }
 
     public function getCreatedAt(): ?\DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    /**
+     * @ORM\PrePersist
+     */
+    public function setCreatedAt(): self
     {
-        $this->createdAt = $createdAt;
+        $this->createdAt = new \DateTime();
 
         return $this;
     }
@@ -146,9 +129,12 @@ class Figure
         return $this->modifiedAt;
     }
 
-    public function setModifiedAt(?\DateTimeInterface $modifiedAt): self
+    /**
+     * @ORM\PreUpdate()
+     */
+    public function setModifiedAt(): self
     {
-        $this->modifiedAt = $modifiedAt;
+        $this->createdAt = new \DateTime();
 
         return $this;
     }
@@ -161,6 +147,30 @@ class Figure
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getPictures(): ?array
+    {
+        return $this->pictures;
+    }
+
+    public function setPictures(array $pictures): self
+    {
+        $this->pictures = $pictures;
+
+        return $this;
+    }
+
+    public function getVideos(): ?array
+    {
+        return $this->videos;
+    }
+
+    public function setVideos(?array $videos): self
+    {
+        $this->videos = $videos;
 
         return $this;
     }

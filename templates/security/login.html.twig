@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Connexion{% endblock %}
+
+{% block body %}
+<div class="h-screen pt-6 bg-gray-100">
+    <div class="container mx-auto my-16">
+        <div class="inputs w-full max-w-2xl p-6 mx-auto ">
+            <h2 class="text-3xl text-gray-900 font-bold text-center">Connexion</h2>
+            <div class="mt-6 bg-white p-8 shadow mb-24">
+                <form method="post">
+                    {% if error %}
+                        <div class="text-white bg-red-500 p-2 rounded">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                    {% endif %}
+                    {% if app.user %}
+                    <div class="flex flex-wrap mb-3">
+                        Vous êtes déjà connecté en tant que {{ app.user.username }}.
+                        <a href="{{ path('snowtricks_logout') }}" class="bg-red-500 hover:bg-red-400 text-white p-3 rounded ml-16">Deconnexion</a>
+                    </div>
+                    {% else %}
+                    <div class='flex flex-wrap -mx-3 mb-6'>
+                        <div class='w-full md:w-full px-3 mb-6'>
+                            <label for="inputUsername"
+                                   class="mb-2 font-bold text-lg text-gray-900 required">Pseudo</label>
+                            <input type="text" value="{{ last_username }}" name="username" id="inputUsername"
+                                   class="appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
+                                   required autofocus>
+                        </div>
+                        <div class='w-full md:w-full px-3 mb-6'>
+                            <label for="inputPassword" class="mb-2 font-bold text-lg text-gray-900 required">Mot de
+                                passe</label>
+                            <input type="password" name="password" id="inputPassword"
+                                   class="appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
+                                   required>
+                        </div>
+                        <div class="checkbox mb-3">
+                            <label>
+                                <input type="checkbox" name="_remember_me"> Rester connecté
+                            </label>
+                        </div>
+                        <button type="submit"
+                                class="w-full h-12 px-6 text-white font-bold transition-colors duration-150 bg-green-500 rounded-lg focus:shadow-outline hover:bg-green-600">
+                            Se connecter
+                        </button>
+                    </div>
+                    <input type="hidden" name="_csrf_token"
+                           value="{{ csrf_token('authenticate') }}"
+                    >
+                </form>
+                <div class="w-full md:w-full px-3 mb-6 text-center">
+                    <a href="{{ path('snowtricks_signup') }}" class="hover:text-blue-500 hover:underline">Je n'ai pas de
+                        compte ?</a>
+                    <br> <a href="" class="hover:text-blue-500 hover:underline">Mot de passe oublié ?</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endblock %}
