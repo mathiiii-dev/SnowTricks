@@ -7,18 +7,18 @@
         </div>
         <div class="float-right pt-3">
             <a href="{{ path('snowtricks_home') }}"
-               class="hover:bg-blue-300 hover:text-gray-700 bg-gray-700 px-3 py-2 text-white rounded-md text-sm font-medium">Accueil</a>
+               class="hover:bg-blue-200 hover:text-black bg-gray-700 px-3 py-2 text-white rounded-md text-sm font-medium">Accueil</a>
             {% if app.user %}
                 <a href="{{ path('snowtricks_createfigure') }}"
-                   class="hover:bg-blue-300 hover:text-gray-700 bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Ajouter
+                   class="hover:bg-blue-200 hover:text-black bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Ajouter
                     un figure</a>
                 <a href="{{ path('snowtricks_logout') }}"
-                   class="hover:bg-blue-300 hover:text-gray-700 bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Deconnexion</a>
+                   class="hover:bg-blue-200 hover:text-black bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Deconnexion</a>
             {% else %}
                 <a href="{{ path('snowtricks_signin') }}"
-                   class="hover:bg-blue-300 hover:text-gray-700 bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Connexion</a>
+                   class="hover:bg-blue-200 hover:text-black bg-gray-700 text-white px-3 py-2 rounded-md text-sm font-medium">Connexion</a>
                 <a href="{{ path('snowtricks_signup') }}"
-                   class="hover:bg-blue-300 hover:text-gray-700 bg-gray-700 px-3 text-white py-2 rounded-md text-sm font-medium">Inscription</a>
+                   class="hover:bg-blue-200 hover:text-black bg-gray-700 px-3 text-white py-2 rounded-md text-sm font-medium">Inscription</a>
             {% endif %}
         </div>
     </div>

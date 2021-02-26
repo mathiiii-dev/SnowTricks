@@ -2,27 +2,32 @@
 
 namespace App\Services;
 
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
-class ErrorService
+class ErrorService extends AbstractController
 {
-    private $templating;
 
-    public function __construct(\Twig\Environment $templating )
+    private $twig;
+
+    public function __construct(Environment $twig)
     {
-        $this->templating = $templating;
+        $this->twig = $twig;
     }
 
-    public function errorForm($formInput, $form, $message): Response
+    public function errorForm($formInput, $form, $message): string
     {
         $form->get($formInput)->addError(new FormError($message));
 
-        return new Response($this->templating->render('figure/formFigure.html.twig', [
+        return $this->twig->render('figure/formFigure.html.twig', [
             'formFigure' => $form->createView(),
             'editMode' => null
-        ]));
+        ]);
 
     }
 

@@ -2,63 +2,66 @@
 
 {% block title %}Tricks{% endblock %}
 
-{% block stylesheets %}
-    {{ parent() }}
-{% endblock %}
-
 {% block body %}
-    <div class="h-screen pt-6 bg-gray-100">
-        <div class="container mx-auto mt-16 bg-gray-100">
-            <div class="inputs w-full max-w-2xl p-6 mx-auto">
-                <h2 class="text-3xl text-gray-900 font-bold text-center">Création d'une figure</h2>
-                <div class="mt-6 bg-white p-8 shadow relative">
-                    {{ form_start(formFigure) }}
-                    <div class='flex flex-wrap -mx-3 mb-6'>
-                        <div class='w-full md:w-full px-3 mb-6'>
-                            {{ form_row(formFigure.name, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                        </div>
-                        <div class='w-full md:w-full px-3 mb-6'>
-                            {{ form_row(formFigure.description, {'row_attr' : {'rows' : '4'}, 'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                        </div>
-                        <div class='w-full md:w-full px-3 mb-6'>
-                            {{ form_row(formFigure.figure_group, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
-                        </div>
-                        <div class='w-full md:w-full px-3 mb-6'>
-                            <h3>Photos</h3>
-                            <ul class="photo " data-prototype="{{ form_widget(formFigure.pictures.vars.prototype)|e('html_attr') }}">
-                                {% for picture in formFigure.pictures %}
-                                    <li>{{ form_row(picture.picture) }}</li>
-                                {% endfor %}
-                            </ul>
-                            <button type="button" class="add_item_link font-bold text-blue-600" data-collection-holder-class="photo"> <i class="fa fa-plus pr-2"></i>Ajouter une photo</button>
-                        </div>
-                        <div class='w-full md:w-full px-3 mb-6'>
-                         <h3>Videos</h3>
-                            <ul class="video" data-prototype="{{ form_widget(formFigure.videos.vars.prototype)|e('html_attr') }}">
-                                {% for video in formFigure.videos %}
-                                    <li>{{ form_row(video.video) }}</li>
-                                {% endfor %}
-                            </ul>
-                            <button type="button" class="add_item_link font-bold text-blue-600" data-collection-holder-class="video"> <i class="fa fa-plus pr-2"></i>Ajouter une video</button>
-                         </div>
-                        <div class="absolute bottom-5 right-5">
-                            <button class="appearance-none bg-gray-200 hover:bg-blue-400 hover:text-white text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3 font-bold"
-                                    type="submit">
-                                {% if editMode %}
-                                    Modifier
-                                {% else %}
-                                    Enregistrer
-                                {% endif %}
-                            </button>
-                        </div>
-                        {{ form_end(formFigure) }}
+<div class="h-screen pt-6 bg-gray-100">
+    <div class="container mx-auto mt-16 bg-gray-100">
+        <div class="inputs w-full max-w-2xl p-6 mx-auto">
+            <h2 class="text-3xl text-gray-900 font-bold text-center">Création d'une figure</h2>
+            <div class="mt-6 bg-white p-8 shadow relative">
+                {{ form_start(formFigure) }}
+                {{ form_errors(formFigure) }}
+                <div class='flex flex-wrap -mx-3 mb-6'>
+                    <div class='w-full md:w-full px-3 mb-6'>
+                        {{ form_row(formFigure.name, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
                     </div>
+                    <div class='w-full md:w-full px-3 mb-6'>
+                        {{ form_row(formFigure.description, {'row_attr' : {'rows' : '4'}, 'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
+                    </div>
+                    <div class='w-full md:w-full px-3 mb-6'>
+                        {{ form_row(formFigure.figure_group, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
+                    </div>
+                    <div class='w-full md:w-full px-3 mb-6'>
+                        <h3>Photos</h3>
+                        <ul class="photo "
+                            data-prototype="{{ form_widget(formFigure.pictures.vars.prototype)|e('html_attr') }}">
+                            {% for picture in formFigure.pictures %}
+                                <li>{{ form_row(picture.picture) }}</li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="add_item_link font-bold text-blue-600"
+                                data-collection-holder-class="photo"><i class="fa fa-plus pr-2"></i>Ajouter une photo
+                        </button>
+                    </div>
+                    <div class='w-full md:w-full px-3 mb-6'>
+                        <h3>Videos</h3>
+                        <ul class="video"
+                            data-prototype="{{ form_widget(formFigure.videos.vars.prototype)|e('html_attr') }}">
+                            {% for video in formFigure.videos %}
+                                <li>{{ form_row(video.video) }}</li>
+                            {% endfor %}
+                        </ul>
+                        <button type="button" class="add_item_link font-bold text-blue-600"
+                                data-collection-holder-class="video"><i class="fa fa-plus pr-2"></i>Ajouter une video
+                        </button>
+                    </div>
+                    <div class="absolute bottom-5 right-5">
+                        <button class="appearance-none bg-gray-200 hover:bg-blue-400 hover:text-white text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3 font-bold"
+                                type="submit">
+                            {% if editMode %}
+                                Modifier
+                            {% else %}
+                                Enregistrer
+                            {% endif %}
+                        </button>
+                    </div>
+                    {{ form_end(formFigure) }}
                 </div>
             </div>
         </div>
-{% endblock %}
+    </div>
+    {% endblock %}
 
-{% block javascripts %}
+    {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('mediaFigure') }}
 {% endblock %}

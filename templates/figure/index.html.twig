@@ -11,9 +11,6 @@
         </div>
     {% endif %}
     <div class="w-full bg-cover bg-center h-full" style="background-image: url('{{ picture.picture }}')">
-        {% for message in app.flashes('success') %}
-            {% include 'component/flashSuccess.html.twig' with {message} %}
-        {% endfor %}
         <div class="flex items-center justify-center w-full md:h-full">
             <div class="container mx-auto relative text-center bg-gray-100 rounded shadow-2xl lg:mt-24 sm:mt-6">
                 {% if app.user %}

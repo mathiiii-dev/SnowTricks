@@ -3,10 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Figure;
-use App\Entity\Picture;
 use App\Entity\User;
 use App\Form\Figure\FigureType;
 use App\Services\ErrorService;
+use App\Services\FlashService;
+use App\Services\FormService;
 use App\Services\MediaService;
 use App\Services\UrlService;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,9 +21,19 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FigureController extends AbstractController
 {
+    private $em;
+    private $flash;
+    private $checkForm;
+
+    public function __construct(EntityManagerInterface $em, FlashService $flash, FormService $checkForm)
+    {
+        $this->em = $em;
+        $this->flash = $flash;
+        $this->checkForm = $checkForm;
+    }
+
     /**
      * @Route("/figure/{id}", name="snowtricks_figure")
-     * @param $id
      * @return Response
      */
     public function index(int $id): Response
@@ -46,40 +57,26 @@ class FigureController extends AbstractController
     /**
      * @Route("/create-figure", name="snowtricks_createfigure")
      * @IsGranted("IS_AUTHENTICATED_FULLY")
-     * @param Request $request
-     * @param EntityManagerInterface $em
-     * @param UrlService $urlCheck
-     * @param ErrorService $error
      * @return Response
      */
-    public function createFigure(Request $request, EntityManagerInterface $em, UrlService $urlCheck, ErrorService $error): Response
+    public function createFigure(Request $request): Response
     {
         $figure = new Figure();
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
         $repository = $this->getDoctrine()->getRepository(User::class);
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $this->checkForm->checkFigure($figure, $form)) {
             $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
             $figure->setUser($user);
 
-            if(!$urlCheck->checkImageUrl($figure)) {
-                return $error->errorForm('pictures', $form, 'Les liens données ne sont pas des images.');
-            }
+            $this->em->persist($figure);
+            $this->em->flush();
 
-            if(!$urlCheck->checkVideoUrl($figure)) {
-                return $error->errorForm('videos', $form, 'Les vidéos données ne proviennent pas de Youtube.');
-            }
-
-            $em->persist($figure);
-            $em->flush();
-
-            $this->addFlash(
-                'success',
-                'Création réussite !'
-            );
+            $this->flash->setFlashMessages(http_response_code(), 'Création réussite !');
 
             return $this->redirectToRoute('snowtricks_figure', ['id' => $figure->getId()]);
+
         }
 
         return $this->render('figure/formFigure.html.twig', [
@@ -90,54 +87,27 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/edit-figure/{id}", name="snowtricks_editfigure")
-     * @param Figure|null $figure
-     * @param Request $request
-     * @param EntityManagerInterface $em
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @return Response
      */
-    public function modifyFigure($id, Figure $figure, Request $request, EntityManagerInterface $em): Response
+    public function modifyFigure($id, Figure $figure, Request $request, MediaService $editMedia): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-
-        if (null === $figure = $em->getRepository(Figure::class)->find($id)) {
-            throw $this->createNotFoundException('No figure found for id '.$id);
-        }
-
-        $originalPictures = new ArrayCollection();
-
-        foreach ($figure->getPictures() as $picture) {
-            $originalPictures->add($picture);
-        }
-
-        $originalVideos = new ArrayCollection();
-
-        foreach ($figure->getVideos() as $video) {
-            $originalVideos->add($video);
+        if (null === $figure = $this->em->getRepository(Figure::class)->find($id)) {
+            throw $this->createNotFoundException('No figure found for id ' . $id);
         }
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid() && $this->checkForm->checkFigure($figure, $form)) {
 
-            foreach ($originalPictures as $picture) {
-                if (false === $figure->getPictures()->contains($picture)) {
-                    $em->remove($picture);
-                }
-            }
+            $editMedia->editMedia($figure->getPictures());
+            $editMedia->editMedia($figure->getVideos());
 
-            foreach ($originalVideos as $video) {
-                if (false === $figure->getVideos()->contains($video)) {
-                    $em->remove($video);
-                }
-            }
+            $this->em->persist($figure);
+            $this->em->flush();
 
-            $em->persist($figure);
-            $em->flush();
-            $this->addFlash(
-                'success',
-                'Modification enregistrée !'
-            );
+            $this->flash->setFlashMessages(http_response_code(), 'Modification réussite !');
 
             return $this->redirectToRoute('snowtricks_figure', ['id' => $id]);
         }
@@ -150,24 +120,26 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/delete-figure/{id}", name="snowtricks_deletefigure")
-     * @param $id
-     * @param EntityManagerInterface $em
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @return RedirectResponse
      */
-    public function deleteFigure($id, EntityManagerInterface $em): RedirectResponse
+    public function deleteFigure($id): RedirectResponse
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
         $figure = $repository->find($id);
-        $em->remove($figure);
-        $em->flush();
-
-        $this->addFlash(
-            'success',
-            'Suppresion réussite !'
-        );
+        foreach ($figure->getVideos() as $video) {
+            $this->em->remove($video);
+        }
+        foreach ($figure->getPictures() as $picture) {
+            $this->em->remove($picture);
+        }
+        $this->em->remove($figure);
+        $this->em->flush();
+        http_response_code(500);
+        $this->flash->setFlashMessages(http_response_code(), 'Suppréssion réussite !');
 
         return $this->redirectToRoute('snowtricks_home');
     }
