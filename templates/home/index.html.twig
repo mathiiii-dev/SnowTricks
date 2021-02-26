@@ -16,7 +16,7 @@
                 <h1 class="text-white lg:text-7xl text-5xl uppercase font-bold">SnowTricks</h1>
                 <p class="text-white text-2xl">Le site du snowboard</p>
                 <div class="absolute bottom-5 right-5">
-                    <a href="#tricks">
+                    <a href="#tricks" class="hover:text-blue-300">
                         <i class="fa fa-arrow-down fa-3x"></i>
                     </a>
                 </div>
@@ -29,9 +29,13 @@
             {% for figure in figures %}
                 <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto my-8 {% if loop.index >= 7 %} hidden {% endif %}"
                      {% if loop.index >= 7 %}id="hidden-cards"{% endif %}>
-                    <a href="{{ path('snowtricks_figure', {'id': figure.id}) }}">
-                        <img class="w-full" src="{{ figure.pictures|first }}" alt="{{ figure.name }}">
-                    </a>
+                    {% for fPicture in firstPictures %}
+                        {% if fPicture.figure.id == figure.id %}
+                        <a href="{{ path('snowtricks_figure', {'id': figure.id}) }}">
+                            <img class="" src="{{ fPicture.picture }}" alt="{{ figure.name }}">
+                        </a>
+                        {% endif %}
+                    {% endfor %}
                     <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">
                             <a href="{{ path('snowtricks_figure', {'id': figure.id}) }}">
@@ -39,12 +43,12 @@
                             </a>
                             <span class="float-right space-x-3">
                                     {% if app.user %}
-                                        <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}">
+                                        <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}" class="hover:text-blue-300">
                                             <span class="hidden">Modifier</span>
                                             <i class="fa fa-pen"></i>
                                         </a>
                                         <button id="delete-figure" data-id="{{ figure.id }}"
-                                                data-name="{{ figure.name }}">
+                                                data-name="{{ figure.name }}" class="hover:text-red-600">
                                             <span class="hidden">Supprimer</span>
                                             <i class="fa fa-trash"></i>
                                         </button>
@@ -67,7 +71,7 @@
             </div>
         {% endif %}
         <div class="float-right">
-            <a href="#top">
+            <a href="#top" class="hover:text-blue-300">
                 <i class="fa fa-arrow-up fa-3x"></i>
             </a>
         </div>

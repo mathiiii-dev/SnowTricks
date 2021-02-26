@@ -24,9 +24,15 @@ class Figure
      */
     private $pictures;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", cascade="persist", mappedBy="figure")
+     */
+    private $videos;
+
     public function __construct()
     {
         $this->pictures = new ArrayCollection();
+        $this->videos = new ArrayCollection();
     }
 
     /**
@@ -69,11 +75,6 @@ class Figure
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
-
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     */
-    private $videos = [];
 
     public function getId(): ?int
     {
@@ -175,15 +176,21 @@ class Figure
         $this->pictures->removeElement($picture);
     }
 
-    public function getVideos(): ?array
+    public function getVideos(): Collection
     {
         return $this->videos;
     }
 
-    public function setVideos(?array $videos): self
+    public function addVideo(Video $video): void
     {
-        $this->videos = $videos;
+        $video->setFigure($this);
 
-        return $this;
+        $this->videos->add($video);
     }
+
+    public function removeVideo(Video $video): void
+    {
+        $this->videos->removeElement($video);
+    }
+
 }

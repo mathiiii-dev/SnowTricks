@@ -5,6 +5,7 @@ namespace App\Form\Figure;
 use App\Entity\Figure;
 use App\Entity\Picture;
 use App\Form\PictureType;
+use App\Form\VideoType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -29,17 +30,15 @@ class FigureType extends AbstractType
                 'allow_delete' => true,
                 'label' => false
             ])
-            ->add('videos', TextType::class, ['label' => 'Video (Lien YouTube uniquement)']);
+            ->add('videos', CollectionType::class, [
+                'entry_type' => VideoType::class,
+                'entry_options' => ['label' => false],
+                'allow_add' => true,
+                'by_reference' => false,
+                'allow_delete' => true,
+                'label' => false
+            ]);
 
-        $builder->get('videos')
-            ->addModelTransformer(new CallbackTransformer(
-                function ($videosAsArray) {
-                    return implode(', ', $videosAsArray);
-                },
-                function ($videosAsArray) {
-                    return explode(', ', $videosAsArray);
-                }
-            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -5,7 +5,6 @@ namespace App\Services;
 
 
 use App\Entity\Figure;
-use Symfony\Component\Form\FormError;
 
 class UrlService
 {
@@ -18,14 +17,12 @@ class UrlService
         $videos = $figure->getVideos();
         $arrVideos = [];
         foreach ($videos as $video) {
-            $parsed_url = parse_url($video);
+            $parsed_url = parse_url($video->getVideo());
             if ($parsed_url['host'] !== "www.youtube.com") {
                 return false;
             }
-            $cleanVideo = str_replace('/watch?v=', '/embed/', $video);
-            array_push($arrVideos, $cleanVideo);
         }
-        return $arrVideos;
+        return true;
     }
 
     /**

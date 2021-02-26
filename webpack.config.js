@@ -26,6 +26,7 @@ Encore
     .addEntry('home', './assets/js/home/home.js')
     .addEntry('figures', './assets/js/home/figures.js')
     .addEntry('figure', './assets/js/figure/figure.js')
+    .addEntry('mediaFigure', './assets/js/figure/mediaFigure.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -74,6 +75,12 @@ Encore
     //.enableIntegrityHashes(Encore.isProduction())
 
     .autoProvidejQuery()
+
+    .autoProvideVariables({
+        $: 'jquery',
+        jQuery: 'jquery',
+        'window.jQuery': 'jquery',
+    })
 
     .enablePostCssLoader()
 

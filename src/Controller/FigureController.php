@@ -7,6 +7,7 @@ use App\Entity\Picture;
 use App\Entity\User;
 use App\Form\Figure\FigureType;
 use App\Services\ErrorService;
+use App\Services\MediaService;
 use App\Services\UrlService;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,12 +30,16 @@ class FigureController extends AbstractController
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
         $figure = $repository->find($id);
+
         if ($figure == null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
         }
 
+        $picture = $figure->getPictures()->first();
+
         return $this->render('figure/index.html.twig', [
-            'figure' => $figure
+            'figure' => $figure,
+            'picture' => $picture
         ]);
     }
 
@@ -62,12 +67,9 @@ class FigureController extends AbstractController
                 return $error->errorForm('pictures', $form, 'Les liens données ne sont pas des images.');
             }
 
-            $videos = $urlCheck->checkVideoUrl($figure);
-
-            if(!$videos) {
+            if(!$urlCheck->checkVideoUrl($figure)) {
                 return $error->errorForm('videos', $form, 'Les vidéos données ne proviennent pas de Youtube.');
             }
-            $figure->setVideos($videos);
 
             $em->persist($figure);
             $em->flush();
@@ -107,6 +109,12 @@ class FigureController extends AbstractController
             $originalPictures->add($picture);
         }
 
+        $originalVideos = new ArrayCollection();
+
+        foreach ($figure->getVideos() as $video) {
+            $originalVideos->add($video);
+        }
+
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
@@ -114,9 +122,13 @@ class FigureController extends AbstractController
 
             foreach ($originalPictures as $picture) {
                 if (false === $figure->getPictures()->contains($picture)) {
-                    $picture->setFigure(null);
+                    $em->remove($picture);
+                }
+            }
 
-                    $em->persist($picture);
+            foreach ($originalVideos as $video) {
+                if (false === $figure->getVideos()->contains($video)) {
+                    $em->remove($video);
                 }
             }
 

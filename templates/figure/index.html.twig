@@ -10,7 +10,7 @@
             {% include 'component/modal.html.twig' %}
         </div>
     {% endif %}
-    <div class="w-full bg-cover bg-center h-full">
+    <div class="w-full bg-cover bg-center h-full" style="background-image: url('{{ picture.picture }}')">
         {% for message in app.flashes('success') %}
             {% include 'component/flashSuccess.html.twig' with {message} %}
         {% endfor %}
@@ -36,7 +36,7 @@
                         <img src="{{ i.picture }}" alt="" class="md:w-1/4 hidden md:block" id="media">
                     {% endfor %}
                     {% for video in figure.videos %}
-                        <iframe width="340" height="230" src="{{ video }}" frameborder="0"
+                        <iframe width="340" height="230" src="{{ video.video|replace({"watch?v=": "embed/"}) }}" frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen class="hidden md:block" id="media">
                         </iframe>
