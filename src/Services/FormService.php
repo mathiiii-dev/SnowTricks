@@ -1,36 +1,34 @@
 <?php
 
-
 namespace App\Services;
 
-
 use App\Entity\Figure;
+use Symfony\Component\Form\FormError;
+use Symfony\Component\Form\FormInterface;
 
 class FormService
 {
-    private $error;
     private $urlCheck;
 
-    public function __construct(ErrorService $error, UrlService $urlCheck)
+    public function __construct(UrlService $urlCheck)
     {
-        $this->error = $error;
         $this->urlCheck = $urlCheck;
     }
 
-    public function checkFigure(Figure $figure, $form): bool
+    public function checkFigure(Figure $figure, FormInterface $form): bool
     {
         if ($figure->getPictures()->isEmpty()) {
-            $this->error->errorForm('pictures', $form, 'Une image, au moins, est necessaire.');
+            $form->get('pictures')->addError(new FormError('Une image, au moins, est necessaire.'));
             return false;
         }
 
         if (!$this->urlCheck->checkImageUrl($figure)) {
-            $this->error->errorForm('pictures', $form, 'Les liens données ne sont pas des images.');
+            $form->get('pictures')->addError(new FormError('Les liens données ne sont pas des images.'));
             return false;
         }
 
         if (!$this->urlCheck->checkVideoUrl($figure)) {
-            $this->error->errorForm('videos', $form, 'Les vidéos données ne proviennent pas de Youtube.');
+            $form->get('videos')->addError(new FormError('Les vidéos données ne proviennent pas de Youtube.'));
             return false;
         }
         return true;

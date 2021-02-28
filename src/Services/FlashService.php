@@ -1,23 +1,31 @@
 <?php
 
-
 namespace App\Services;
 
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-class FlashService extends AbstractController
+class FlashService
 {
-    public function setFlashMessages(int $httpResponse, string $successMessage)
-    {
+    /** @var FlashBagInterface */
+    private $flashBagInterface;
 
+    public function __construct(FlashBagInterface $flashBagInterface)
+    {
+        $this->flashBagInterface = $flashBagInterface;
+    }
+
+    public function setFlashMessages(int $httpResponse, string $successMessage): void
+    {
         if ($httpResponse !== 200) {
-            return $this->addFlash(
+            $this->flashBagInterface->add(
                 'error',
                 'Une erreur est survenue !'
             );
+
+            return;
         }
-         return $this->addFlash(
+
+         $this->flashBagInterface->add(
             'success',
             $successMessage
         );

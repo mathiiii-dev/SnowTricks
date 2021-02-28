@@ -2,6 +2,10 @@
 
 {% block title %}Tricks{% endblock %}
 
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+{% endblock %}
+
 {% block body %}
 <div class="h-screen pt-6 bg-gray-100">
     <div class="container mx-auto mt-16 bg-gray-100">
@@ -9,7 +13,12 @@
             <h2 class="text-3xl text-gray-900 font-bold text-center">Création d'une figure</h2>
             <div class="mt-6 bg-white p-8 shadow relative">
                 {{ form_start(formFigure) }}
-                {{ form_errors(formFigure) }}
+                {% if formFigure.vars.errors|length %}
+                    <div class="py-3 px-5 mb-4 bg-red-100 text-red-900 text-sm rounded-md border border-red-200"
+                         role="alert">
+                        {{ form_errors(formFigure) }}
+                    </div>
+                {% endif %}
                 <div class='flex flex-wrap -mx-3 mb-6'>
                     <div class='w-full md:w-full px-3 mb-6'>
                         {{ form_row(formFigure.name, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}

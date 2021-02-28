@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Entity\Figure;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 

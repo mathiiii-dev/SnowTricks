@@ -5,12 +5,9 @@ namespace App\Controller;
 use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\Figure\FigureType;
-use App\Services\ErrorService;
 use App\Services\FlashService;
 use App\Services\FormService;
 use App\Services\MediaService;
-use App\Services\UrlService;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -138,7 +135,7 @@ class FigureController extends AbstractController
         }
         $this->em->remove($figure);
         $this->em->flush();
-        http_response_code(500);
+
         $this->flash->setFlashMessages(http_response_code(), 'Suppréssion réussite !');
 
         return $this->redirectToRoute('snowtricks_home');

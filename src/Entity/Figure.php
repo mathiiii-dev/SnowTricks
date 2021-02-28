@@ -20,22 +20,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Figure
 {
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Picture", cascade="persist", mappedBy="figure")
-     */
-    private $pictures;
-
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Video", cascade="persist", mappedBy="figure")
-     */
-    private $videos;
-
-    public function __construct()
-    {
-        $this->pictures = new ArrayCollection();
-        $this->videos = new ArrayCollection();
-    }
-
-    /**
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
@@ -75,6 +59,22 @@ class Figure
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Picture", cascade="persist", mappedBy="figure")
+     */
+    private $pictures;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", cascade="persist", mappedBy="figure")
+     */
+    private $videos;
+
+    public function __construct()
+    {
+        $this->pictures = new ArrayCollection();
+        $this->videos = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
