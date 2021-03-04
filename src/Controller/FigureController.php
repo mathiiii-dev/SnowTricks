@@ -53,7 +53,7 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/create-figure", name="snowtricks_createfigure")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return Response
      */
     public function createFigure(Request $request): Response
@@ -84,7 +84,7 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/edit-figure/{id}", name="snowtricks_editfigure")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return Response
      */
     public function modifyFigure($id, Figure $figure, Request $request, MediaService $editMedia): Response
@@ -121,7 +121,7 @@ class FigureController extends AbstractController
 
     /**
      * @Route("/delete-figure/{id}", name="snowtricks_deletefigure")
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return RedirectResponse
      */
     public function deleteFigure($id): RedirectResponse
