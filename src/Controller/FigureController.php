@@ -93,13 +93,17 @@ class FigureController extends AbstractController
             throw $this->createNotFoundException('No figure found for id ' . $id);
         }
 
+        $originalPictures = $editMedia->originalMedia($figure->getPictures());
+        $originalVideos = $editMedia->originalMedia($figure->getVideos());
+
+
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && $this->checkForm->checkFigure($figure, $form)) {
 
-            $editMedia->editMedia($figure->getPictures());
-            $editMedia->editMedia($figure->getVideos());
+            $editMedia->editMedia($figure->getPictures(), $originalPictures);
+            $editMedia->editMedia($figure->getVideos(), $originalVideos);
 
             $this->em->persist($figure);
             $this->em->flush();
