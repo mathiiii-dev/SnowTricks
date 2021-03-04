@@ -23,10 +23,9 @@ class MediaService
         return $originalMedias;
     }
 
-    public function editMedia($figureMedia)
+    public function editMedia($figureMedia, $originalMedias)
     {
-        $OriginalMedias = $this->originalMedia($figureMedia);
-        foreach ($OriginalMedias as $media) {
+        foreach ($originalMedias as $media) {
             if (false === $figureMedia->contains($media)) {
                 $this->em->remove($media);
             }
