@@ -26,4 +26,22 @@ class MailService
 
         $mailer->send($email);
     }
+
+    public function sendMailResetPassword(MailerInterface $mailer, User $user)
+    {
+        $token = $user->getToken();
+
+        $email = (new TemplatedEmail())
+            ->from('snowtricks@mail.com')
+            ->to('mat.micheli99@gmail.com')
+            ->subject('Snowtricks - Réinistialisation de votre mot de passe')
+            ->htmlTemplate('security/email.html.twig')
+
+            ->context([
+                'token' => $token,
+                'username' => $user->getUsername()
+            ]);
+
+        $mailer->send($email);
+    }
 }

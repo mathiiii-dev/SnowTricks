@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réinitialisation{% endblock %}
+
+{% block body %}
+<div class="h-screen pt-6 bg-gray-100">
+    <div class="container mx-auto my-16">
+        <div class="inputs w-full max-w-2xl p-6 mx-auto ">
+            <h2 class="text-3xl text-gray-900 font-bold text-center">Réinitialisation du mot de passe</h2>
+            <div class="mt-6 bg-white p-8 shadow mb-24">
+                <form method="post">
+                    <div class='flex flex-wrap -mx-3 mb-6'>
+                        <div class='w-full md:w-full px-3 mb-6 mt-6'>
+                            <label for="inputUsername"
+                                   class="mb-2 font-bold text-lg text-gray-900 required">Pseudo</label>
+                            <input type="text" name="username" id="inputUsername" value="{{ username }}"
+                                   class="appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
+                                   required autofocus>
+                        </div>
+                        <div class='w-full md:w-full px-3 mb-6 mt-6'>
+                            <label for="inputUsername"
+                                   class="mb-2 font-bold text-lg text-gray-900 required">Mot de passe</label>
+                            <input type="password" name="password" id="inputPassword"
+                                   class="appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500"
+                                   required autofocus>
+                        </div>
+                        <button type="submit"
+                                class="w-full h-12 mt-6 px-6 text-white font-bold transition-colors duration-150 bg-blue-500 rounded-lg focus:shadow-outline hover:bg-blue-600">
+                            Réinitialiser
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% endblock %}
