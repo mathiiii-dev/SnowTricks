@@ -1,8 +1,6 @@
 <?php
 
-
 namespace App\Form;
-
 
 use App\Entity\Video;
 use Symfony\Component\Form\AbstractType;

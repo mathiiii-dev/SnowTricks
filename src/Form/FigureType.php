@@ -1,13 +1,9 @@
 <?php
 
-namespace App\Form\Figure;
+namespace App\Form;
 
 use App\Entity\Figure;
-use App\Entity\Picture;
-use App\Form\PictureType;
-use App\Form\VideoType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -19,9 +15,9 @@ class FigureType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', TextType::class, ['label' => 'Nom'])
-            ->add('description', TextareaType::class, ['label' => 'Description'])
-            ->add('figure_group', TextType::class, ['label' => 'Groupe'])
+            ->add('name', TextType::class, ['label' => 'Nom', 'label_attr' => ['class' => 'mb-2 font-bold text-lg text-gray-900']])
+            ->add('description', TextareaType::class, ['label' => 'Description', 'label_attr' => ['class' => 'mb-2 font-bold text-lg text-gray-900']])
+            ->add('figure_group', TextType::class, ['label' => 'Groupe', 'label_attr' => ['class' => 'mb-2 font-bold text-lg text-gray-900']])
             ->add('pictures', CollectionType::class, [
                 'entry_type' => PictureType::class,
                 'entry_options' => ['label' => false],

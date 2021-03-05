@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Figure;
 use App\Entity\User;
-use App\Form\Figure\FigureType;
+use App\Form\FigureType;
 use App\Services\FlashService;
 use App\Services\FormService;
 use App\Services\MediaService;
@@ -87,7 +87,7 @@ class FigureController extends AbstractController
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return Response
      */
-    public function modifyFigure($id, Figure $figure, Request $request, MediaService $editMedia): Response
+    public function modifyFigure($id, Request $request, MediaService $editMedia): Response
     {
         if (null === $figure = $this->em->getRepository(Figure::class)->find($id)) {
             throw $this->createNotFoundException('No figure found for id ' . $id);
@@ -104,8 +104,7 @@ class FigureController extends AbstractController
 
             $editMedia->editMedia($figure->getPictures(), $originalPictures);
             $editMedia->editMedia($figure->getVideos(), $originalVideos);
-
-            $this->em->persist($figure);
+            $figure->setModifiedAt();
             $this->em->flush();
 
             $this->flash->setFlashMessages(http_response_code(), 'Modification réussite !');

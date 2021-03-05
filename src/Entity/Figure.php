@@ -138,11 +138,11 @@ class Figure
     }
 
     /**
-     * @ORM\PreUpdate()
+     * @ORM\PreUpdate
      */
     public function setModifiedAt(): self
     {
-        $this->createdAt = new \DateTime();
+        $this->modifiedAt = new \DateTime();
 
         return $this;
     }
