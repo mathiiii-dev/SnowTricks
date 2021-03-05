@@ -7,10 +7,10 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class MediaService
 {
-    private $em;
-    public function __construct(EntityManagerInterface $em)
+    private $entityManager;
+    public function __construct(EntityManagerInterface $entityManager)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
     }
 
     public function originalMedia($figureMedia): ArrayCollection
@@ -27,7 +27,7 @@ class MediaService
     {
         foreach ($originalMedias as $media) {
             if (false === $figureMedia->contains($media)) {
-                $this->em->remove($media);
+                $this->entityManager->remove($media);
             }
         }
     }

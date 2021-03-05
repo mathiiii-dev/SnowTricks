@@ -17,13 +17,13 @@ use Symfony\Component\Uid\Uuid;
 
 class SignInController extends AbstractController
 {
-    private $em;
+    private $entityManager;
     private $mail;
     private $flash;
 
-    public function __construct(EntityManagerInterface $em, MailService $mail, FlashService $flash)
+    public function __construct(EntityManagerInterface $entityManager, MailService $mail, FlashService $flash)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
         $this->mail = $mail;
         $this->flash = $flash;
     }
@@ -57,8 +57,8 @@ class SignInController extends AbstractController
 
             $uuid = Uuid::v4();
             $user->setToken($uuid);
-            $this->em->persist($user);
-            $this->em->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             $this->mail->sendMailResetPassword($mailer, $user);
 
@@ -90,8 +90,8 @@ class SignInController extends AbstractController
             $user->setPassword($hash);
             $user->setToken(null);
 
-            $this->em->persist($user);
-            $this->em->flush();
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
             $this->flash->setFlashMessages(http_response_code(), 'Mot de passe modifié !');
 

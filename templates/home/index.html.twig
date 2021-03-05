@@ -28,19 +28,19 @@
                      {% if loop.index >= 7 %}id="hidden-cards"{% endif %}>
                     {% for fPicture in firstPictures %}
                         {% if fPicture.figure.id == figure.id %}
-                        <a href="{{ path('snowtricks_figure', {'id': figure.id}) }}">
+                        <a href="{{ path('snowtricks_figure', {'idFigure': figure.id}) }}">
                             <img class="" src="{{ fPicture.picture }}" alt="{{ figure.name }}">
                         </a>
                         {% endif %}
                     {% endfor %}
                     <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">
-                            <a href="{{ path('snowtricks_figure', {'id': figure.id}) }}">
+                            <a href="{{ path('snowtricks_figure', {'idFigure': figure.id}) }}">
                                 {{ figure.name }}
                             </a>
                             <span class="float-right space-x-3">
                                     {% if app.user %}
-                                        <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}" class="hover:text-blue-300">
+                                        <a href="{{ path('snowtricks_editfigure', {'idFigure': figure.id}) }}" class="hover:text-blue-300">
                                             <span class="hidden">Modifier</span>
                                             <i class="fa fa-pen"></i>
                                         </a>

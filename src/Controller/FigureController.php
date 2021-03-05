@@ -18,26 +18,26 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FigureController extends AbstractController
 {
-    private $em;
+    private $entityManager;
     private $flash;
     private $checkForm;
 
-    public function __construct(EntityManagerInterface $em, FlashService $flash, FormService $checkForm)
+    public function __construct(EntityManagerInterface $entityManager, FlashService $flash, FormService $checkForm)
     {
-        $this->em = $em;
+        $this->entityManager = $entityManager;
         $this->flash = $flash;
         $this->checkForm = $checkForm;
     }
 
     /**
-     * @Route("/figure/{id}", name="snowtricks_figure")
+     * @Route("/figure/{idFigure}", name="snowtricks_figure")
      * @return Response
      */
-    public function index(int $id): Response
+    public function index(int $idFigure): Response
     {
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
-        $figure = $repository->find($id);
+        $figure = $repository->find($idFigure);
 
         if ($figure == null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
@@ -67,8 +67,8 @@ class FigureController extends AbstractController
             $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
             $figure->setUser($user);
 
-            $this->em->persist($figure);
-            $this->em->flush();
+            $this->entityManager->persist($figure);
+            $this->entityManager->flush();
 
             $this->flash->setFlashMessages(http_response_code(), 'Création réussite !');
 
@@ -83,14 +83,14 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/edit-figure/{id}", name="snowtricks_editfigure")
+     * @Route("/edit-figure/{idFigure}", name="snowtricks_editfigure")
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return Response
      */
-    public function modifyFigure($id, Request $request, MediaService $editMedia): Response
+    public function modifyFigure(int $idFigure, Request $request, MediaService $editMedia): Response
     {
-        if (null === $figure = $this->em->getRepository(Figure::class)->find($id)) {
-            throw $this->createNotFoundException('No figure found for id ' . $id);
+        if (null === $figure = $this->entityManager->getRepository(Figure::class)->find($idFigure)) {
+            throw $this->createNotFoundException('No figure found for id ' . $idFigure);
         }
 
         $originalPictures = $editMedia->originalMedia($figure->getPictures());
@@ -105,11 +105,11 @@ class FigureController extends AbstractController
             $editMedia->editMedia($figure->getPictures(), $originalPictures);
             $editMedia->editMedia($figure->getVideos(), $originalVideos);
             $figure->setModifiedAt();
-            $this->em->flush();
+            $this->entityManager->flush();
 
             $this->flash->setFlashMessages(http_response_code(), 'Modification réussite !');
 
-            return $this->redirectToRoute('snowtricks_figure', ['id' => $id]);
+            return $this->redirectToRoute('snowtricks_figure', ['idFigure' => $idFigure]);
         }
 
         return $this->render('figure/formFigure.html.twig', [
@@ -119,25 +119,25 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/delete-figure/{id}", name="snowtricks_deletefigure")
+     * @Route("/delete-figure/{idFigure}", name="snowtricks_deletefigure")
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return RedirectResponse
      */
-    public function deleteFigure($id): RedirectResponse
+    public function deleteFigure(int $idFigure): RedirectResponse
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 
         $repository = $this->getDoctrine()->getRepository(Figure::class);
 
-        $figure = $repository->find($id);
+        $figure = $repository->find($idFigure);
         foreach ($figure->getVideos() as $video) {
-            $this->em->remove($video);
+            $this->entityManager->remove($video);
         }
         foreach ($figure->getPictures() as $picture) {
-            $this->em->remove($picture);
+            $this->entityManager->remove($picture);
         }
-        $this->em->remove($figure);
-        $this->em->flush();
+        $this->entityManager->remove($figure);
+        $this->entityManager->flush();
 
         $this->flash->setFlashMessages(http_response_code(), 'Suppréssion réussite !');
 
