@@ -31,4 +31,17 @@ class MediaService
             }
         }
     }
+
+    public function getFirstPicture($figures, $repository): array
+    {
+        $firstPictures = [];
+        foreach ($figures as $figure) {
+
+            $figure = $repository->find($figure->getId());
+
+            array_push($firstPictures, $figure->getPictures()->first());
+
+        }
+        return $firstPictures;
+    }
 }

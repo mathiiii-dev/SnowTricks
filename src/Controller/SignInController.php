@@ -20,12 +20,14 @@ class SignInController extends AbstractController
     private $entityManager;
     private $mail;
     private $flash;
+    private $user;
 
-    public function __construct(EntityManagerInterface $entityManager, MailService $mail, FlashService $flash)
+    public function __construct(EntityManagerInterface $entityManager, MailService $mail, FlashService $flash, UserRepository $user)
     {
         $this->entityManager = $entityManager;
         $this->mail = $mail;
         $this->flash = $flash;
+        $this->user = $user;
     }
 
     /**
@@ -34,36 +36,34 @@ class SignInController extends AbstractController
      */
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-
-        $error = $authenticationUtils->getLastAuthenticationError();
-        $lastUsername = $authenticationUtils->getLastUsername();
-
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/login.html.twig', [
+            'last_username' => $authenticationUtils->getLastUsername(),
+            'error' => $authenticationUtils->getLastAuthenticationError()
+        ]);
     }
 
     /**
      * @Route("/forgot-password", name="snowtricks_forgotpass")
      * @return Response
      */
-    public function forgotPassword(Request $request, UserRepository $users, MailerInterface $mailer): Response
+    public function forgotPassword(Request $request, UserRepository $user, MailerInterface $mailer): Response
     {
-        if ($request->getMethod() == Request::METHOD_POST){
+        if ($request->getMethod() === Request::METHOD_POST){
             $username = $request->request->get('username');
-            $user = $users->findOneBy(['username' => $username]);
+            $currentUser = $this->user->findOneBy(['username' => $username]);
 
             if(!$user){
                 throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
             }
 
             $uuid = Uuid::v4();
-            $user->setToken($uuid);
-            $this->entityManager->persist($user);
+            $currentUser->setToken($uuid);
+            $this->entityManager->persist($currentUser);
             $this->entityManager->flush();
 
-            $this->mail->sendMailResetPassword($mailer, $user);
+            $this->mail->sendMailResetPassword($mailer, $currentUser);
 
             $this->flash->setFlashMessages(http_response_code(), 'Un lien de réinitialisation vous a été envoyé par mail !');
-
         }
         return $this->render('security/forgotpass.html.twig');
     }
@@ -72,12 +72,12 @@ class SignInController extends AbstractController
      * @Route("/reset-password/{username}/{token}", name="snowtricks_resetpass")
      * @return Response
      */
-    public function resetPassword($username, $token, Request $request, UserRepository $users, UserPasswordEncoderInterface $encoder): Response
+    public function resetPassword($username, $token, Request $request, UserRepository $user, UserPasswordEncoderInterface $encoder): Response
     {
-        if ($request->getMethod() == Request::METHOD_POST){
+        if ($request->getMethod() === Request::METHOD_POST){
             $password = $request->request->get('password');
 
-            $user = $users->findOneBy([
+            $currentUser = $this->user->findOneBy([
                 'username' => $username,
                 'token' => $token
             ]);
@@ -86,11 +86,10 @@ class SignInController extends AbstractController
                 throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
             }
 
-            $hash = $encoder->encodePassword($user, $password);
-            $user->setPassword($hash);
-            $user->setToken(null);
+            $hash = $encoder->encodePassword($currentUser, $password);
+            $currentUser->setPassword($hash);
+            $currentUser->setToken(null);
 
-            $this->entityManager->persist($user);
             $this->entityManager->flush();
 
             $this->flash->setFlashMessages(http_response_code(), 'Mot de passe modifié !');

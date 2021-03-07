@@ -39,20 +39,18 @@ class FigureController extends AbstractController
 
         $figure = $repository->find($idFigure);
 
-        if ($figure == null) {
+        if ($figure === null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
         }
 
-        $picture = $figure->getPictures()->first();
-
         return $this->render('figure/index.html.twig', [
             'figure' => $figure,
-            'picture' => $picture
+            'picture' => $figure->getPictures()->first()
         ]);
     }
 
     /**
-     * @Route("/create-figure", name="snowtricks_createfigure")
+     * @Route("/create-figure", name="snowtricks_create_figure")
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return Response
      */
@@ -70,7 +68,7 @@ class FigureController extends AbstractController
             $this->entityManager->persist($figure);
             $this->entityManager->flush();
 
-            $this->flash->setFlashMessages(http_response_code(), 'Création réussite !');
+            $this->flash->setFlashMessages(http_response_code(), 'Création de la figure avec succès !');
 
             return $this->redirectToRoute('snowtricks_figure', ['id' => $figure->getId()]);
 
@@ -96,7 +94,6 @@ class FigureController extends AbstractController
         $originalPictures = $editMedia->originalMedia($figure->getPictures());
         $originalVideos = $editMedia->originalMedia($figure->getVideos());
 
-
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
@@ -107,7 +104,7 @@ class FigureController extends AbstractController
             $figure->setModifiedAt();
             $this->entityManager->flush();
 
-            $this->flash->setFlashMessages(http_response_code(), 'Modification réussite !');
+            $this->flash->setFlashMessages(http_response_code(), 'Modification de la figure avec succès !');
 
             return $this->redirectToRoute('snowtricks_figure', ['idFigure' => $idFigure]);
         }

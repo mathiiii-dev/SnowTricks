@@ -9,7 +9,7 @@
             <a href="{{ path('snowtricks_home') }}"
                class="hover:bg-white text-white hover:text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Accueil</a>
             {% if app.user %}
-                <a href="{{ path('snowtricks_createfigure') }}"
+                <a href="{{ path('snowtricks_create_figure') }}"
                    class="hover:bg-white text-white hover:text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Ajouter
                     un figure</a>
                 <a href="{{ path('snowtricks_logout') }}"
@@ -28,7 +28,7 @@
                 <i class="fa fa-home fa-3x"></i>
             </a>
             {% if app.user %}
-                <a href="{{ path('snowtricks_createfigure') }}" class="inline">
+                <a href="{{ path('snowtricks_create_figure') }}" class="inline">
                     <i class="fa fa-snowboarding fa-3x"></i>
                 </a>
                 <a href="{{ path('snowtricks_logout') }}" class="inline">
