@@ -3,12 +3,19 @@
 namespace App\Controller;
 
 use App\Entity\Figure;
+use App\Services\MediaService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
+    private $mediaService;
+    public function __construct(MediaService $mediaService)
+    {
+        $this->mediaService = $mediaService;
+    }
+
     /**
      * @Route("/", name="snowtricks_home")
      */
@@ -19,8 +26,8 @@ class HomeController extends AbstractController
         $figures = $repository->findAll();
 
         return $this->render('home/index.html.twig', [
-            'figures' => $figures
+            'figures' => $figures,
+            'firstPictures' => $this->mediaService->getFirstPicture($figures, $repository)
         ]);
     }
-
 }
