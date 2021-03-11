@@ -1,42 +1,37 @@
 <?php
 
-
 namespace App\Services;
 
-
 use App\Entity\Figure;
-use Symfony\Component\Form\FormError;
 
 class UrlService
 {
-    /**
-     * @param $figure
-     * @return array|false
-     */
-    public function checkVideoUrl(Figure $figure)
+    public function checkVideoUrl(Figure $figure): bool
     {
         $videos = $figure->getVideos();
-        $arrVideos = [];
+
         foreach ($videos as $video) {
-            $parsed_url = parse_url($video);
+
+            if (!filter_var($video->getVideo(), FILTER_VALIDATE_URL)) {
+                return false;
+            }
+
+            $parsed_url = parse_url($video->getVideo());
             if ($parsed_url['host'] !== "www.youtube.com") {
                 return false;
             }
-            $cleanVideo = str_replace('/watch?v=', '/embed/', $video);
-            array_push($arrVideos, $cleanVideo);
         }
-        return $arrVideos;
+        return true;
     }
 
-    /**
-     * @param Figure $figure
-     * @return bool
-     */
     public function checkImageUrl(Figure $figure): bool
     {
         foreach ($figure->getPictures() as $picture) {
 
-            $headers = get_headers($picture, 1);
+            if (!filter_var($picture->getPicture(), FILTER_VALIDATE_URL)) {
+                return false;
+            }
+            $headers = get_headers($picture->getPicture(), 1);
             if (!str_contains($headers['Content-Type'], 'image/')) {
                 return false;
             }
