@@ -100,7 +100,6 @@ class FigureController extends AbstractController
 
             $this->mediaService->editMedia($figure->getPictures(), $originalPictures);
             $this->mediaService->editMedia($figure->getVideos(), $originalVideos);
-            $figure->setModifiedAt();
             $this->entityManager->flush();
 
             $this->flash->setFlashMessages(http_response_code(), 'Modification de la figure avec succès !');
