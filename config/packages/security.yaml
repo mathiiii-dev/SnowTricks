@@ -26,7 +26,10 @@ security:
                 path: snowtricks_logout
             form_login:
                 use_forward: true
-
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800
+                path: /
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }

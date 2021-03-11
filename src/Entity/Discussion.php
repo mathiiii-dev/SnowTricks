@@ -7,6 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=DiscussionRepository::class)
+ * @ORM\HasLifecycleCallbacks()
  */
 class Discussion
 {
@@ -14,7 +15,6 @@ class Discussion
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @ORM\HasLifecycleCallbacks()
      */
     private $id;
 
