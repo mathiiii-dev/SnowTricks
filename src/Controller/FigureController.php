@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\FigureType;
+use App\Repository\DiscussionRepository;
 use App\Services\FlashService;
 use App\Services\FormService;
 use App\Services\MediaService;
@@ -22,13 +23,15 @@ class FigureController extends AbstractController
     private $flash;
     private $checkForm;
     private $mediaService;
+    private $discussion;
 
-    public function __construct(EntityManagerInterface $entityManager, FlashService $flash, FormService $checkForm, MediaService $mediaService)
+    public function __construct(EntityManagerInterface $entityManager, FlashService $flash, FormService $checkForm, MediaService $mediaService, DiscussionRepository $discussion)
     {
         $this->entityManager = $entityManager;
         $this->flash = $flash;
         $this->checkForm = $checkForm;
         $this->mediaService = $mediaService;
+        $this->discussion = $discussion;
     }
 
     /**
@@ -40,10 +43,12 @@ class FigureController extends AbstractController
         if ($figure === null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
         }
+        $messages = $this->discussion->findBy(['figure' => $figure]);
 
         return $this->render('figure/index.html.twig', [
             'figure' => $figure,
-            'picture' => $figure->getPictures()->first()
+            'picture' => $figure->getPictures()->first(),
+            'messages' => $messages
         ]);
     }
 

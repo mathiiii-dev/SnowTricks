@@ -7,18 +7,18 @@
         </div>
         <div class="float-right pt-3">
             <a href="{{ path('snowtricks_home') }}"
-               class="hover:bg-white text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Accueil</a>
+               class="bg-white text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:text-white hover:border-white border-2 border-black hover:bg-black hover:text-white hover:border-white border-2 border-black">Accueil</a>
             {% if app.user %}
                 <a href="{{ path('snowtricks_create_figure') }}"
-                   class="hover:bg-white text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Ajouter
+                   class="bg-white text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:text-white hover:border-white border-2 border-black">Ajouter
                     un figure</a>
                 <a href="{{ path('snowtricks_logout') }}"
-                   class="hover:bg-white text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Deconnexion</a>
+                   class="bg-white text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:text-white hover:border-white border-2 border-black">Deconnexion</a>
             {% else %}
                 <a href="{{ path('snowtricks_signin') }}"
-                   class="hover:bg-white text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Connexion</a>
+                   class="bg-white text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:text-white hover:border-white border-2 border-black">Connexion</a>
                 <a href="{{ path('snowtricks_signup') }}"
-                   class="hover:bg-white text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Inscription</a>
+                   class="bg-white text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:text-white hover:border-white border-2 border-black">Inscription</a>
             {% endif %}
         </div>
     </div>

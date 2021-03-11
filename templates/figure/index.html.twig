@@ -71,10 +71,53 @@
                     </span>
                 {% endif %}
             </div>
+            {% if app.user %}
+                <hr class="mb-2">
+                <form action="{{ path('snowtricks_send_message', {'figure': figure.id}) }}" method="post">
+                    <label for="message" class="mb-2 font-bold text-lg text-gray-900 float-left">Message : </label>
+                    <textarea name="message" id="message" cols="10" rows="3" class="appearance-none block w-full bg-white text-gray-700
+                    border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500" maxlength="255"></textarea>
+                    <div class="text-right mt-1" id="counter"></div>
+                    <button type="submit" class="py-2 px-4 bg-blue-500 rounded text-white font-bold hover:bg-blue-600 mt-2">Envoyer</button>
+                </form>
+                <hr class="mt-2">
+            {% else %}
+                <div class="max-w-sm overflow-hidden mx-auto my-8 text-center p-4">
+                    <p>Pour participez à la discussion, connectez-vous en cliquant sur le bouton ci-dessous :</p>
+                    <div class="pt-6">
+                        <a href="{{ path('snowtricks_signin') }}"
+                           class="bg-gray-700 rounded text-white p-3 hover:bg-gray-500">Connexion</a>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="bg-blue-300 rounded-lg p-6 mt-6">
+                {% for message in messages %}
+                    <div class="bg-white rounded p-2 m-2">
+                        <p class="text-left font-light pr-6 text-gray-700">{{ message.user.username }}</p>
+                        <p class="text-justify px-6 my-2">{{ message.message }}</p>
+                        <p class="text-right font-light text-xs">{{ message.createdAt |date('d m y h:m:s') }}</p>
+                        <p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p>
+                    </div>
+                {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}
 {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('figure') }}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messageEle = document.getElementById('message');
+            const counterEle = document.getElementById('counter');
+
+            messageEle.addEventListener('input', function(e) {
+                const target = e.target;
+                const maxLength = target.getAttribute('maxlength');
+                const currentLength = target.value.length;
+
+                counterEle.innerHTML = `${currentLength}/${maxLength}`;
+            });
+        });
+    </script>
 {% endblock %}
