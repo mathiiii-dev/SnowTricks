@@ -99,11 +99,4 @@ class SignInController extends AbstractController
         return $this->render('security/resetpass.html.twig', ['username' => $username]);
     }
 
-    /**
-     * @Route("/logout", name="snowtricks_logout")
-     */
-    public function logout()
-    {
-
-    }
 }

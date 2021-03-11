@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Entity\Figure;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -43,5 +44,15 @@ class MediaService
 
         }
         return $firstPictures;
+    }
+
+    public function removeMedia(Figure $figure)
+    {
+        foreach ($figure->getVideos() as $video) {
+            $this->entityManager->remove($video);
+        }
+        foreach ($figure->getPictures() as $picture) {
+            $this->entityManager->remove($picture);
+        }
     }
 }

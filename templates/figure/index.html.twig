@@ -22,14 +22,14 @@
         <div class="container mx-auto relative text-center">
             {% if app.user %}
                 <div class="float-right">
-                    <a href="{{ path('snowtricks_editfigure', {'idFigure': figure.id}) }}"
+                    <a href="{{ path('snowtricks_editfigure', {'figure': figure.id}) }}"
                        class="hover:text-blue-500">
                         <span class="hidden">Modifier</span>
                         <i class="fa fa-pen fa-2x"></i>
                     </a>
                     <button id="delete-figure"
                             class="pl-3 hover:text-red-600" data-id="{{ figure.id }}" data-name="{{ figure.name }}"
-                            data-url="{{ path('snowtricks_deletefigure', {'idFigure': figure.id}) }}">
+                            data-url="{{ path('snowtricks_deletefigure', {'figure': figure.id}) }}">
                         <span class="hidden">Supprimer</span>
                         <i class="fa fa-trash fa-2x"></i>
                     </button>

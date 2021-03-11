@@ -10,6 +10,7 @@ use App\Services\FormService;
 use App\Services\MediaService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,24 +22,22 @@ class FigureController extends AbstractController
     private $entityManager;
     private $flash;
     private $checkForm;
+    private $mediaService;
 
-    public function __construct(EntityManagerInterface $entityManager, FlashService $flash, FormService $checkForm)
+    public function __construct(EntityManagerInterface $entityManager, FlashService $flash, FormService $checkForm, MediaService $mediaService)
     {
         $this->entityManager = $entityManager;
         $this->flash = $flash;
         $this->checkForm = $checkForm;
+        $this->mediaService = $mediaService;
     }
 
     /**
-     * @Route("/figure/{idFigure}", name="snowtricks_figure")
+     * @Route("/figure/{figure}", name="snowtricks_figure")
      * @return Response
      */
-    public function index(int $idFigure): Response
+    public function index(Figure $figure): Response
     {
-        $repository = $this->getDoctrine()->getRepository(Figure::class);
-
-        $figure = $repository->find($idFigure);
-
         if ($figure === null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
         }
@@ -70,7 +69,7 @@ class FigureController extends AbstractController
 
             $this->flash->setFlashMessages(http_response_code(), 'Création de la figure avec succès !');
 
-            return $this->redirectToRoute('snowtricks_figure', ['id' => $figure->getId()]);
+            return $this->redirectToRoute('snowtricks_figure', ['figure' => $figure->getId()]);
 
         }
 
@@ -81,32 +80,32 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/edit-figure/{idFigure}", name="snowtricks_editfigure")
+     * @Route("/edit-figure/{figure}", name="snowtricks_editfigure")
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return Response
      */
-    public function modifyFigure(int $idFigure, Request $request, MediaService $editMedia): Response
+    public function modifyFigure(Figure $figure, Request $request): Response
     {
-        if (null === $figure = $this->entityManager->getRepository(Figure::class)->find($idFigure)) {
-            throw $this->createNotFoundException('No figure found for id ' . $idFigure);
+        if ($figure === null) {
+            throw $this->createNotFoundException('No figure found for id ' . $figure);
         }
 
-        $originalPictures = $editMedia->originalMedia($figure->getPictures());
-        $originalVideos = $editMedia->originalMedia($figure->getVideos());
+        $originalPictures = $this->mediaService->originalMedia($figure->getPictures());
+        $originalVideos = $this->mediaService->originalMedia($figure->getVideos());
 
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid() && $this->checkForm->checkFigure($figure, $form)) {
 
-            $editMedia->editMedia($figure->getPictures(), $originalPictures);
-            $editMedia->editMedia($figure->getVideos(), $originalVideos);
+            $this->mediaService->editMedia($figure->getPictures(), $originalPictures);
+            $this->mediaService->editMedia($figure->getVideos(), $originalVideos);
             $figure->setModifiedAt();
             $this->entityManager->flush();
 
             $this->flash->setFlashMessages(http_response_code(), 'Modification de la figure avec succès !');
 
-            return $this->redirectToRoute('snowtricks_figure', ['idFigure' => $idFigure]);
+            return $this->redirectToRoute('snowtricks_figure', ['figure' => $figure->getId()]);
         }
 
         return $this->render('figure/formFigure.html.twig', [
@@ -116,27 +115,18 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/delete-figure/{idFigure}", name="snowtricks_deletefigure")
+     * @Route("/delete-figure/{figure}", name="snowtricks_deletefigure")
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return RedirectResponse
      */
-    public function deleteFigure(int $idFigure): RedirectResponse
+    public function deleteFigure(Figure $figure): RedirectResponse
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $this->mediaService->removeMedia($figure);
 
-        $repository = $this->getDoctrine()->getRepository(Figure::class);
-
-        $figure = $repository->find($idFigure);
-        foreach ($figure->getVideos() as $video) {
-            $this->entityManager->remove($video);
-        }
-        foreach ($figure->getPictures() as $picture) {
-            $this->entityManager->remove($picture);
-        }
         $this->entityManager->remove($figure);
         $this->entityManager->flush();
 
-        $this->flash->setFlashMessages(http_response_code(), 'Suppréssion réussite !');
+        $this->flash->setFlashMessages(http_response_code(), 'Suppréssion de la figure avec succès !');
 
         return $this->redirectToRoute('snowtricks_home');
     }
