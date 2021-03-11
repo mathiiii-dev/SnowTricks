@@ -10,66 +10,63 @@
             {% include 'component/modal.html.twig' %}
         </div>
     {% endif %}
-    <div class="w-full bg-cover bg-center h-96"
-         style="background-image: url('{{ picture.picture }}');">
-        <div class="flex items-center justify-center h-full w-full">
-            <div class="text-center">
-                <h1 class="text-white lg:text-7xl text-5xl uppercase font-bold">{{ figure.name }}</h1>
-            </div>
-        </div>
-    </div>
-    <div class="flex items-center justify-center w-full md:h-full mt-6">
-        <div class="container mx-auto relative text-center">
-            {% if app.user %}
-                <div class="float-right">
-                    <a href="{{ path('snowtricks_editfigure', {'figure': figure.id}) }}"
-                       class="hover:text-blue-500">
-                        <span class="hidden">Modifier</span>
-                        <i class="fa fa-pen fa-2x"></i>
-                    </a>
-                    <button id="delete-figure"
-                            class="pl-3 hover:text-red-600" data-id="{{ figure.id }}" data-name="{{ figure.name }}"
-                            data-url="{{ path('snowtricks_deletefigure', {'figure': figure.id}) }}">
-                        <span class="hidden">Supprimer</span>
-                        <i class="fa fa-trash fa-2x"></i>
+    <div class="w-full bg-cover bg-center h-full"
+         style="background-image: url('{{ figure.pictures|first }}');">
+        {% for message in app.flashes('success') %}
+            {% include 'component/flashSuccess.html.twig' with {message} %}
+        {% endfor %}
+        <div class="flex items-center justify-center w-full md:h-full">
+            <div class="container mx-auto relative text-center bg-gray-100 rounded shadow-2xl lg:mt-24 sm:mt-6">
+                {% if app.user %}
+                    <div class="float-right mr-6 mt-2">
+                        <a href="{{ path('snowtricks_editfigure', {'id': figure.id}) }}"
+                           class="hover:text-blue-500">
+                            <span class="hidden">Modifier</span>
+                            <i class="fa fa-pen fa-2x"></i>
+                        </a>
+                        <button id="delete-figure"
+                                class="pl-3 hover:text-red-600" data-id="{{ figure.id }}" data-name="{{ figure.name }}" data-url="{{ path('snowtricks_deletefigure', {'id': figure.id}) }}">
+                            <span class="hidden">Supprimer</span>
+                            <i class="fa fa-trash fa-2x"></i>
+                        </button>
+                    </div>
+                {% endif %}
+                <p class="text-uppercase text-5xl text-black font-bold md:mb-28 md:pt-8">{{ figure.name }}</p>
+                <div class="flex flex-wrap content-center gap-4 justify-center p-2">
+                    {% for picture in figure.pictures %}
+                        <img src="{{ picture }}" alt="" class="md:w-1/4 hidden md:block" id="media">
+                    {% endfor %}
+                    {% for video in figure.videos %}
+                        <iframe width="340" height="230" src="{{ video }}" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen class="hidden md:block" id="media">
+                        </iframe>
+                    {% endfor %}
+                </div>
+                <div class="justify-center mt-6 md:hidden">
+                    <button id="show-media"
+                            class="py-2 px-4 bg-blue-500 rounded text-white font-bold hover:bg-blue-600">
+                        Voir les médias
+                    </button>
+                    <button id="remove-media"
+                            class="py-2 px-4 bg-blue-500 rounded text-white font-bold hover:bg-blue-600 hidden">
+                        Enlever les médias
                     </button>
                 </div>
-            {% endif %}
-            <div class="flex flex-wrap content-center gap-4 justify-center mt-16">
-                {% for i in figure.pictures %}
-                    <img src="{{ i.picture }}" alt="" class="md:w-1/4 hidden md:block" id="media">
-                {% endfor %}
-                {% for video in figure.videos %}
-                    <iframe width="340" height="230" src="{{ video.video|replace({"watch?v=": "embed/"}) }}"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen class="hidden md:block" id="media">
-                    </iframe>
-                {% endfor %}
-            </div>
-            <div class="justify-center mt-16 md:hidden">
-                <button id="show-media"
-                        class="py-2 px-4 bg-blue-500 rounded text-white font-bold hover:bg-blue-600">
-                    Voir les médias
-                </button>
-                <button id="remove-media"
-                        class="py-2 px-4 bg-blue-500 rounded text-white font-bold hover:bg-blue-600 hidden">
-                    Enlever les médias
-                </button>
-            </div>
-            <p class="text-justify lg:px-64 px-2 py-6">{{ figure.description }}</p>
-            <div class="mt-6 pb-6">
+                <p class="text-justify lg:px-64 px-2 py-6">{{ figure.description }}</p>
+                <div class="mt-6 pb-6">
                     <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
                     <i class="fa fa-snowboarding pr-1"></i>{{ figure.figureGroup }}
                 </span>
-                <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
+                    <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
                     <i class="fa fa-calendar pr-1"></i> Créée le {{ figure.createdAt | date('d/m/Y') }}
                 </span>
-                {% if figure.modifiedAt %}
-                    <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
+                    {% if figure.modifiedAt %}
+                        <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
                          <i class="fa fa-calendar pr-1"></i> Modifiée le {{ figure.modifiedAt | date('d/m/Y') }}
                     </span>
-                {% endif %}
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>

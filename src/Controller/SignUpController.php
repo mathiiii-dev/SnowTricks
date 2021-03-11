@@ -20,6 +20,10 @@ class SignUpController extends AbstractController
 {
     /**
      * @Route("/sign-up", name="snowtricks_signup")
+     * @param Request $request
+     * @param EntityManagerInterface $em
+     * @param UserPasswordEncoderInterface $encoder
+     * @param $mailer
      * @return Response
      */
     public function signUp(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, MailerInterface $mailer): Response
@@ -57,6 +61,9 @@ class SignUpController extends AbstractController
 
     /**
      * @Route("/confirm-account/{pseudo}/{token}", name="snowtricks_confirmaccount")
+     * @param $token
+     * @param UserRepository $users
+     * @param $pseudo
      * @return RedirectResponse
      */
     public function activation($token, UserRepository $users, $pseudo): RedirectResponse

@@ -14,10 +14,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     fields={"username"},
  *     message="Le pseudo est déja utilisé"
  * )
- * @UniqueEntity(
- *     fields={"email"},
- *     message="Cette email est déja utilisé"
- * )
  * @ORM\HasLifecycleCallbacks()
  */
 class User implements UserInterface

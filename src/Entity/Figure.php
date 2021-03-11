@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\FigureRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -61,20 +59,14 @@ class Figure
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Picture", cascade="persist", mappedBy="figure")
+     * @ORM\Column(type="array")
      */
-    private $pictures;
+    private $pictures = [];
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Video", cascade="persist", mappedBy="figure")
+     * @ORM\Column(type="array", nullable=true)
      */
-    private $videos;
-
-    public function __construct()
-    {
-        $this->pictures = new ArrayCollection();
-        $this->videos = new ArrayCollection();
-    }
+    private $videos = [];
 
     public function getId(): ?int
     {
@@ -138,11 +130,11 @@ class Figure
     }
 
     /**
-     * @ORM\PreUpdate
+     * @ORM\PreUpdate()
      */
     public function setModifiedAt(): self
     {
-        $this->modifiedAt = new \DateTime();
+        $this->createdAt = new \DateTime();
 
         return $this;
     }
@@ -159,38 +151,27 @@ class Figure
         return $this;
     }
 
-    public function getPictures(): Collection
+    public function getPictures(): ?array
     {
         return $this->pictures;
     }
 
-    public function addPicture(Picture $picture): void
+    public function setPictures(array $pictures): self
     {
-        $picture->setFigure($this);
+        $this->pictures = $pictures;
 
-        $this->pictures->add($picture);
+        return $this;
     }
 
-    public function removePicture(Picture $picture): void
-    {
-        $this->pictures->removeElement($picture);
-    }
-
-    public function getVideos(): Collection
+    public function getVideos(): ?array
     {
         return $this->videos;
     }
 
-    public function addVideo(Video $video): void
+    public function setVideos(?array $videos): self
     {
-        $video->setFigure($this);
+        $this->videos = $videos;
 
-        $this->videos->add($video);
+        return $this;
     }
-
-    public function removeVideo(Video $video): void
-    {
-        $this->videos->removeElement($video);
-    }
-
 }
