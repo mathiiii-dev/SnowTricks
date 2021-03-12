@@ -36,19 +36,4 @@ class FormService
         return true;
 
     }
-
-    public function checkDiscussion(string $message)
-    {
-        if (strlen($message) > 255) {
-            $this->flashService->setFlashMessages(500, 'Le message est trop long ! (max 255 char.)');
-            return false;
-        }
-
-        if (strlen($message) < 3) {
-            $this->flashService->setFlashMessages(500,'Le message est trop court ! (min 3 char.)');
-            return false;
-        }
-
-        return true;
-    }
 }

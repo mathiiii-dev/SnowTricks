@@ -21,6 +21,7 @@ class DiscussionController extends AbstractController
     private $figureRepository;
     private $flash;
     private $formService;
+
     public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository, FormService $formService, FigureRepository $figureRepository, FlashService $flash)
     {
         $this->entityManager = $entityManager;
@@ -42,7 +43,7 @@ class DiscussionController extends AbstractController
 
             $message = $request->request->get('message');
             $checkDiscussion = $this->formService->checkDiscussion($message);
-            if($checkDiscussion === true) {
+            if ($checkDiscussion) {
                 $user = $this->userRepository->findOneBy(['username' => $this->getUser()->getUsername()]);
 
                 $discussion->setMessage($message);
@@ -54,7 +55,9 @@ class DiscussionController extends AbstractController
 
                 $this->flash->setFlashMessages(http_response_code(), 'Message envoyé !');
 
-                return $this->redirectToRoute('snowtricks_figure', ['figure' => $figure->getId()]);
+                return $this->redirectToRoute('snowtricks_figure', [
+                    'figure' => $figure->getId()
+                ]);
             }
 
             return $this->redirectToRoute('snowtricks_figure', [

@@ -27,6 +27,7 @@ Encore
     .addEntry('figures', './assets/js/home/figures.js')
     .addEntry('figure', './assets/js/figure/figure.js')
     .addEntry('mediaFigure', './assets/js/figure/mediaFigure.js')
+    .addEntry('counter', './assets/js/figure/counter.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')

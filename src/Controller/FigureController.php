@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Discussion;
 use App\Entity\Figure;
 use App\Entity\User;
+use App\Form\DiscussionType;
 use App\Form\FigureType;
 use App\Repository\DiscussionRepository;
 use App\Services\FlashService;
@@ -38,17 +40,38 @@ class FigureController extends AbstractController
      * @Route("/figure/{figure}", name="snowtricks_figure")
      * @return Response
      */
-    public function index(Figure $figure): Response
+    public function index(Figure $figure, Request $request): Response
     {
+        $discussion = new Discussion();
+
+        $formDiscussion = $this->createForm(DiscussionType::class, $discussion);
+        $formDiscussion->handleRequest($request);
+        $repository = $this->getDoctrine()->getRepository(User::class);
+        if ($formDiscussion->isSubmitted() && $formDiscussion->isValid()) {
+            $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
+
+            $discussion->setUser($user);
+            $discussion->setFigure($figure);
+
+            $this->entityManager->persist($discussion);
+            $this->entityManager->flush();
+
+            $this->flash->setFlashMessages(http_response_code(), 'Message envoyé avec succès !');
+
+            return $this->redirectToRoute('snowtricks_figure', ['figure' => $figure->getId()]);
+
+        }
+
         if ($figure === null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
         }
-        $messages = $this->discussion->findBy(['figure' => $figure]);
+        $messages = $this->discussion->findBy(['figure' => $figure], ['id' => 'DESC']);
 
         return $this->render('figure/index.html.twig', [
             'figure' => $figure,
             'picture' => $figure->getPictures()->first(),
-            'messages' => $messages
+            'messages' => $messages,
+            'formDiscussion' => $formDiscussion->createView()
         ]);
     }
 

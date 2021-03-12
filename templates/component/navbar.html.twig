@@ -7,18 +7,18 @@
         </div>
         <div class="float-right pt-3">
             <a href="{{ path('snowtricks_home') }}"
-               class="bg-white text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:text-white hover:border-white border-2 border-black hover:bg-black hover:text-white hover:border-white border-2 border-black">Accueil</a>
+               class="px-3 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black">Accueil</a>
             {% if app.user %}
                 <a href="{{ path('snowtricks_create_figure') }}"
-                   class="bg-white text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:text-white hover:border-white border-2 border-black">Ajouter
+                   class="px-3 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black">Ajouter
                     un figure</a>
                 <a href="{{ path('snowtricks_logout') }}"
-                   class="bg-white text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:text-white hover:border-white border-2 border-black">Deconnexion</a>
+                   class="px-3 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black">Deconnexion</a>
             {% else %}
                 <a href="{{ path('snowtricks_signin') }}"
-                   class="bg-white text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:text-white hover:border-white border-2 border-black">Connexion</a>
+                   class="px-3 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black">Connexion</a>
                 <a href="{{ path('snowtricks_signup') }}"
-                   class="bg-white text-black px-3 py-2 rounded-md text-sm font-medium hover:bg-black hover:text-white hover:border-white border-2 border-black">Inscription</a>
+                   class="px-3 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black">Inscription</a>
             {% endif %}
         </div>
     </div>
