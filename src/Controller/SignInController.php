@@ -61,7 +61,7 @@ class SignInController extends AbstractController
             $this->entityManager->persist($currentUser);
             $this->entityManager->flush();
 
-            $this->mail->sendMailResetPassword($mailer, $currentUser);
+            $this->mail->send($mailer, $currentUser, 'Snowtricks - Réinistialisation de votre mot de passe', 'security/email.html.twig');
 
             $this->flash->setFlashMessages(http_response_code(), 'Un lien de réinitialisation vous a été envoyé par mail !');
         }

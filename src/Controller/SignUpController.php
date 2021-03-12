@@ -40,7 +40,7 @@ class SignUpController extends AbstractController
             $em->flush();
 
             $mail = new MailService();
-            $mail->send($mailer, $user);
+            $mail->send($mailer, $user, 'Snowtricks - Merci de votre inscription !', 'sign_up/email.html.twig');
 
             $this->addFlash(
                 'success',

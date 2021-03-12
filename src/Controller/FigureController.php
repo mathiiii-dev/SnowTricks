@@ -23,15 +23,13 @@ class FigureController extends AbstractController
 {
     private $entityManager;
     private $flash;
-    private $checkForm;
     private $mediaService;
     private $discussion;
 
-    public function __construct(EntityManagerInterface $entityManager, FlashService $flash, FormService $checkForm, MediaService $mediaService, DiscussionRepository $discussion)
+    public function __construct(EntityManagerInterface $entityManager, FlashService $flash, MediaService $mediaService, DiscussionRepository $discussion)
     {
         $this->entityManager = $entityManager;
         $this->flash = $flash;
-        $this->checkForm = $checkForm;
         $this->mediaService = $mediaService;
         $this->discussion = $discussion;
     }
@@ -87,7 +85,7 @@ class FigureController extends AbstractController
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
         $repository = $this->getDoctrine()->getRepository(User::class);
-        if ($form->isSubmitted() && $form->isValid() /*&& $this->checkForm->checkFigure($figure, $form)*/) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
             $figure->setUser($user);
 
@@ -123,7 +121,7 @@ class FigureController extends AbstractController
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() /*&& $this->checkForm->checkFigure($figure, $form)*/) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $this->mediaService->editMedia($figure->getPictures(), $originalPictures);
             $this->mediaService->editMedia($figure->getVideos(), $originalVideos);
