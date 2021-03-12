@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator as AcmeAssert;
 
 /**
  * @ORM\Entity(repositoryClass=FigureRepository::class)
@@ -62,11 +63,13 @@ class Figure
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Picture", cascade="persist", mappedBy="figure")
+     * @AcmeAssert\ConstraintPicture
      */
     private $pictures;
 
     /**
      * @ORM\OneToMany(targetEntity="App\Entity\Video", cascade="persist", mappedBy="figure")
+     * @AcmeAssert\ConstraintVideo
      */
     private $videos;
 

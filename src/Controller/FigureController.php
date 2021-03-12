@@ -87,7 +87,7 @@ class FigureController extends AbstractController
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
         $repository = $this->getDoctrine()->getRepository(User::class);
-        if ($form->isSubmitted() && $form->isValid() && $this->checkForm->checkFigure($figure, $form)) {
+        if ($form->isSubmitted() && $form->isValid() /*&& $this->checkForm->checkFigure($figure, $form)*/) {
             $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
             $figure->setUser($user);
 
@@ -123,7 +123,7 @@ class FigureController extends AbstractController
         $form = $this->createForm(FigureType::class, $figure);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() && $this->checkForm->checkFigure($figure, $form)) {
+        if ($form->isSubmitted() && $form->isValid() /*&& $this->checkForm->checkFigure($figure, $form)*/) {
 
             $this->mediaService->editMedia($figure->getPictures(), $originalPictures);
             $this->mediaService->editMedia($figure->getVideos(), $originalVideos);
