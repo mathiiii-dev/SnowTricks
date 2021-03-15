@@ -24,7 +24,7 @@ class MediaService
         return $originalMedias;
     }
 
-    public function editMedia($figureMedia, $originalMedias)
+    public function editMedia($figureMedia, $originalMedias): void
     {
         foreach ($originalMedias as $media) {
             if (false === $figureMedia->contains($media)) {
@@ -46,7 +46,7 @@ class MediaService
         return $firstPictures;
     }
 
-    public function removeMedia(Figure $figure)
+    public function removeMedia(Figure $figure): void
     {
         foreach ($figure->getVideos() as $video) {
             $this->entityManager->remove($video);

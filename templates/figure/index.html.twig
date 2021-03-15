@@ -73,13 +73,13 @@
             </div>
             {% if app.user %}
                 <hr class="mb-2">
-                {{ form_start(formDiscussion) }}
+                {{ form_start(formDiscussion, {'attr': {'id': 'formDiscussion'}}) }}
                 <div class='w-full md:w-full px-3 mb-6'>
                     <div class="text-right mt-1" id="counter"></div>
                     {{ form_row(formDiscussion.message, {'attr': {'id':'message', 'maxLength' : 255, 'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
                 </div>
                 <button class="appearance-none bg-gray-200 hover:bg-blue-400 hover:text-white text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3 font-bold"
-                        type="submit">
+                        id="send-message" type="submit">
                     Envoyer
                 </button>
                 {{ form_end(formDiscussion) }}
@@ -93,18 +93,15 @@
                     </div>
                 </div>
             {% endif %}
-            {% if messages %}
-                <div class="bg-gray-100 rounded-lg p-6 mt-6 overflow-auto h-96">
-                    {% for message in messages %}
-                        <div class="bg-white rounded p-2 m-2 shadow-xl">
-                            <p class="text-left font-light pr-6 text-gray-700">{{ message.user.username }}</p>
-                            <p class="text-justify px-6 my-2">{{ message.message }}</p>
-                            <p class="text-right font-light text-xs">{{ message.createdAt |date('d-m-Y H:i:s') }}</p>
-                            <p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p>
-                        </div>
-                    {% endfor %}
+            <div class="bg-gray-100 rounded-lg p-6 mt-6 overflow-auto h-96">
+                <div class="bg-white rounded p-2 m-2 shadow-xl">
+                    <p class="text-left font-light pr-6 text-gray-700" id="test"></p>
+                    <p class="text-justify px-6 my-2"></p>
+                    <p class="text-right font-light text-xs"></p>
+                    <p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p>
                 </div>
-            {% endif %}
+            </div>
+            <button id="voir-plus">Voir plus</button>
         </div>
     </div>
 {% endblock %}
@@ -112,4 +109,64 @@
     {{ parent() }}
     {{ encore_entry_script_tags('figure') }}
     {{ encore_entry_script_tags('counter') }}
+
+    <script>
+        let counter = 0;
+
+        function fetchLastComment(counter = 0) {
+            let url = '{{ path("snowtricks_get_message", {'idFigure': figure.id, 'offset' : 'offset'}) }}';
+            url = url.replace("offset", counter.toString());
+            fetch(url, {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then((resp) => resp.json())
+            .then(function (data) {
+                data.forEach(message => document.getElementById('test').innerHTML += message);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+        }
+
+        const btn = document.getElementById('voir-plus');
+
+        btn.addEventListener('click', () => {
+            counter = counter + 5;
+            fetchLastComment(counter);
+        })
+
+        window.addEventListener("load", function (event) {
+            event.preventDefault();
+            fetchLastComment(counter);
+        });
+
+        const form = document.getElementById('send-message');
+        form.addEventListener("click",
+            function (event) {
+                event.preventDefault()
+                let data = document.getElementById("discussion_message").value;
+                fetch('{{ path('snowtricks_send_message', {'idFigure': figure.id}) }}', {
+                    method: "POST",
+                    body: data,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(resp => resp.json())
+                .then(() => {
+                    console.log(data)
+                    fetchLastComment(counter);
+                    document.getElementById("discussion_message").value = "";
+                })
+                .catch( error => {
+                    console.log(error);
+                })
+            }
+        )
+
+    </script>
+
 {% endblock %}

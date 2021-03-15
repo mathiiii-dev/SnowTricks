@@ -25,13 +25,15 @@ class FigureController extends AbstractController
     private $flash;
     private $mediaService;
     private $discussion;
+    private $formDiscussion;
 
-    public function __construct(EntityManagerInterface $entityManager, FlashService $flash, MediaService $mediaService, DiscussionRepository $discussion)
+    public function __construct(EntityManagerInterface $entityManager, FlashService $flash, MediaService $mediaService, DiscussionRepository $discussion, DiscussionController $formDiscussion)
     {
         $this->entityManager = $entityManager;
         $this->flash = $flash;
         $this->mediaService = $mediaService;
         $this->discussion = $discussion;
+        $this->formDiscussion = $formDiscussion;
     }
 
     /**
@@ -40,36 +42,16 @@ class FigureController extends AbstractController
      */
     public function index(Figure $figure, Request $request): Response
     {
-        $discussion = new Discussion();
-
-        $formDiscussion = $this->createForm(DiscussionType::class, $discussion);
-        $formDiscussion->handleRequest($request);
-        $repository = $this->getDoctrine()->getRepository(User::class);
-        if ($formDiscussion->isSubmitted() && $formDiscussion->isValid()) {
-            $user = $repository->findOneBy(['username' => $this->getUser()->getUsername()]);
-
-            $discussion->setUser($user);
-            $discussion->setFigure($figure);
-
-            $this->entityManager->persist($discussion);
-            $this->entityManager->flush();
-
-            $this->flash->setFlashMessages(http_response_code(), 'Message envoyé avec succès !');
-
-            return $this->redirectToRoute('snowtricks_figure', ['figure' => $figure->getId()]);
-
-        }
+        $formDiscussion = $this->formDiscussion->createFormDiscussion($request, $figure);
 
         if ($figure === null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
         }
-        $messages = $this->discussion->findBy(['figure' => $figure], ['id' => 'DESC']);
 
         return $this->render('figure/index.html.twig', [
             'figure' => $figure,
             'picture' => $figure->getPictures()->first(),
-            'messages' => $messages,
-            'formDiscussion' => $formDiscussion->createView()
+            'formDiscussion' => $formDiscussion
         ]);
     }
 
