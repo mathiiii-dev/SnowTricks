@@ -93,13 +93,7 @@
                     </div>
                 </div>
             {% endif %}
-            <div class="bg-gray-100 rounded-lg p-6 mt-6 overflow-auto h-96">
-                <div class="bg-white rounded p-2 m-2 shadow-xl">
-                    <p class="text-left font-light pr-6 text-gray-700" id="test"></p>
-                    <p class="text-justify px-6 my-2"></p>
-                    <p class="text-right font-light text-xs"></p>
-                    <p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p>
-                </div>
+            <div class="bg-gray-100 rounded-lg p-6 mt-6" id="messages-boxes">
             </div>
             <button id="voir-plus">Voir plus</button>
         </div>
@@ -112,6 +106,7 @@
 
     <script>
         let counter = 0;
+        const btn = document.getElementById('voir-plus');
 
         function fetchLastComment(counter = 0) {
             let url = '{{ path("snowtricks_get_message", {'idFigure': figure.id, 'offset' : 'offset'}) }}';
@@ -122,16 +117,28 @@
                     'Content-Type': 'application/json',
                 },
             })
-            .then((resp) => resp.json())
-            .then(function (data) {
-                data.forEach(message => document.getElementById('test').innerHTML += message);
+            .then(resp => resp.json())
+            .then(data => {
+                let html = '';
+                let countMessage = data[0].messagesCount;
+                data.forEach(
+                    message => html += '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
+                        '<p class="text-left font-light pr-6 text-gray-700">'+ message.user +'</p>' +
+                        '<p class="text-justify px-6 my-2" id="message">'+message.message+'</p>' +
+                        '<p class="text-right font-light text-xs">'+ new Date(message.createdAt).toString() +'</p>'+
+                        '<p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p></div>'
+                );
+
+                if(countMessage <= counter + 5) {
+                    btn.classList.add('hidden')
+                }
+
+                document.querySelector('#messages-boxes').innerHTML += html;
             })
             .catch(function (error) {
                 console.log(error);
             });
         }
-
-        const btn = document.getElementById('voir-plus');
 
         btn.addEventListener('click', () => {
             counter = counter + 5;

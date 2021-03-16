@@ -69,8 +69,14 @@ class DiscussionController extends AbstractController
     {
         $messageArray = [];
         $messages = $this->discussionRepository->findBy(['figure' => $idFigure], ['id' => 'DESC'], 5, $offset);
+        $messagesCount = count($this->discussionRepository->findBy(['figure' => $idFigure]));
         foreach ($messages as $message) {
-            array_push($messageArray, $message->getMessage());
+            array_push($messageArray, [
+                'message' => $message->getMessage(),
+                'user' => $message->getUser()->getUsername(),
+                'createdAt' => $message->getCreatedAt(),
+                'messagesCount' => $messagesCount
+                ]);
         }
 
         return $this->json($messageArray);
