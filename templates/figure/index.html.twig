@@ -95,7 +95,7 @@
             {% endif %}
             <div class="bg-gray-100 rounded-lg p-6 mt-6" id="messages-boxes">
             </div>
-            <button id="voir-plus">Voir plus</button>
+            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2" id="voir-plus">Voir plus</button>
         </div>
     </div>
 {% endblock %}
@@ -107,10 +107,15 @@
     <script>
         let counter = 0;
         const btn = document.getElementById('voir-plus');
+        let messages = [];
 
-        function fetchLastComment(counter = 0) {
+        function fetchLastComment(counter = 0, origin) {
             let url = '{{ path("snowtricks_get_message", {'idFigure': figure.id, 'offset' : 'offset'}) }}';
-            url = url.replace("offset", counter.toString());
+            if (origin === 1) {
+                url = url.replace("offset", counter.toString());
+            } else {
+                url = url.replace("offset", '0');
+            }
             fetch(url, {
                 method: "GET",
                 headers: {
@@ -121,19 +126,21 @@
             .then(data => {
                 let html = '';
                 let countMessage = data[0].messagesCount;
-                data.forEach(
+                data.forEach(message => messages.push(message));
+                console.log(messages)
+                messages.forEach(
                     message => html += '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
-                        '<p class="text-left font-light pr-6 text-gray-700">'+ message.user +'</p>' +
-                        '<p class="text-justify px-6 my-2" id="message">'+message.message+'</p>' +
-                        '<p class="text-right font-light text-xs">'+ new Date(message.createdAt).toString() +'</p>'+
+                        '<p class="text-left font-light pr-6 text-gray-700">' + message.user + '</p>' +
+                        '<p class="text-justify px-6 my-2" id="message">' + message.message + '</p>' +
+                        '<p class="text-right font-light text-xs">' + new Date(message.createdAt).getTime() + '</p>' +
                         '<p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p></div>'
                 );
 
-                if(countMessage <= counter + 5) {
+                if (countMessage <= counter + 5) {
                     btn.classList.add('hidden')
                 }
 
-                document.querySelector('#messages-boxes').innerHTML += html;
+                document.querySelector('#messages-boxes').innerHTML = html;
             })
             .catch(function (error) {
                 console.log(error);
@@ -142,12 +149,12 @@
 
         btn.addEventListener('click', () => {
             counter = counter + 5;
-            fetchLastComment(counter);
+            fetchLastComment(counter, 1);
         })
 
         window.addEventListener("load", function (event) {
             event.preventDefault();
-            fetchLastComment(counter);
+            fetchLastComment(counter, 0);
         });
 
         const form = document.getElementById('send-message');
@@ -164,15 +171,38 @@
                 })
                 .then(resp => resp.json())
                 .then(() => {
-                    console.log(data)
-                    fetchLastComment(counter);
+                    fetchLastSentComment();
                     document.getElementById("discussion_message").value = "";
                 })
-                .catch( error => {
+                .catch(error => {
                     console.log(error);
                 })
             }
         )
+
+        function fetchLastSentComment() {
+            console.log('Je suis rentré')
+            fetch('{{ path('snowtricks_get_last_message', {'idFigure': figure.id}) }}', {
+                method: "GET",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(resp => resp.json())
+            .then((data) => {
+                console.log(data)
+                let html = '';
+                html = '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
+                    '<p class="text-left font-light pr-6 text-gray-700">' + data.user + '</p>' +
+                    '<p class="text-justify px-6 my-2" id="message">' + data.message + '</p>' +
+                    '<p class="text-right font-light text-xs">' + new Date(data.createdAt).toString() + '</p>' +
+                    '<p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p></div>'
+                document.querySelector('#messages-boxes').insertAdjacentHTML("afterbegin",html);
+            })
+            .catch(error => {
+                console.log(error);
+            })
+        }
 
     </script>
 

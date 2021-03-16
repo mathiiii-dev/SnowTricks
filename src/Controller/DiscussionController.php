@@ -81,4 +81,19 @@ class DiscussionController extends AbstractController
 
         return $this->json($messageArray);
     }
+
+    /**
+     * @Route("/figure/{idFigure}/get-last-message", name="snowtricks_get_last_message")
+     * @return Response
+     */
+    public function getLastSentMessage(Figure $idFigure): Response
+    {
+        $lastMessage = $this->discussionRepository->findOneBy(['figure' => $idFigure], ['id' => 'DESC']);
+
+        return $this->json([
+            'message' => $lastMessage->getMessage(),
+            'user' => $lastMessage->getUser()->getUsername(),
+            'createdAt' => $lastMessage->getCreatedAt()
+        ]);
+    }
 }
