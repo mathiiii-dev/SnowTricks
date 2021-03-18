@@ -103,12 +103,10 @@
     {{ parent() }}
     {{ encore_entry_script_tags('figure') }}
     {{ encore_entry_script_tags('counter') }}
-
     <script>
         let counter = 0;
         const btn = document.getElementById('voir-plus');
         let messages = [];
-
         function fetchLastComment(counter = 0, origin) {
             let url = '{{ path("snowtricks_get_message", {'idFigure': figure.id, 'offset' : 'offset'}) }}';
             if (origin === 1) {
@@ -132,7 +130,7 @@
                     message => html += '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
                         '<p class="text-left font-light pr-6 text-gray-700">' + message.user + '</p>' +
                         '<p class="text-justify px-6 my-2" id="message">' + message.message + '</p>' +
-                        '<p class="text-right font-light text-xs">' + new Date(message.createdAt).getTime() + '</p>' +
+                        '<p class="text-right font-light text-xs">'+ new Date(message.createdAt) +'</p>' +
                         '<p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p></div>'
                 );
 
@@ -181,7 +179,6 @@
         )
 
         function fetchLastSentComment() {
-            console.log('Je suis rentré')
             fetch('{{ path('snowtricks_get_last_message', {'idFigure': figure.id}) }}', {
                 method: "GET",
                 headers: {
@@ -195,7 +192,7 @@
                 html = '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
                     '<p class="text-left font-light pr-6 text-gray-700">' + data.user + '</p>' +
                     '<p class="text-justify px-6 my-2" id="message">' + data.message + '</p>' +
-                    '<p class="text-right font-light text-xs">' + new Date(data.createdAt).toString() + '</p>' +
+                    '<p class="text-right font-light text-xs">'+ new Date(data.createdAt) +'</p>' +
                     '<p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p></div>'
                 document.querySelector('#messages-boxes').insertAdjacentHTML("afterbegin",html);
             })
