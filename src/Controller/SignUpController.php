@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\SignUpType;
 use App\Repository\UserRepository;
 use App\Services\MailService;
+use App\Services\UploadService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -14,6 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Uid\Uuid;
 
 class SignUpController extends AbstractController
@@ -22,7 +24,7 @@ class SignUpController extends AbstractController
      * @Route("/sign-up", name="snowtricks_signup")
      * @return Response
      */
-    public function signUp(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, MailerInterface $mailer): Response
+    public function signUp(Request $request, EntityManagerInterface $em, UploadService $uploadService, UserPasswordEncoderInterface $encoder, MailerInterface $mailer, SluggerInterface $slugger): Response
     {
         $user = new User();
 
@@ -32,6 +34,12 @@ class SignUpController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
+
+            $profilePicture = $form->get('profilePicture')->getData();
+            if ($profilePicture) {
+                $brochureFileName = $uploadService->upload($profilePicture);
+                $user->setProfilePicture($brochureFileName);
+            }
 
             $uuid = Uuid::v4();
             $user->setToken($uuid);

@@ -98,5 +98,8 @@ if (Encore.isProduction()) {
     }));
 }
 
+const config = Encore.getWebpackConfig();
 
-module.exports = Encore.getWebpackConfig();
+config.resolve.extensions.push('json');
+
+module.exports = config;
