@@ -127,9 +127,11 @@
                 data.forEach(message => messages.push(message));
                 console.log(messages)
                 messages.forEach(
-                    message => html += '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
+                    message =>
+                        html += '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
+                        '<img src="http://127.0.0.1:8000/uploads/profilePicture/'+ message.profilePicture +'" class="inline object-cover w-12 h-12 rounded-full float-left mr-2">' +
                         '<p class="text-left font-light pr-6 text-gray-700">' + message.user + '</p>' +
-                        '<p class="text-justify px-6 my-2" id="message">' + message.message + '</p>' +
+                        '<p class="text-center px-6 my-2">' + message.message + '</p>' +
                         '<p class="text-right font-light text-xs">'+ new Date(message.createdAt) +'</p>' +
                         '<p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p></div>'
                 );
@@ -148,6 +150,7 @@
         btn.addEventListener('click', () => {
             counter = counter + 5;
             fetchLastComment(counter, 1);
+            fetchLastSentComment();
         })
 
         window.addEventListener("load", function (event) {
@@ -190,8 +193,9 @@
                 console.log(data)
                 let html = '';
                 html = '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
+                    '<img src="http://127.0.0.1:8000/uploads/profilePicture/'+ data.profilePicture +'" class="inline object-cover w-12 h-12 rounded-full float-left mr-2">' +
                     '<p class="text-left font-light pr-6 text-gray-700">' + data.user + '</p>' +
-                    '<p class="text-justify px-6 my-2" id="message">' + data.message + '</p>' +
+                    '<p class="text-center px-6 my-2" id="message">' + data.message + '</p>' +
                     '<p class="text-right font-light text-xs">'+ new Date(data.createdAt) +'</p>' +
                     '<p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p></div>'
                 document.querySelector('#messages-boxes').insertAdjacentHTML("afterbegin",html);
@@ -200,7 +204,6 @@
                 console.log(error);
             })
         }
-
     </script>
 
 {% endblock %}

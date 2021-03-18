@@ -75,7 +75,8 @@ class DiscussionController extends AbstractController
                 'message' => $message->getMessage(),
                 'user' => $message->getUser()->getUsername(),
                 'createdAt' => $message->getCreatedAt(),
-                'messagesCount' => $messagesCount
+                'messagesCount' => $messagesCount,
+                'profilePicture' => $message->getUser()->getProfilePicture()
                 ]);
         }
 
@@ -93,7 +94,8 @@ class DiscussionController extends AbstractController
         return $this->json([
             'message' => $lastMessage->getMessage(),
             'user' => $lastMessage->getUser()->getUsername(),
-            'createdAt' => $lastMessage->getCreatedAt()
+            'createdAt' => $lastMessage->getCreatedAt(),
+            'profilePicture' => $lastMessage->getUser()->getProfilePicture()
         ]);
     }
 }
