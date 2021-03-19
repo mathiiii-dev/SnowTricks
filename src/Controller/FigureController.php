@@ -40,9 +40,9 @@ class FigureController extends AbstractController
      * @Route("/figure/{figure}", name="snowtricks_figure")
      * @return Response
      */
-    public function index(Figure $figure, Request $request): Response
+    public function index(Figure $figure): Response
     {
-        $formDiscussion = $this->formDiscussion->createFormDiscussion($request, $figure);
+        $formDiscussion = $this->formDiscussion->createFormDiscussion();
 
         if ($figure === null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');

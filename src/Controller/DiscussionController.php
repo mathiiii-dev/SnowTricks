@@ -29,7 +29,7 @@ class DiscussionController extends AbstractController
         $this->discussionRepository = $discussionRepository;
     }
 
-    public function createFormDiscussion(Request $request, Figure $figure): FormView
+    public function createFormDiscussion(): FormView
     {
         $discussion = new Discussion();
 

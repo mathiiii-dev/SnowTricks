@@ -23,6 +23,7 @@ class SignUpController extends AbstractController
     /**
      * @Route("/sign-up", name="snowtricks_signup")
      * @return Response
+     * @throws \Exception
      */
     public function signUp(Request $request, EntityManagerInterface $em, UploadService $uploadService, UserPasswordEncoderInterface $encoder, MailerInterface $mailer, SluggerInterface $slugger): Response
     {
@@ -37,8 +38,8 @@ class SignUpController extends AbstractController
 
             $profilePicture = $form->get('profilePicture')->getData();
             if ($profilePicture) {
-                $brochureFileName = $uploadService->upload($profilePicture);
-                $user->setProfilePicture($brochureFileName);
+                $profilePictureName = $uploadService->upload($profilePicture);
+                $user->setProfilePicture($profilePictureName);
             }
 
             $uuid = Uuid::v4();

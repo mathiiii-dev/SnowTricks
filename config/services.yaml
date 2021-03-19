@@ -26,3 +26,7 @@ services:
     App\Services\UploadService:
         arguments:
             $targetDirectory: '%profilePicture_directory%'
+
+    App\DataFixtures\UserFixtures:
+        arguments:
+            $targetDirectory: '%profilePicture_directory%'
