@@ -15,6 +15,7 @@ class DiscussionFixtures extends Fixture implements DependentFixtureInterface
     {
         $figures = $manager->getRepository(Figure::class)->findAll();
         $users = $manager->getRepository(User::class)->findAll();
+
         $messages = [
             'Bonjour à tous',
             'Salut ça va ?',
@@ -28,15 +29,18 @@ class DiscussionFixtures extends Fixture implements DependentFixtureInterface
             'J\'ai réussis cette figure pour la premiere fois hier !'
         ];
 
-        for($i = 0; $i < count($figures); $i++){
-            for($i = 0; $i < rand(5,15); $i++) {
+        foreach($figures as $figure){
+            for($i = 0; $i < rand(3, 18); $i++) {
                 $discussion = new Discussion();
+
                 $user = $users[array_rand($users)];
                 $discussion->setUser($user);
-                $figure = $figures[array_rand($figures)];
+
                 $discussion->setFigure($figure);
+
                 $message = $messages[array_rand($messages)];
                 $discussion->setMessage($message);
+
                 $manager->persist($discussion);
             }
         }

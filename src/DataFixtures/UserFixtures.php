@@ -46,11 +46,13 @@ class UserFixtures extends Fixture
 
         for($i = 0; $i < count($userArray); $i++){
             $user = new User();
+            
             $user->setUsername($userArray[$i]['username']);
             $user->setEmail($userArray[$i]['email']);
 
             $password = $this->encoder->encodePassword($user, 'password');
             $user->setPassword($password);
+
             $user->setProfilePicture('BAwYBb8Y-400x400-1f71e964-5530-4f9a-a154-11b1ddd09289.jpg');
             $manager->persist($user);
         }
