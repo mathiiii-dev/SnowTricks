@@ -9,5 +9,5 @@ use Symfony\Component\Validator\Constraint;
  */
 class ConstraintVideo extends Constraint
 {
-    public $videoMessage = 'Les liens données ne sont pas des vidéos Youtube !';
+    public $videoMessage = 'Les liens données ne sont pas des vidéos Youtube valide !';
 }

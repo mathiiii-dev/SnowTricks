@@ -2,14 +2,11 @@
 
 namespace App\Controller;
 
-use App\Entity\Discussion;
 use App\Entity\Figure;
 use App\Entity\User;
-use App\Form\DiscussionType;
 use App\Form\FigureType;
 use App\Repository\DiscussionRepository;
 use App\Services\FlashService;
-use App\Services\FormService;
 use App\Services\MediaService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;

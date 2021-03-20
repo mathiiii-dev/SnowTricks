@@ -106,6 +106,7 @@
     <script>
         let counter = 0;
         const btn = document.getElementById('voir-plus');
+
         let messages = [];
         function fetchLastComment(counter = 0, origin) {
             let url = '{{ path("snowtricks_get_message", {'idFigure': figure.id, 'offset' : 'offset'}) }}';
@@ -136,8 +137,12 @@
                         '<p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p></div>'
                 );
 
+                if (countMessage <= 5) {
+                    btn.classList.add('hidden');
+                }
+
                 if (countMessage <= counter + 5) {
-                    btn.classList.add('hidden')
+                    btn.classList.add('hidden');
                 }
 
                 document.querySelector('#messages-boxes').innerHTML = html;
@@ -190,7 +195,6 @@
             })
             .then(resp => resp.json())
             .then((data) => {
-                console.log(data)
                 let html = '';
                 html = '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
                     '<img src="http://127.0.0.1:8000/uploads/profilePicture/'+ data.profilePicture +'" class="inline object-cover w-12 h-12 rounded-full float-left mr-2">' +

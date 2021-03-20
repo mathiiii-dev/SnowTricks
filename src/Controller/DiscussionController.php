@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DiscussionController extends AbstractController
 {
-
     private $entityManager;
     private $userRepository;
     private $discussionRepository;

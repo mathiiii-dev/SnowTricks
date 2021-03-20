@@ -2,7 +2,10 @@
 
 namespace App\Services;
 
+use App\Entity\Discussion;
 use App\Entity\Figure;
+use App\Entity\Picture;
+use App\Entity\Video;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -48,11 +51,20 @@ class MediaService
 
     public function removeMedia(Figure $figure): void
     {
-        foreach ($figure->getVideos() as $video) {
+        $pictures = $this->entityManager->getRepository(Picture::class)->findBy(['figure' => $figure->getId()]);
+        $videos = $this->entityManager->getRepository(Video::class)->findBy(['figure' => $figure->getId()]);
+        $messages = $this->entityManager->getRepository(Discussion::class)->findBy(['figure' => $figure->getId()]);
+
+        foreach ($videos as $video) {
             $this->entityManager->remove($video);
         }
-        foreach ($figure->getPictures() as $picture) {
+
+        foreach ($pictures as $picture) {
             $this->entityManager->remove($picture);
+        }
+
+        foreach ($messages as $message) {
+            $this->entityManager->remove($message);
         }
     }
 }

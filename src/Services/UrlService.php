@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Entity\Figure;
-
 class UrlService
 {
     public function checkVideoUrl($figure): bool
@@ -15,7 +13,8 @@ class UrlService
             }
 
             $parsed_url = parse_url($video->getVideo());
-            if ($parsed_url['host'] !== "www.youtube.com") {
+
+            if ($parsed_url['host'] != "www.youtube.com" || $parsed_url['path'] != "/watch") {
                 return false;
             }
         }

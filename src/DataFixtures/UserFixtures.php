@@ -6,9 +6,7 @@ use App\Entity\User;
 use App\Services\UploadService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UserFixtures extends Fixture
 {
@@ -44,16 +42,22 @@ class UserFixtures extends Fixture
             ]
         ];
 
+        $pictureArray = [
+            'BAwYBb8Y-400x400-1f71e964-5530-4f9a-a154-11b1ddd09289.jpg',
+            '238052cb5170c6e2779a32bc9ff555be-f35da74e-82f5-4fd4-8764-2164a5625703.jpg'
+        ];
+
         for($i = 0; $i < count($userArray); $i++){
             $user = new User();
-            
+
             $user->setUsername($userArray[$i]['username']);
             $user->setEmail($userArray[$i]['email']);
 
             $password = $this->encoder->encodePassword($user, 'password');
             $user->setPassword($password);
 
-            $user->setProfilePicture('BAwYBb8Y-400x400-1f71e964-5530-4f9a-a154-11b1ddd09289.jpg');
+            $picture = $pictureArray[array_rand($pictureArray)];
+            $user->setProfilePicture($picture);
             $manager->persist($user);
         }
 
