@@ -15,7 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Uid\Uuid;
 
 class SignUpController extends AbstractController
@@ -25,7 +24,7 @@ class SignUpController extends AbstractController
      * @return Response
      * @throws \Exception
      */
-    public function signUp(Request $request, EntityManagerInterface $em, UploadService $uploadService, UserPasswordEncoderInterface $encoder, MailerInterface $mailer, SluggerInterface $slugger): Response
+    public function signUp(Request $request, EntityManagerInterface $entityManager, UploadService $uploadService, UserPasswordEncoderInterface $encoder, MailerInterface $mailer): Response
     {
         $user = new User();
 
@@ -45,8 +44,8 @@ class SignUpController extends AbstractController
             $uuid = Uuid::v4();
             $user->setToken($uuid);
 
-            $em->persist($user);
-            $em->flush();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             $mail = new MailService();
             $mail->send($mailer, $user, 'Snowtricks - Merci de votre inscription !', 'sign_up/email.html.twig');
