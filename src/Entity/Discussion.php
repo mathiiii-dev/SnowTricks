@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\DiscussionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=DiscussionRepository::class)
@@ -20,6 +21,7 @@ class Discussion
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\Length(min=3, max=255, minMessage="Le message est trop court. (min 3 char.)", maxMessage="Le message figure est trop long. (max 255 char.)")
      */
     private $message;
 
@@ -36,7 +38,7 @@ class Discussion
 
 
     /**
-     * @ORM\OneToOne(targetEntity=Figure::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=Figure::class)
      * @ORM\JoinColumn(nullable=false)
      */
     private $figure;
@@ -58,10 +60,7 @@ class Discussion
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }

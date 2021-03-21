@@ -6,6 +6,7 @@ use App\Entity\User;
 use App\Form\SignUpType;
 use App\Repository\UserRepository;
 use App\Services\MailService;
+use App\Services\UploadService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -21,8 +22,9 @@ class SignUpController extends AbstractController
     /**
      * @Route("/sign-up", name="snowtricks_signup")
      * @return Response
+     * @throws \Exception
      */
-    public function signUp(Request $request, EntityManagerInterface $em, UserPasswordEncoderInterface $encoder, MailerInterface $mailer): Response
+    public function signUp(Request $request, EntityManagerInterface $entityManager, UploadService $uploadService, UserPasswordEncoderInterface $encoder, MailerInterface $mailer): Response
     {
         $user = new User();
 
@@ -33,14 +35,20 @@ class SignUpController extends AbstractController
             $hash = $encoder->encodePassword($user, $user->getPassword());
             $user->setPassword($hash);
 
+            $profilePicture = $form->get('profilePicture')->getData();
+            if ($profilePicture) {
+                $profilePictureName = $uploadService->upload($profilePicture);
+                $user->setProfilePictureName($profilePictureName);
+            }
+
             $uuid = Uuid::v4();
             $user->setToken($uuid);
 
-            $em->persist($user);
-            $em->flush();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
             $mail = new MailService();
-            $mail->send($mailer, $user);
+            $mail->send($mailer, $user, 'Snowtricks - Merci de votre inscription !', 'sign_up/email.html.twig');
 
             $this->addFlash(
                 'success',
@@ -56,7 +64,7 @@ class SignUpController extends AbstractController
     }
 
     /**
-     * @Route("/confirm-account/{pseudo}/{token}", name="snowtricks_confirmaccount")
+     * @Route("/account/confirm/{pseudo}/{token}", name="snowtricks_account_confirm")
      * @return RedirectResponse
      */
     public function activation($token, UserRepository $users, $pseudo): RedirectResponse

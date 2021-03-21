@@ -7,18 +7,18 @@
         </div>
         <div class="float-right pt-3">
             <a href="{{ path('snowtricks_home') }}"
-               class="hover:bg-white text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Accueil</a>
+               class="px-3 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black">Accueil</a>
             {% if app.user %}
-                <a href="{{ path('snowtricks_create_figure') }}"
-                   class="hover:bg-white text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Ajouter
-                    un figure</a>
+                <a href="{{ path('snowtricks_figure_create') }}"
+                   class="px-3 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black">Ajouter
+                    une figure</a>
                 <a href="{{ path('snowtricks_logout') }}"
-                   class="hover:bg-white text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Deconnexion</a>
+                   class="px-3 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black">Deconnexion</a>
             {% else %}
                 <a href="{{ path('snowtricks_signin') }}"
-                   class="hover:bg-white text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Connexion</a>
+                   class="px-3 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black">Connexion</a>
                 <a href="{{ path('snowtricks_signup') }}"
-                   class="hover:bg-white text-black border-white hover:border-transparent border-2 px-3 py-2 rounded-md text-sm font-medium">Inscription</a>
+                   class="px-3 py-2 rounded-md text-sm font-medium bg-gray-100 text-gray-700 hover:bg-gray-200 hover:text-black">Inscription</a>
             {% endif %}
         </div>
     </div>
@@ -28,7 +28,7 @@
                 <i class="fa fa-home fa-3x"></i>
             </a>
             {% if app.user %}
-                <a href="{{ path('snowtricks_create_figure') }}" class="inline">
+                <a href="{{ path('snowtricks_figure_create') }}" class="inline">
                     <i class="fa fa-snowboarding fa-3x"></i>
                 </a>
                 <a href="{{ path('snowtricks_logout') }}" class="inline">
