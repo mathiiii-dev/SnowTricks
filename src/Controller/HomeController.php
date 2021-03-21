@@ -3,17 +3,17 @@
 namespace App\Controller;
 
 use App\Entity\Figure;
-use App\Services\MediaService;
+use App\Services\FigureManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomeController extends AbstractController
 {
-    private $mediaService;
-    public function __construct(MediaService $mediaService)
+    private $figureManager;
+    public function __construct(FigureManager $figureManager)
     {
-        $this->mediaService = $mediaService;
+        $this->figureManager = $figureManager;
     }
 
     /**
@@ -27,7 +27,7 @@ class HomeController extends AbstractController
 
         return $this->render('home/index.html.twig', [
             'figures' => $figures,
-            'firstPictures' => $this->mediaService->getFirstPicture($figures, $repository)
+            'firstPictures' => $this->figureManager->getFirstPicture($figures, $repository)
         ]);
     }
 }

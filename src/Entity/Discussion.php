@@ -60,10 +60,7 @@ class Discussion
         return $this;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCreatedAt()
+    public function getCreatedAt(): \DateTime
     {
         return $this->createdAt;
     }

@@ -26,16 +26,16 @@ class Picture
      * @ORM\Column(type="string")
      * @Assert\Url(message="Liens d'image uniquement")
      */
-    private $picture;
+    private $link;
 
-    public function getPicture(): string
+    public function getLink(): string
     {
-        return $this->picture;
+        return $this->link;
     }
 
-    public function setPicture(string $picture): void
+    public function setLink(string $link): void
     {
-        $this->picture = $picture;
+        $this->link = $link;
     }
 
     /**

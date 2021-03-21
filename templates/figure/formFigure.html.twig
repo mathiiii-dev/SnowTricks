@@ -34,7 +34,7 @@
                         <ul class="photo "
                             data-prototype="{{ form_widget(formFigure.pictures.vars.prototype)|e('html_attr') }}">
                             {% for picture in formFigure.pictures %}
-                                <li>{{ form_row(picture.picture) }}</li>
+                                <li>{{ form_row(picture.link) }}</li>
                             {% endfor %}
                         </ul>
                         <button type="button" class="add_item_link font-bold text-blue-600"
@@ -46,7 +46,7 @@
                         <ul class="video"
                             data-prototype="{{ form_widget(formFigure.videos.vars.prototype)|e('html_attr') }}">
                             {% for video in formFigure.videos %}
-                                <li>{{ form_row(video.video) }}</li>
+                                <li>{{ form_row(video.link) }}</li>
                             {% endfor %}
                         </ul>
                         <button type="button" class="add_item_link font-bold text-blue-600"

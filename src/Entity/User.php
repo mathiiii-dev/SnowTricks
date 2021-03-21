@@ -56,7 +56,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string")
      */
-    private $profilePicture;
+    private $profilePictureName;
 
     /**
      * @ORM\Column(type="datetime")
@@ -153,14 +153,14 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getProfilePicture()
+    public function getProfilePictureName()
     {
-        return $this->profilePicture;
+        return $this->profilePictureName;
     }
 
-    public function setProfilePicture($profilePicture)
+    public function setProfilePictureName($profilePictureName)
     {
-        $this->profilePicture = $profilePicture;
+        $this->profilePictureName = $profilePictureName;
 
         return $this;
     }

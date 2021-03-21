@@ -22,8 +22,8 @@ class UploadService
     {
         $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
         $safeFilename = $this->slugger->slug($originalFilename);
-        $uuidPicture = Uuid::v4();
-        $fileName = $safeFilename . '-' . $uuidPicture . '.' . $file->guessExtension();
+        $slug = Uuid::v4();
+        $fileName = $safeFilename . '-' . $slug . '.' . $file->guessExtension();
 
         try {
             $file->move($this->getTargetDirectory(), $fileName);

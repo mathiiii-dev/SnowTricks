@@ -24,16 +24,16 @@ class Video
     /**
      * @ORM\Column(type="string")
      */
-    private $video;
+    private $link;
 
-    public function getVideo(): string
+    public function getLink(): string
     {
-        return $this->video;
+        return $this->link;
     }
 
-    public function setVideo(string $video): void
+    public function setLink(string $link): void
     {
-        $this->video = $video;
+        $this->link = $link;
     }
 
     /**

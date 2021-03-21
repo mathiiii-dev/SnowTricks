@@ -43,7 +43,7 @@ class SignInController extends AbstractController
     }
 
     /**
-     * @Route("/forgot-password", name="snowtricks_forgotpass")
+     * @Route("/password/forgot", name="snowtricks_password_forgot")
      * @return Response
      */
     public function forgotPassword(Request $request, UserRepository $user, MailerInterface $mailer): Response
@@ -69,7 +69,7 @@ class SignInController extends AbstractController
     }
 
     /**
-     * @Route("/reset-password/{username}/{token}", name="snowtricks_resetpass")
+     * @Route("/password/reset/{username}/{token}", name="snowtricks_password_reset")
      * @return Response
      */
     public function resetPassword($username, $token, Request $request, UserRepository $user, UserPasswordEncoderInterface $encoder): Response

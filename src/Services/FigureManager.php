@@ -9,7 +9,7 @@ use App\Entity\Video;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
-class MediaService
+class FigureManager
 {
     private $entityManager;
     public function __construct(EntityManagerInterface $entityManager)

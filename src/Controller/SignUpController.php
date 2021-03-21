@@ -38,7 +38,7 @@ class SignUpController extends AbstractController
             $profilePicture = $form->get('profilePicture')->getData();
             if ($profilePicture) {
                 $profilePictureName = $uploadService->upload($profilePicture);
-                $user->setProfilePicture($profilePictureName);
+                $user->setProfilePictureName($profilePictureName);
             }
 
             $uuid = Uuid::v4();
@@ -64,7 +64,7 @@ class SignUpController extends AbstractController
     }
 
     /**
-     * @Route("/confirm-account/{pseudo}/{token}", name="snowtricks_confirmaccount")
+     * @Route("/account/confirm/{pseudo}/{token}", name="snowtricks_account_confirm")
      * @return RedirectResponse
      */
     public function activation($token, UserRepository $users, $pseudo): RedirectResponse

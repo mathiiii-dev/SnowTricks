@@ -38,63 +38,64 @@ class DiscussionController extends AbstractController
     }
 
     /**
-     * @Route("/figure/{idFigure}/send-message", name="snowtricks_send_message")
+     * @Route("/figure/{figure}/messages/send", name="snowtricks_messages_send")
      * @return JsonResponse
      */
-    public function sendMessageFigure(Figure $idFigure, Request $request): JsonResponse
+    public function sendMessageFigure(Figure $figure, Request $request): JsonResponse
     {
         $discussion = new Discussion();
 
         $user = $this->userRepository->findOneBy(['username' => $this->getUser()->getUsername()]);
         $discussion->setUser($user);
 
-        $discussion->setFigure($idFigure);
+        $discussion->setFigure($figure);
         $discussion->setMessage($request->getContent());
 
         $this->entityManager->persist($discussion);
         $this->entityManager->flush();
 
         return new JsonResponse([
-                'code' => http_response_code(),
-                'message' => $discussion->getMessage()
-            ]);
+            'code' => http_response_code(),
+            'message' => $discussion->getMessage()
+        ]);
     }
 
     /**
-     * @Route("/figure/{idFigure}/get-message/{offset}", name="snowtricks_get_message")
+     * @Route("/figure/{figure}/messages/get/{offset}", name="snowtricks_messages_get")
      * @return Response
      */
-    public function getLastMessage(Figure $idFigure, string $offset): Response
+    public function getLastMessages(Figure $figure, string $offset): Response
     {
         $messageArray = [];
-        $messages = $this->discussionRepository->findBy(['figure' => $idFigure], ['id' => 'DESC'], 5, $offset);
-        $messagesCount = count($this->discussionRepository->findBy(['figure' => $idFigure]));
+        $messages = $this->discussionRepository->findBy(['figure' => $figure], ['id' => 'DESC'], 5, $offset);
+        $messagesCount = count($this->discussionRepository->findBy(['figure' => $figure]));
+
         foreach ($messages as $message) {
             array_push($messageArray, [
                 'message' => $message->getMessage(),
                 'user' => $message->getUser()->getUsername(),
-                'createdAt' => $message->getCreatedAt(),
+                'createdAt' => $message->getCreatedAt()->format("d-m-Y h:i:s"),
                 'messagesCount' => $messagesCount,
-                'profilePicture' => $message->getUser()->getProfilePicture()
-                ]);
+                'profilePicture' => $message->getUser()->getProfilePictureName()
+            ]);
         }
 
         return $this->json($messageArray);
     }
 
     /**
-     * @Route("/figure/{idFigure}/get-last-message", name="snowtricks_get_last_message")
+     * @Route("/figure/{figure}/messages/get-last", name="snowtricks_message_get_last")
      * @return Response
      */
-    public function getLastSentMessage(Figure $idFigure): Response
+    public function getLastSentMessage(Figure $figure): Response
     {
-        $lastMessage = $this->discussionRepository->findOneBy(['figure' => $idFigure], ['id' => 'DESC']);
+        $lastMessage = $this->discussionRepository->findOneBy(['figure' => $figure], ['id' => 'DESC']);
 
         return $this->json([
             'message' => $lastMessage->getMessage(),
             'user' => $lastMessage->getUser()->getUsername(),
-            'createdAt' => $lastMessage->getCreatedAt(),
-            'profilePicture' => $lastMessage->getUser()->getProfilePicture()
+            'createdAt' => $lastMessage->getCreatedAt()->format("d-m-Y h:i:s"),
+            'profilePicture' => $lastMessage->getUser()->getProfilePictureName()
         ]);
     }
 }

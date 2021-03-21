@@ -14,7 +14,7 @@ class FigureFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
-        $figureArray = [
+        $figures = [
             [
                 'name' => 'Air to Fakie',
                 'description' => 'Il s\'agit d\'une figure relativement simple, et plus précisément d\'un saut sans rotation qui se fait généralement dans un pipe (un U). Le rider s\'élance dans les airs et retombe dans le sens inverse.',
@@ -67,7 +67,7 @@ class FigureFixtures extends Fixture implements DependentFixtureInterface
             ],
         ];
 
-        $pictureArray = [
+        $pictures = [
             'https://images.unsplash.com/photo-1478700485868-972b69dc3fc4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format',
             'https://images.unsplash.com/photo-1518630045166-e3cbc72e3e1c?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1307&q=80',
             'https://images.unsplash.com/photo-1522445263200-1b4b91053db8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
@@ -76,33 +76,33 @@ class FigureFixtures extends Fixture implements DependentFixtureInterface
             'https://images.unsplash.com/photo-1525995049888-5b77b53751b6?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1348&q=80'
         ];
 
-        $videoArray = [
+        $videos = [
             'https://www.youtube.com/watch?v=mCYhIliI4fY',
             'https://www.youtube.com/watch?v=1TJ08caetkw',
         ];
 
         $users = $manager->getRepository(User::class)->findAll();
 
-        for($i = 0; $i < count($figureArray); $i++){
+        for($i = 0; $i < count($figures); $i++){
             $figure = new Figure();
-            $figure->setName($figureArray[$i]['name']);
-            $figure->setDescription($figureArray[$i]['description']);
-            $figure->setFigureGroup($figureArray[$i]['group']);
+            $figure->setName($figures[$i]['name']);
+            $figure->setDescription($figures[$i]['description']);
+            $figure->setFigureGroup($figures[$i]['group']);
 
             $user = $users[array_rand($users)];
             $figure->setUser($user);
 
             $picture = new Picture();
             $picture->setFigure($figure);
-            $pictureFigure = $pictureArray[array_rand($pictureArray)];
-            $picture->setPicture($pictureFigure);
+            $pictureFigure = $pictures[array_rand($pictures)];
+            $picture->setLink($pictureFigure);
 
             $manager->persist($picture);
 
             $video = new Video();
             $video->setFigure($figure);
-            $videoFigure = $videoArray[array_rand($videoArray)];
-            $video->setVideo($videoFigure);
+            $videoFigure = $videos[array_rand($videos)];
+            $video->setLink($videoFigure);
 
             $manager->persist($video);
 
