@@ -12,7 +12,7 @@ class PictureType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add('picture',
+        $builder->add('link',
             TextType::class,
             [
                 'label' => false,

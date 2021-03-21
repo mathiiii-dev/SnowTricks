@@ -27,6 +27,8 @@ Encore
     .addEntry('figures', './assets/js/home/figures.js')
     .addEntry('figure', './assets/js/figure/figure.js')
     .addEntry('mediaFigure', './assets/js/figure/mediaFigure.js')
+    .addEntry('counter', './assets/js/figure/counter.js')
+    .addEntry('fetchComment', './assets/js/figure/fetchComment.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -97,5 +99,8 @@ if (Encore.isProduction()) {
     }));
 }
 
+const config = Encore.getWebpackConfig();
 
-module.exports = Encore.getWebpackConfig();
+config.resolve.extensions.push('json');
+
+module.exports = config;

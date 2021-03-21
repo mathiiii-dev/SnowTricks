@@ -43,7 +43,7 @@ class SignInController extends AbstractController
     }
 
     /**
-     * @Route("/forgot-password", name="snowtricks_forgotpass")
+     * @Route("/password/forgot", name="snowtricks_password_forgot")
      * @return Response
      */
     public function forgotPassword(Request $request, UserRepository $user, MailerInterface $mailer): Response
@@ -61,7 +61,7 @@ class SignInController extends AbstractController
             $this->entityManager->persist($currentUser);
             $this->entityManager->flush();
 
-            $this->mail->sendMailResetPassword($mailer, $currentUser);
+            $this->mail->send($mailer, $currentUser, 'Snowtricks - Réinitialisation de votre mot de passe', 'security/email.html.twig');
 
             $this->flash->setFlashMessages(http_response_code(), 'Un lien de réinitialisation vous a été envoyé par mail !');
         }
@@ -69,7 +69,7 @@ class SignInController extends AbstractController
     }
 
     /**
-     * @Route("/reset-password/{username}/{token}", name="snowtricks_resetpass")
+     * @Route("/password/reset/{username}/{token}", name="snowtricks_password_reset")
      * @return Response
      */
     public function resetPassword($username, $token, Request $request, UserRepository $user, UserPasswordEncoderInterface $encoder): Response

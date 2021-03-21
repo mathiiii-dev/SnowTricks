@@ -54,6 +54,11 @@ class User implements UserInterface
     private $email;
 
     /**
+     * @ORM\Column(type="string")
+     */
+    private $profilePictureName;
+
+    /**
      * @ORM\Column(type="datetime")
      */
     private $createdAt;
@@ -147,6 +152,19 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getProfilePictureName()
+    {
+        return $this->profilePictureName;
+    }
+
+    public function setProfilePictureName($profilePictureName)
+    {
+        $this->profilePictureName = $profilePictureName;
+
+        return $this;
+    }
+
 
     public function getCreatedAt(): ?\DateTimeInterface
     {

@@ -29,7 +29,7 @@
                     {% for fPicture in firstPictures %}
                         {% if fPicture.figure.id == figure.id %}
                         <a href="{{ path('snowtricks_figure', {'figure': figure.id}) }}">
-                            <img class="" src="{{ fPicture.picture }}" alt="{{ figure.name }}">
+                            <img class="" src="{{ fPicture.link }}" alt="{{ figure.name }}">
                         </a>
                         {% endif %}
                     {% endfor %}
@@ -40,7 +40,7 @@
                             </a>
                             <span class="float-right space-x-3">
                                     {% if app.user %}
-                                        <a href="{{ path('snowtricks_editfigure', {'figure': figure.id}) }}" class="hover:text-blue-300">
+                                        <a href="{{ path('snowtricks_figure_edit', {'figure': figure.id}) }}" class="hover:text-blue-300">
                                             <span class="hidden">Modifier</span>
                                             <i class="fa fa-pen"></i>
                                         </a>
@@ -77,7 +77,7 @@
                 <h1 class="font-bold text-3xl text-center mb-4">Aucune figures.</h1>
                 <p>Pour créer une figure, connectez-vous et cliquez sur le bouton ci-dessous :</p>
                 <div class="pt-6">
-                    <a href="{{ path('snowtricks_createfigure') }}"
+                    <a href="{{ path('snowtricks_create_figure') }}"
                        class="bg-gray-700 rounded text-white p-3 hover:bg-gray-500">Ajouter une figure</a></p>
                 </div>
             </div>
@@ -87,6 +87,8 @@
 
 {% block javascripts %}
     {{ parent() }}
-    {{ encore_entry_script_tags('home') }}
-    {{ encore_entry_script_tags('figures') }}
+    {% if figures %}
+        {{ encore_entry_script_tags('home') }}
+        {{ encore_entry_script_tags('figures') }}
+    {% endif %}
 {% endblock %}

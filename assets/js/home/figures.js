@@ -6,7 +6,7 @@ deleteFigure.forEach((item) => {
     item.addEventListener('click', (e) => {
         document.getElementById('figure-name').innerHTML = item.dataset.name;
         hiddenModal.classList.remove('hidden')
-        document.getElementById('delete-action').setAttribute('href', 'delete-figure/' + item.dataset.id)
+        document.getElementById('delete-action').setAttribute('href', 'figure/delete/' + item.dataset.id)
     })
 })
 
