@@ -101,6 +101,8 @@
 {% endblock %}
 {% block javascripts %}
     <script>
+        let assetUrl = '{{ asset('uploads/profilePicture/' ~ 'userPicture') }}';
+        let reportUrl = '{{ path('snowtricks_message_report', {'discussion':'idDiscussion'}) }}'
         let urlFetchLastComment = '{{ path("snowtricks_messages_get", {'figure': figure.id, 'offset' : 'offset'}) }}';
         let urlSendComment = '{{ path("snowtricks_messages_send", {'figure': figure.id}) }}';
         let urlFetchLastSentComment = '{{ path('snowtricks_message_get_last', {'figure': figure.id}) }}';

@@ -26,19 +26,23 @@ class UserFixtures extends Fixture
         $users = [
             [
                 'username' => 'Mathias',
-                'email' => 'mathias.micheli@mail.com'
+                'email' => 'mathias.micheli@mail.com',
+                'role' => ['ROLE_ADMIN']
             ],
             [
                 'username' =>'John',
-                'email' =>'john@mail.com'
+                'email' =>'john@mail.com',
+                'role' => ['']
             ],
             [
                 'username' =>'Paul',
-                'email' =>'Paul@mail.com'
+                'email' =>'Paul@mail.com',
+                'role' => ['']
             ],
             [
                 'username' =>'Edward',
-                'email' =>'ed42@mail.comm'
+                'email' =>'ed42@mail.comm',
+                'role' => ['']
             ]
         ];
 
@@ -53,6 +57,7 @@ class UserFixtures extends Fixture
 
             $user->setUsername($users[$i]['username']);
             $user->setEmail($users[$i]['email']);
+            $user->setRoles($users[$i]['role']);
 
             $password = $this->encoder->encodePassword($user, 'password');
             $user->setPassword($password);
