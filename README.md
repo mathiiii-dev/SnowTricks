@@ -19,7 +19,6 @@ To make the project run you will need to install those things :
 * [Composer](https://getcomposer.org/download/)
 * [Node.js & npm](https://nodejs.org/fr/)
 
-
 ### Installing
 
 Follow those steps to make the projetc run on your machine
@@ -36,18 +35,36 @@ Install npm packages :
 ```
 npm i
 ```
+
 ### Database & DataFixtures
+
+First you can load the database with this file : 
+https://drive.google.com/file/d/1p_TW3rvatb1X-5ijMKLItliKB6cY-fIS/view?usp=sharing
+
+You can edit .env with your database credentials : 
+```php
+DATABASE_URL="mysql://root:@127.0.0.1:3306/SnowTricks?serverVersion=5.7"
+```
 
 You can load some data into the database : 
 ```
 php bin/console doctrine:fixtures:load
 ```
+## Mail
 
-You can edit .env with your database credentials : 
+For some test with the mail, I've used gmail.
 
-```php
-DATABASE_URL="mysql://root:@127.0.0.1:3306/SnowTricks?serverVersion=5.7"
+First you need to create a account password here : 
+
+https://support.google.com/mail/answer/185833?hl=fr
+
+And then you have to edit .env : 
 ```
+MAILER_DSN=gmail+smtp:/email:password@default
+```
+
+Or if you don't have gmail you can use an other one like here : https://symfony.com/doc/current/mailer.html
+
 ## Admin account
 
 With the database test you have two admin accounts which are : 
