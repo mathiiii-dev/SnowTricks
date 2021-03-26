@@ -39,7 +39,7 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/figure/{figure}", name="snowtricks_figure")
+     * @Route("/figure/{figure}", name="snowtricks_figure", requirements={"figure"="\d+"})
      * @return Response
      */
     public function index(Figure $figure): Response
@@ -90,7 +90,7 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/figure/edit/{figure}", name="snowtricks_figure_edit")
+     * @Route("/figure/edit/{figure}", name="snowtricks_figure_edit", requirements={"figure"="\d+"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return Response
      */
@@ -124,7 +124,7 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/figure/delete/{figure}", name="snowtricks_figure_delete")
+     * @Route("/figure/delete/{figure}", name="snowtricks_figure_delete", requirements={"figure"="\d+"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return RedirectResponse
      */

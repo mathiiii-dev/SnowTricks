@@ -48,7 +48,7 @@ class DiscussionController extends AbstractController
     }
 
     /**
-     * @Route("/figure/{figure}/messages/send", name="snowtricks_messages_send")
+     * @Route("/figure/{figure}/messages/send", name="snowtricks_messages_send", requirements={"figure"="\d+"}, methods={"POST"})
      * @return JsonResponse
      */
     public function sendMessageFigure(Figure $figure, Request $request): JsonResponse
@@ -71,7 +71,7 @@ class DiscussionController extends AbstractController
     }
 
     /**
-     * @Route("/figure/{figure}/messages/get/{offset}", name="snowtricks_messages_get")
+     * @Route("/figure/{figure}/messages/get/{offset}", name="snowtricks_messages_get", methods={"GET"})
      * @return Response
      */
     public function getLastMessages(Figure $figure, string $offset): Response
@@ -95,7 +95,7 @@ class DiscussionController extends AbstractController
     }
 
     /**
-     * @Route("/figure/{figure}/messages/get-last", name="snowtricks_message_get_last")
+     * @Route("/figure/{figure}/messages/get-last", name="snowtricks_message_get_last", requirements={"figure"="\d+"}, methods={"GET"})
      * @return Response
      */
     public function getLastSentMessage(Figure $figure): Response

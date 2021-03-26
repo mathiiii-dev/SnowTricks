@@ -23,7 +23,6 @@ function fetchLastComment(counter = 0, origin) {
         let html = '';
         let countMessage = data[0].messagesCount;
         data.forEach(message => messages.push(message));
-        console.log(messages)
         messages.forEach(
             message =>
                 html += '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
@@ -31,7 +30,7 @@ function fetchLastComment(counter = 0, origin) {
                     '<p class="text-left font-light pr-6 text-gray-700">' + message.user + '</p>' +
                     '<p class="text-center px-6 my-2">' + message.message + '</p>' +
                     '<p class="text-right font-light text-xs">'+ message.createdAt +'</p>' +
-                    '<p class="text-right font-light text-sm text-red-600"><a href="'+reportUrl.replace('idDiscussion', message.message_id)+'">Signaler</a></p></div>'
+                    '<p class="text-right font-light text-sm text-red-600"><a href="'+reportUrl.replace('discussion', message.message_id)+'">Signaler</a></p></div>'
         );
 
         if (countMessage <= 5) {
@@ -99,7 +98,7 @@ function fetchLastSentComment() {
             '<p class="text-left font-light pr-6 text-gray-700">' + data.user + '</p>' +
             '<p class="text-center px-6 my-2" id="message">' + data.message + '</p>' +
             '<p class="text-right font-light text-xs">'+ data.createdAt +'</p>' +
-            '<p class="text-right font-light text-sm text-red-600"><a href="'+reportUrl.replace('idDiscussion', data.message_id)+'">Signaler</a></p></div>'
+            '<p class="text-right font-light text-sm text-red-600"><a href="'+reportUrl.replace('discussion', data.message_id)+'">Signaler</a></p></div>'
         document.querySelector('#messages-boxes').insertAdjacentHTML("afterbegin",html);
     })
     .catch(error => {

@@ -9,6 +9,7 @@ use App\Services\FlashService;
 use Doctrine\ORM\EntityManagerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -39,10 +40,10 @@ class AdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/administration/validate/message/{discussion}", name="snowtricks_administration_validate_message")
+     * @Route("/administration/validate/message/{discussion}", name="snowtricks_administration_validate_message", requirements={"discussion"="\d+"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function validate(Discussion $discussion): \Symfony\Component\HttpFoundation\RedirectResponse
+    public function validate(Discussion $discussion): RedirectResponse
     {
         $reports = $this->entityManager->getRepository(Report::class)->findBy(['discussion' => $discussion->getId()]);
 
@@ -58,10 +59,10 @@ class AdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/administration/delete/message/{discussion}", name="snowtricks_administration_delete_message")
+     * @Route("/administration/delete/message/{discussion}", name="snowtricks_administration_delete_message", requirements={"discussion"="\d+"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function delete(Discussion $discussion)
+    public function delete(Discussion $discussion): RedirectResponse
     {
         $reports = $this->entityManager->getRepository(Report::class)->findBy(['discussion' => $discussion->getId()]);
 
