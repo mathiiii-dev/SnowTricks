@@ -33,6 +33,7 @@ class ReportFixtures extends Fixture implements DependentFixtureInterface
                 $report->setDiscussion($discussion);
                 $report->setCreatedAt();
                 $report->setMessage($message);
+                $report->setFigure($discussion->getFigure());
 
                 $manager->persist($report);
         }

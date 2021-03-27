@@ -124,7 +124,7 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/figure/delete/{figure}", name="snowtricks_figure_delete", requirements={"figure"="\d+"})
+     * @Route("/figure/delete/{figure}", name="snowtricks_figure_delete")
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      * @return RedirectResponse
      */

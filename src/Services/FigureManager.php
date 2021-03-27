@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Entity\Discussion;
 use App\Entity\Figure;
 use App\Entity\Picture;
+use App\Entity\Report;
 use App\Entity\Video;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -51,9 +52,13 @@ class FigureManager
 
     public function removeMedia(Figure $figure): void
     {
-        $pictures = $this->entityManager->getRepository(Picture::class)->findBy(['figure' => $figure->getId()]);
-        $videos = $this->entityManager->getRepository(Video::class)->findBy(['figure' => $figure->getId()]);
-        $messages = $this->entityManager->getRepository(Discussion::class)->findBy(['figure' => $figure->getId()]);
+        $media = [
+            $pictures = $this->entityManager->getRepository(Picture::class)->findBy(['figure' => $figure->getId()]),
+            $videos = $this->entityManager->getRepository(Video::class)->findBy(['figure' => $figure->getId()]),
+            $messages = $this->entityManager->getRepository(Discussion::class)->findBy(['figure' => $figure->getId()]),
+            $reports = $this->entityManager->getRepository(Report::class)->findBy(['figure' => $figure->getId()])
+        ];
+
 
         foreach ($videos as $video) {
             $this->entityManager->remove($video);
@@ -65,6 +70,10 @@ class FigureManager
 
         foreach ($messages as $message) {
             $this->entityManager->remove($message);
+        }
+
+        foreach ($reports as $report) {
+            $this->entityManager->remove($report);
         }
     }
 }

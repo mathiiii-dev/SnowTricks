@@ -128,6 +128,7 @@ class DiscussionController extends AbstractController
             $report->setMessage($reportMessage);
             $report->setDiscussion($message);
             $report->setUser($user = $this->userRepository->findOneBy(['username' => $this->getUser()->getUsername()]));
+            $report->setFigure($discussion->getFigure());
             $report->setCreatedAt();
 
             $this->entityManager->persist($report);

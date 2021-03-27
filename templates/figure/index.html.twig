@@ -59,14 +59,17 @@
             </div>
             <p class="text-justify lg:px-64 px-2 py-6">{{ figure.description }}</p>
             <div class="mt-6 pb-6">
-                    <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
+                    <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none
+                    text-white bg-blue-500 rounded-full">
                     <i class="fa fa-snowboarding pr-1"></i>{{ figure.figureGroup }}
                 </span>
-                <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
+                <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white
+                bg-blue-500 rounded-full">
                     <i class="fa fa-calendar pr-1"></i> Créée le {{ figure.createdAt | date('d/m/Y') }}
                 </span>
                 {% if figure.modifiedAt %}
-                    <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-blue-500 rounded-full">
+                    <span class="inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white
+                    bg-blue-500 rounded-full">
                          <i class="fa fa-calendar pr-1"></i> Modifiée le {{ figure.modifiedAt | date('d/m/Y') }}
                     </span>
                 {% endif %}
@@ -76,9 +79,12 @@
                 {{ form_start(formDiscussion, {'attr': {'id': 'formDiscussion'}}) }}
                 <div class='w-full md:w-full px-3 mb-6'>
                     <div class="text-right mt-1" id="counter"></div>
-                    {{ form_row(formDiscussion.message, {'attr': {'id':'message', 'maxLength' : 255, 'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
+                    {{ form_row(formDiscussion.message, {'attr': {'id':'message', 'maxLength' : 255, 'class' :
+                        'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md
+                        py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
                 </div>
-                <button class="appearance-none bg-gray-200 hover:bg-blue-400 hover:text-white text-gray-900 px-2 py-1 shadow-sm border border-gray-400 rounded-md mr-3 font-bold"
+                <button class="appearance-none bg-gray-200 hover:bg-blue-400 hover:text-white text-gray-900 px-2 py-1
+                shadow-sm border border-gray-400 rounded-md mr-3 font-bold"
                         id="send-message" type="submit">
                     Envoyer
                 </button>

@@ -40,6 +40,12 @@ class Report
      */
     private $discussion;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Figure::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $figure;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,5 +100,21 @@ class Report
         $this->discussion = $discussion;
 
         return $this;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFigure()
+    {
+        return $this->figure;
+    }
+
+    /**
+     * @param mixed $figure
+     */
+    public function setFigure($figure): void
+    {
+        $this->figure = $figure;
     }
 }
