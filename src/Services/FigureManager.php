@@ -52,13 +52,10 @@ class FigureManager
 
     public function removeMedia(Figure $figure): void
     {
-        $media = [
-            $pictures = $this->entityManager->getRepository(Picture::class)->findBy(['figure' => $figure->getId()]),
-            $videos = $this->entityManager->getRepository(Video::class)->findBy(['figure' => $figure->getId()]),
-            $messages = $this->entityManager->getRepository(Discussion::class)->findBy(['figure' => $figure->getId()]),
-            $reports = $this->entityManager->getRepository(Report::class)->findBy(['figure' => $figure->getId()])
-        ];
-
+        $pictures = $this->entityManager->getRepository(Picture::class)->findBy(['figure' => $figure->getId()]);
+        $videos = $this->entityManager->getRepository(Video::class)->findBy(['figure' => $figure->getId()]);
+        $messages = $this->entityManager->getRepository(Discussion::class)->findBy(['figure' => $figure->getId()]);
+        $reports = $this->entityManager->getRepository(Report::class)->findBy(['figure' => $figure->getId()]);
 
         foreach ($videos as $video) {
             $this->entityManager->remove($video);
