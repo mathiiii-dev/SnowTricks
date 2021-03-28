@@ -67,7 +67,7 @@ Or if you don't have gmail you can use an other one like here : https://symfony.
 
 ## Admin account
 
-With the database test you have two admin accounts which are : 
+With the database you have one admin accounts : 
 ```
 Pseudo : Mathias
 Password : password
