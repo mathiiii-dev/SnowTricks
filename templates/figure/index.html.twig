@@ -10,8 +10,7 @@
             {% include 'component/modal.html.twig' %}
         </div>
     {% endif %}
-    <div class="w-full bg-cover bg-center h-96"
-         style="background-image: url('{{ picture.link }}');">
+    <div class="w-full bg-cover bg-center h-96" style="background-image: url('{{ picture }}');">
         <div class="flex items-center justify-center h-full w-full">
             <div class="text-center">
                 <h1 class="text-white lg:text-7xl text-5xl uppercase font-bold">{{ figure.name }}</h1>
@@ -21,16 +20,14 @@
     <div class="flex items-center justify-center w-full md:h-full mt-6">
         <div class="container mx-auto relative text-center">
             {% if app.user %}
-                <div class="float-right">
+                <div class="md:float-right">
                     <a href="{{ path('snowtricks_figure_edit', {'figure': figure.id}) }}"
-                       class="hover:text-blue-500">
-                        <span class="hidden">Modifier</span>
+                       class="md:hover:text-blue-500 md:text-black text-blue-500">
                         <i class="fa fa-pen fa-2x"></i>
                     </a>
                     <button id="delete-figure"
-                            class="pl-3 hover:text-red-600" data-id="{{ figure.id }}" data-name="{{ figure.name }}"
+                            class="pl-3 md:hover:text-red-500 md:text-black text-red-500" data-id="{{ figure.id }}" data-name="{{ figure.name }}"
                             data-url="{{ path('snowtricks_figure_delete', {'figure': figure.id}) }}">
-                        <span class="hidden">Supprimer</span>
                         <i class="fa fa-trash fa-2x"></i>
                     </button>
                 </div>
@@ -39,15 +36,20 @@
                 {% for i in figure.pictures %}
                     <img src="{{ i.link }}" alt="" class="md:w-1/4 hidden md:block" id="media">
                 {% endfor %}
-                {% for video in figure.videos %}
-                    <iframe width="340" height="230" src="{{ video.link|replace({"watch?v=": "embed/"}) }}"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen class="hidden md:block" id="media">
-                    </iframe>
-                {% endfor %}
+                {% if figure.pictures.count == 0 %}
+                    <img src="{{ asset('/image/img-header.jpg') }}" alt="" class="md:w-1/4 hidden md:block" id="media">
+                {% endif %}
+                {% if figure.videos != false %}
+                    {% for video in figure.videos %}
+                        <iframe width="340" height="230" src="{{ video.link|replace({"watch?v=": "embed/"}) }}"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen class="hidden md:block" id="media">
+                        </iframe>
+                    {% endfor %}
+                {% endif %}
             </div>
-            <div class="justify-center mt-16 md:hidden">
+            <div class="justify-center mt-6 md:hidden">
                 <button id="show-media"
                         class="py-2 px-4 bg-blue-500 rounded text-white font-bold hover:bg-blue-600">
                     Voir les médias
@@ -101,7 +103,9 @@
             {% endif %}
             <div class="bg-gray-100 rounded-lg p-6 mt-6" id="messages-boxes">
             </div>
-            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2" id="voir-plus">Voir plus</button>
+            <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mt-2" id="voir-plus">
+                Voir plus
+            </button>
         </div>
     </div>
 {% endblock %}

@@ -18,52 +18,52 @@ class FigureFixtures extends Fixture implements DependentFixtureInterface
             [
                 'name' => 'Air to Fakie',
                 'description' => 'Il s\'agit d\'une figure relativement simple, et plus précisément d\'un saut sans rotation qui se fait généralement dans un pipe (un U). Le rider s\'élance dans les airs et retombe dans le sens inverse.',
-                'group' => 'Jump'
+                'group' => 'Jump',
             ],
             [
                 'name' => 'Big air',
                 'description' => 'C\'est l\'une des épreuves les plus impressionnantes dans les compétitions de snow. Le rider s’élance à une vitesse folle avant de sauter sur une tremplin et de réaliser un maximum de tricks dans les airs. Le big air peut aussi faire référence au tremplin de neige duquel le snowboardeur s\'élance avant de faire ses figures.',
-                'group' => 'Jump'
+                'group' => 'Jump',
             ],
             [
                 'name' => 'Carver',
                 'description' => 'C\'est un mot qui revient souvent dans la bouche des snowboardeurs. Mais pas que, puisqu\'on parle aussi de carving en skis. Mais alors qu\'est-ce que c\'est ? Carver, c\'est tout simplement faire un virage net en se penchant et sans déraper.',
-                'group' => 'Turn'
+                'group' => 'Turn',
             ],
             [
                 'name' => 'Jib',
                 'description' => 'Le Jib (aussi appelé slide ou grind) est une pratique du snow freestyle qui consiste à glisser sur tous types de modules autres que la neige (rails, troncs d\'arbre, tables etc.)',
-                'group' => 'Slide'
+                'group' => 'Slide',
             ],
             [
                 'name' => 'Lipslide',
                 'description' => 'Le lispslide consiste à glisser sur un obstacle en mettant la planche perpendiculaire à celui-ci. Un jib à 90 degrés en d\'autres termes. Le lipslide peut se faire en avant ou en arrière. Frontside ou backside, donc.',
-                'group' => 'Slide'
+                'group' => 'Slide',
             ],
             [
                 'name' => 'Mc Twist',
                 'description' => 'Le Mc Twist est un flip (rotation verticale) agrémenté d\'une vrille. Un saut plutôt périlleux réservé aux riders les plus confirmés. Le champion Shaun White s\'est illustré par un Double Mc Twist 1260 lors de sa session de Half-Pipe aux Jeux Olympiques de Vancouver en 2010.',
-                'group' => 'Flip'
+                'group' => 'Flip',
             ],
             [
                 'name' => 'Mc Twist',
                 'description' => 'Le Mc Twist est un flip (rotation verticale) agrémenté d\'une vrille. Un saut plutôt périlleux réservé aux riders les plus confirmés. Le champion Shaun White s\'est illustré par un Double Mc Twist 1260 lors de sa session de Half-Pipe aux Jeux Olympiques de Vancouver en 2010.',
-                'group' => 'Flip'
+                'group' => 'Flip',
             ],
             [
                 'name' => 'Rodeoback / Rodeofront',
                 'description' => 'C\'est une figure qui consiste à faire un salto arrière en y ajoutant une rotation d\'un demi-tour. Le rodeo est back quand le snowboarder part de dos et front quand il part de face.',
-                'group' => 'Flip'
+                'group' => 'Flip',
             ],
             [
                 'name' => 'Pop/poper',
                 'description' => 'Il s\'agit d\'un concept assez flou qu\'il est difficile de définir. Le pop est le fait de faire décoller sa board avec un mouvement assez énergique. Certains riders ont plus de pop que d\'autres et ça se voit quand ils sautent par dessus un obstacle.',
-                'group' => 'Jump'
+                'group' => 'Jump',
             ],
             [
                 'name' => 'Noseslide',
                 'description' => 'C\'est un jib que le rider effectue sur le nose de la planche, soit la spatule qui se trouve devant lui. La spatule arrière s\'appelle le tail. Le noseslide peut être frontside ou backside.',
-                'group' => 'Slide'
+                'group' => 'Slide',
             ],
         ];
 

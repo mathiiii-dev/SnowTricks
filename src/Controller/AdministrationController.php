@@ -19,8 +19,11 @@ class AdministrationController extends AbstractController
     private $entityManager;
     private $flash;
 
-    public function __construct(ReportRepository $reportRepository, EntityManagerInterface $entityManager, FlashService $flash)
-    {
+    public function __construct(
+        ReportRepository $reportRepository,
+        EntityManagerInterface $entityManager,
+        FlashService $flash
+    ) {
         $this->reportRepository = $reportRepository;
         $this->entityManager = $entityManager;
         $this->flash = $flash;
@@ -32,15 +35,16 @@ class AdministrationController extends AbstractController
      */
     public function index(): Response
     {
-        $report = $this->reportRepository->findAll();
-
         return $this->render('administration/index.html.twig', [
-            'report' => $report
+            'reports' => $this->reportRepository->findAll(),
         ]);
     }
 
     /**
-     * @Route("/administration/validate/message/{discussion}", name="snowtricks_administration_validate_message", requirements={"discussion"="\d+"})
+     * @Route("/administration/validate/message/{discussion}",
+     *     name="snowtricks_administration_validate_message",
+     *     requirements={"discussion"="\d+"},
+     *     methods={"GET"})
      * @IsGranted("ROLE_ADMIN")
      */
     public function validate(Discussion $discussion): RedirectResponse
@@ -59,7 +63,10 @@ class AdministrationController extends AbstractController
     }
 
     /**
-     * @Route("/administration/delete/message/{discussion}", name="snowtricks_administration_delete_message", requirements={"discussion"="\d+"})
+     * @Route("/administration/delete/message/{discussion}",
+     *     name="snowtricks_administration_delete_message",
+     *     requirements={"discussion"="\d+"},
+     *     methods={"GET"})
      * @IsGranted("ROLE_ADMIN")
      */
     public function delete(Discussion $discussion): RedirectResponse

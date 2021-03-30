@@ -27,29 +27,29 @@ class UserFixtures extends Fixture
             [
                 'username' => 'Mathias',
                 'email' => 'mathias.micheli@mail.com',
-                'role' => ['ROLE_ADMIN']
+                'roles' => ['ROLE_ADMIN'],
             ],
             [
                 'username' =>'John',
                 'email' =>'john@mail.com',
-                'role' => ['']
+                'roles' => [''],
             ],
             [
                 'username' =>'Paul',
                 'email' =>'Paul@mail.com',
-                'role' => ['']
+                'roles' => [''],
             ],
             [
                 'username' =>'Edward',
                 'email' =>'ed42@mail.comm',
-                'role' => ['']
+                'roles' => [''],
             ]
         ];
 
         $pictures = [
             'BAwYBb8Y-400x400-1f71e964-5530-4f9a-a154-11b1ddd09289.jpg',
             '238052cb5170c6e2779a32bc9ff555be-f35da74e-82f5-4fd4-8764-2164a5625703.jpg',
-            'Ew-306BVgAIZarR-a1ef5923-8505-4fda-9bcd-df3cc8ebd2ce.jpg'
+            'Ew-306BVgAIZarR-a1ef5923-8505-4fda-9bcd-df3cc8ebd2ce.jpg',
         ];
 
         for($i = 0; $i < count($users); $i++){

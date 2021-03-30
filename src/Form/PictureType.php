@@ -16,7 +16,8 @@ class PictureType extends AbstractType
             TextType::class,
             [
                 'label' => false,
-                'attr' => ['class' => 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500']
+                'attr' => ['class' => 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 
+                shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500']
             ]);
     }
 

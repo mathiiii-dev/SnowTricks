@@ -24,15 +24,23 @@
         <div class="flex flex-wrap -mx-1 lg:-mx-4">
             {% if figures %}
             {% for figure in figures %}
-                <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto my-8 {% if loop.index >= 7 %} hidden {% endif %}"
-                     {% if loop.index >= 7 %}id="hidden-cards"{% endif %}>
-                    {% for fPicture in firstPictures %}
-                        {% if fPicture.figure.id == figure.id %}
-                        <a href="{{ path('snowtricks_figure', {'figure': figure.id}) }}">
-                            <img class="" src="{{ fPicture.link }}" alt="{{ figure.name }}">
-                        </a>
+                <div class="max-w-sm rounded overflow-hidden shadow-lg mx-auto my-8
+                            {% if loop.index >= 7 %}
+                                hidden
+                            {% endif %}"
+                        {% if loop.index >= 7 %}
+                            id="hidden-cards"
                         {% endif %}
-                    {% endfor %}
+                >
+                    {% if figure.pictures.count != 0 %}
+                        <a href="{{ path('snowtricks_figure', {'figure': figure.id}) }}">
+                            <img class="h-64" src="{{ figure.pictures.first.link }}" alt="{{ figure.name }}">
+                        </a>
+                    {% else %}
+                        <a href="{{ path('snowtricks_figure', {'figure': figure.id}) }}">
+                            <img class="h-64" src="{{ asset('/image/img-header.jpg') }}" alt="{{ figure.name }}">
+                        </a>
+                    {% endif %}
                     <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">
                             <a href="{{ path('snowtricks_figure', {'figure': figure.id}) }}">
@@ -40,7 +48,8 @@
                             </a>
                             <span class="float-right space-x-3">
                                     {% if app.user %}
-                                        <a href="{{ path('snowtricks_figure_edit', {'figure': figure.id}) }}" class="hover:text-blue-300">
+                                        <a href="{{ path('snowtricks_figure_edit', {'figure': figure.id}) }}"
+                                           class="hover:text-blue-300">
                                             <span class="hidden">Modifier</span>
                                             <i class="fa fa-pen"></i>
                                         </a>

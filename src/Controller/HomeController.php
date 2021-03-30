@@ -17,12 +17,13 @@ class HomeController extends AbstractController
     }
 
     /**
-     * @Route("/", name="snowtricks_home")
+     * @Route("/",
+     *      name="snowtricks_home",
+     *      methods={"GET"})
      */
     public function index(): Response
     {
         $repository = $this->getDoctrine()->getRepository(Figure::class);
-
         $figures = $repository->findAll();
 
         return $this->render('home/index.html.twig', [

@@ -20,7 +20,7 @@ class ReportFixtures extends Fixture implements DependentFixtureInterface
             'Ce message est innaproprié',
             'C\'est une insulte',
             'Le message est vulgaire',
-            'Cela na rien a faire la'
+            'Cela na rien a faire la',
         ];
 
         foreach($messages as $message){

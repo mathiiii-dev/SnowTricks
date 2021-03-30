@@ -26,7 +26,7 @@ class DiscussionFixtures extends Fixture implements DependentFixtureInterface
             'Je faisais du ski avant',
             'Je trouve cette figure compliqué',
             'Je vais essayer cette figure ce week-end',
-            'J\'ai réussis cette figure pour la premiere fois hier !'
+            'J\'ai réussis cette figure pour la premiere fois hier !',
         ];
 
         foreach($figures as $figure){
