@@ -23,16 +23,9 @@ function fetchLastComment(counter = 0, origin) {
         let html = '';
         let countMessage = data[0].messagesCount;
         data.forEach(message => messages.push(message));
-        console.log(messages)
         messages.forEach(
             message =>
-                html += '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
-                    '<img src="http://127.0.0.1:8000/uploads/profilePicture/'+ message.profilePicture +'" alt="profilePicture" class="inline object-cover w-12 h-12 rounded-full float-left mr-2">' +
-                    '<p class="text-left font-light pr-6 text-gray-700">' + message.user + '</p>' +
-                    '<p class="text-center px-6 my-2">' + message.message + '</p>' +
-                    '<p class="text-right font-light text-xs">'+ message.createdAt +'</p>' +
-                    '<p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p></div>'
-        );
+                html += messageBox(message));
 
         if (countMessage <= 5) {
             btn.classList.add('hidden');
@@ -94,15 +87,20 @@ function fetchLastSentComment() {
     .then(resp => resp.json())
     .then((data) => {
         let html = '';
-        html = '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
-            '<img src="http://127.0.0.1:8000/uploads/profilePicture/'+ data.profilePicture +'" alt="profilePicture" class="inline object-cover w-12 h-12 rounded-full float-left mr-2">' +
-            '<p class="text-left font-light pr-6 text-gray-700">' + data.user + '</p>' +
-            '<p class="text-center px-6 my-2" id="message">' + data.message + '</p>' +
-            '<p class="text-right font-light text-xs">'+ data.createdAt +'</p>' +
-            '<p class="text-right font-light text-sm text-red-600"><a href="">Signaler</a></p></div>'
+        html = messageBox(data)
         document.querySelector('#messages-boxes').insertAdjacentHTML("afterbegin",html);
     })
     .catch(error => {
         console.log(error);
     })
+}
+
+function messageBox(data) {
+    return '<div class="bg-white rounded p-2 m-2 shadow-xl">' +
+    '<img src="'+ assetUrl.replace('userPicture', data.profilePicture) +'" alt="profilePicture" class="inline object-cover w-12 h-12 rounded-full float-left mr-2">' +
+    '<p class="text-left font-light pr-6 text-gray-700">' + data.user + '</p>' +
+    '<p class="text-center px-6 my-2" id="message">' + data.message + '</p>' +
+    '<p class="text-right font-light text-xs">'+ data.createdAt +'</p>' +
+    '<p class="text-right font-light text-sm text-red-600"><a href="'+reportUrl.replace('discussion', data.message_id)+'">Signaler</a></p></div>'
+
 }

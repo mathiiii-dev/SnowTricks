@@ -39,8 +39,10 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/figure/{figure}", name="snowtricks_figure")
-     * @return Response
+     * @Route("/figure/{figure}",
+     *     name="snowtricks_figure",
+     *     requirements={"figure"="\d+"},
+     *     methods={"GET"})
      */
     public function index(Figure $figure): Response
     {
@@ -49,18 +51,23 @@ class FigureController extends AbstractController
         if ($figure === null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
         }
+        $picture = "/image/img-header.jpg";
+        if($figure->getPictures()->first()) {
+            $picture = $figure->getPictures()->first()->getLink();
+        }
 
         return $this->render('figure/index.html.twig', [
             'figure' => $figure,
-            'picture' => $figure->getPictures()->first(),
-            'formDiscussion' => $formDiscussion
+            'picture' =>  $picture,
+            'formDiscussion' => $formDiscussion,
         ]);
     }
 
     /**
-     * @Route("/create-figure", name="snowtricks_figure_create")
+     * @Route("/create-figure",
+     *     name="snowtricks_figure_create",
+     *     methods={"POST","GET"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
-     * @return Response
      */
     public function createFigure(Request $request): Response
     {
@@ -90,9 +97,11 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/figure/edit/{figure}", name="snowtricks_figure_edit")
+     * @Route("/figure/edit/{figure}",
+     *     name="snowtricks_figure_edit",
+     *     requirements={"figure"="\d+"},
+     *     methods={"POST","GET"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
-     * @return Response
      */
     public function modifyFigure(Figure $figure, Request $request): Response
     {
@@ -124,9 +133,10 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/figure/delete/{figure}", name="snowtricks_figure_delete")
+     * @Route("/figure/delete/{figure}",
+     *     name="snowtricks_figure_delete",
+     *     methods={"POST","GET"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
-     * @return RedirectResponse
      */
     public function deleteFigure(Figure $figure): RedirectResponse
     {

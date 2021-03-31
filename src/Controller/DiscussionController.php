@@ -4,10 +4,14 @@ namespace App\Controller;
 
 use App\Entity\Discussion;
 use App\Entity\Figure;
+use App\Entity\Report;
 use App\Form\DiscussionType;
+use App\Form\ReportType;
 use App\Repository\DiscussionRepository;
 use App\Repository\UserRepository;
+use App\Services\FlashService;
 use Doctrine\ORM\EntityManagerInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,15 +21,28 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DiscussionController extends AbstractController
 {
+    /** @var EntityManagerInterface **/
     private $entityManager;
+
+    /** @var UserRepository **/
     private $userRepository;
+
+    /** @var DiscussionRepository **/
     private $discussionRepository;
 
-    public function __construct(EntityManagerInterface $entityManager, UserRepository $userRepository, DiscussionRepository $discussionRepository)
-    {
+    /** @var FlashService **/
+    private $flash;
+
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        UserRepository $userRepository,
+        DiscussionRepository $discussionRepository,
+        FlashService $flash
+    ) {
         $this->entityManager = $entityManager;
         $this->userRepository = $userRepository;
         $this->discussionRepository = $discussionRepository;
+        $this->flash = $flash;
     }
 
     public function createFormDiscussion(): FormView
@@ -38,8 +55,10 @@ class DiscussionController extends AbstractController
     }
 
     /**
-     * @Route("/figure/{figure}/messages/send", name="snowtricks_messages_send")
-     * @return JsonResponse
+     * @Route("/figure/{figure}/messages/send",
+     *      name="snowtricks_messages_send",
+     *      requirements={"figure"="\d+"},
+     *      methods={"POST"})
      */
     public function sendMessageFigure(Figure $figure, Request $request): JsonResponse
     {
@@ -61,8 +80,9 @@ class DiscussionController extends AbstractController
     }
 
     /**
-     * @Route("/figure/{figure}/messages/get/{offset}", name="snowtricks_messages_get")
-     * @return Response
+     * @Route("/figure/{figure}/messages/get/{offset}",
+     *      name="snowtricks_messages_get",
+     *      methods={"GET"})
      */
     public function getLastMessages(Figure $figure, string $offset): Response
     {
@@ -76,7 +96,8 @@ class DiscussionController extends AbstractController
                 'user' => $message->getUser()->getUsername(),
                 'createdAt' => $message->getCreatedAt()->format("d-m-Y h:i:s"),
                 'messagesCount' => $messagesCount,
-                'profilePicture' => $message->getUser()->getProfilePictureName()
+                'profilePicture' => $message->getUser()->getProfilePictureName(),
+                'message_id' => $message->getId()
             ]);
         }
 
@@ -84,7 +105,10 @@ class DiscussionController extends AbstractController
     }
 
     /**
-     * @Route("/figure/{figure}/messages/get-last", name="snowtricks_message_get_last")
+     * @Route("/figure/{figure}/messages/get-last",
+     *      name="snowtricks_message_get_last",
+     *      requirements={"figure"="\d+"},
+     *      methods={"GET"})
      * @return Response
      */
     public function getLastSentMessage(Figure $figure): Response
@@ -95,7 +119,43 @@ class DiscussionController extends AbstractController
             'message' => $lastMessage->getMessage(),
             'user' => $lastMessage->getUser()->getUsername(),
             'createdAt' => $lastMessage->getCreatedAt()->format("d-m-Y h:i:s"),
-            'profilePicture' => $lastMessage->getUser()->getProfilePictureName()
+            'profilePicture' => $lastMessage->getUser()->getProfilePictureName(),
+            'message_id' => $lastMessage->getId()
+        ]);
+    }
+
+    /**
+     * @Route("report/messages/{discussion}", name="snowtricks_message_report")
+     * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
+     */
+    public function report(Discussion $discussion, Request $request): Response
+    {
+        $report = new Report();
+
+        $form = $this->createForm(ReportType::class, $report);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $reportMessage = $request->request->get('report');
+
+            $report->setMessage($reportMessage['message']);
+            $report->setDiscussion($discussion);
+            $report->setUser($this->userRepository->findOneBy(['username' => $this->getUser()->getUsername()]));
+            $report->setFigure($discussion->getFigure());
+            $report->setCreatedAt();
+
+            $this->entityManager->persist($report);
+            $this->entityManager->flush();
+
+            $this->flash->setFlashMessages(http_response_code(), 'Message signalé !');
+
+            return $this->redirectToRoute('snowtricks_figure', ['figure' => $discussion->getFigure()->getId()]);
+        }
+
+        return $this->render('figure/report.html.twig', [
+            'message' => $discussion->getMessage(),
+            'figure' => $discussion->getFigure()->getId(),
+            'formReport' => $form->createView(),
         ]);
     }
 }

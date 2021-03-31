@@ -21,11 +21,6 @@ class ConstraintPictureValidator extends ConstraintValidator
             throw new UnexpectedTypeException($constraint, ConstraintPicture::class);
         }
 
-        if($value->getValues() === []) {
-            $this->context->buildViolation($constraint->emptyMessage)
-                ->addViolation();
-        }
-
         if (!$this->urlCheck->checkImageUrl($value)) {
             $this->context->buildViolation($constraint->pictureMessage)
                 ->addViolation();
