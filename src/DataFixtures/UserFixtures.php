@@ -57,7 +57,7 @@ class UserFixtures extends Fixture
 
             $user->setUsername($users[$i]['username']);
             $user->setEmail($users[$i]['email']);
-            $user->setRoles($users[$i]['role']);
+            $user->setRoles($users[$i]['roles']);
 
             $password = $this->encoder->encodePassword($user, 'password');
             $user->setPassword($password);
