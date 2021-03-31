@@ -2,10 +2,6 @@
 
 {% block title %}Tricks{% endblock %}
 
-{% block stylesheets %}
-    {{ encore_entry_link_tags('app') }}
-{% endblock %}
-
 {% block body %}
 <div class="h-screen pt-6 bg-gray-100">
     <div class="container mx-auto mt-16 bg-gray-100">
@@ -29,7 +25,7 @@
                     <div class='w-full md:w-full px-3 mb-6'>
                         {{ form_row(formFigure.figure_group, {'attr': {'class' : 'appearance-none block w-full bg-white text-gray-700 border border-gray-400 shadow-inner rounded-md py-3 px-4 leading-tight focus:outline-none  focus:border-gray-500'}}) }}
                     </div>
-                    <div class='w-full md:w-full px-3 mb-6'>
+                    <div class='w-full md:w-full px-3 mb-6 hidden md:block' id="media">
                         <h3>Photos</h3>
                         <ul class="photo "
                             data-prototype="{{ form_widget(formFigure.pictures.vars.prototype)|e('html_attr') }}">
@@ -41,7 +37,7 @@
                                 data-collection-holder-class="photo"><i class="fa fa-plus pr-2"></i>Ajouter une photo
                         </button>
                     </div>
-                    <div class='w-full md:w-full px-3 mb-6'>
+                    <div class='w-full md:w-full px-3 mb-6 hidden md:block' id="media">
                         <h3>Videos</h3>
                         <ul class="video"
                             data-prototype="{{ form_widget(formFigure.videos.vars.prototype)|e('html_attr') }}">
@@ -51,6 +47,16 @@
                         </ul>
                         <button type="button" class="add_item_link font-bold text-blue-600"
                                 data-collection-holder-class="video"><i class="fa fa-plus pr-2"></i>Ajouter une video
+                        </button>
+                    </div>
+                    <div class="justify-center mt-6 md:hidden">
+                        <button id="show-media" type="button"
+                                class="py-2 px-4 bg-blue-500 rounded text-white font-bold hover:bg-blue-600">
+                            Voir les médias
+                        </button>
+                        <button id="remove-media" type="button"
+                                class="py-2 px-4 bg-blue-500 rounded text-white font-bold hover:bg-blue-600 hidden">
+                            Enlever les médias
                         </button>
                     </div>
                     <div class="absolute bottom-5 right-5">
@@ -73,4 +79,5 @@
     {% block javascripts %}
     {{ parent() }}
     {{ encore_entry_script_tags('mediaFigure') }}
+    {{ encore_entry_script_tags('figure') }}
 {% endblock %}

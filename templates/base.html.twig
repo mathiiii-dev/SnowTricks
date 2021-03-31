@@ -12,22 +12,22 @@
     {% endblock %}
 </head>
 <body>
-    {% include 'component/navbar.html.twig' %}
+{% include 'component/navbar.html.twig' %}
 
-    {% for message in app.flashes('success') %}
-        {% include 'component/flash.html.twig' with {message, class : 'green'} %}
-    {% endfor %}
+{% for message in app.flashes('success') %}
+    {% include 'component/flash.html.twig' with {message, class : 'green'} %}
+{% endfor %}
 
-    {% for message in app.flashes('error') %}
-        {% include 'component/flash.html.twig' with {message, class : 'red'} %}
-    {% endfor %}
+{% for message in app.flashes('error') %}
+    {% include 'component/flash.html.twig' with {message, class : 'red'} %}
+{% endfor %}
 
-    {% block body %}{% endblock %}
+{% block body %}{% endblock %}
 
-    {% include 'component/footer.html.twig' %}
+{% include 'component/footer.html.twig' %}
 
-    {% block javascripts %}
-        {{ encore_entry_script_tags('app') }}
-    {% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
 </body>
 </html>
