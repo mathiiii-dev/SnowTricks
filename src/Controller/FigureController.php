@@ -51,10 +51,8 @@ class FigureController extends AbstractController
         if ($figure === null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
         }
-
-        if(!$figure->getPictures()->first()) {
-            $picture = "/image/img-header.jpg";
-        } else {
+        $picture = "/image/img-header.jpg";
+        if($figure->getPictures()->first()) {
             $picture = $figure->getPictures()->first()->getLink();
         }
 

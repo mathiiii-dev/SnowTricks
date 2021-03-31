@@ -76,11 +76,13 @@
                 </button>
             </div>
         {% endif %}
-        <div class="float-right">
-            <a href="#top" class="hover:text-blue-300">
-                <i class="fa fa-arrow-up fa-3x"></i>
-            </a>
-        </div>
+        {% if figures|length >= 15%}
+            <div class="float-right">
+                <a href="#top" class="hover:text-blue-300">
+                    <i class="fa fa-arrow-up fa-3x"></i>
+                </a>
+            </div>
+        {% endif %}
         {% else %}
             <div class="max-w-sm overflow-hidden mx-auto my-8 text-center p-4">
                 <h1 class="font-bold text-3xl text-center mb-4">Aucune figures.</h1>
