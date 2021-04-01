@@ -73,7 +73,7 @@ Pseudo : Mathias
 Password : password
 ```
 
-### Launch project
+## Launch project
 
 You can launch the project with this command : 
 ```
