@@ -67,15 +67,25 @@ Or if you don't have gmail you can use an other one like here : https://symfony.
 
 ## Admin account
 
-With the database you have one admin accounts : 
+With the database you have one admin account : 
 ```
 Pseudo : Mathias
 Password : password
 ```
+and one user account : 
+```
+Pseudo : Paul
+Password : password
+```
 
-### Launch project
+## Launch project
 
-You can launch the project with this command : 
+First you need to run : 
+```
+npm run dev
+```
+
+Then, you can launch the project with this command : 
 ```
 symfony server:start
 ```
