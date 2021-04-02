@@ -21,13 +21,13 @@
         <div class="container mx-auto relative text-center">
             {% if app.user %}
                 <div class="md:float-right">
-                    <a href="{{ path('snowtricks_figure_edit', {'figure': figure.id}) }}"
+                    <a href="{{ path('snowtricks_figure_edit', {'slug': figure.name|replace({' ': '-', '/': ''})}) }}"
                        class="md:hover:text-blue-500 md:text-black text-blue-500">
                         <i class="fa fa-pen fa-2x"></i>
                     </a>
                     <button id="delete-figure"
                             class="pl-3 md:hover:text-red-500 md:text-black text-red-500" data-id="{{ figure.id }}" data-name="{{ figure.name }}"
-                            data-url="{{ path('snowtricks_figure_delete', {'figure': figure.id}) }}">
+                            data-url="{{ path('snowtricks_figure_delete', {'slug': figure.name|replace({' ': '-', '/': ''})}) }}">
                         <i class="fa fa-trash fa-2x"></i>
                     </button>
                 </div>

@@ -87,7 +87,7 @@ class DiscussionController extends AbstractController
     public function getLastMessages(Figure $figure, string $offset): Response
     {
         $messageArray = [];
-        $messages = $this->discussionRepository->findBy(['figure' => $figure], ['id' => 'DESC'], 5, $offset);
+        $messages = $this->discussionRepository->findBy(['figure' => $figure], ['id' => 'DESC'], 10, $offset);
         $messagesCount = count($this->discussionRepository->findBy(['figure' => $figure]));
 
         foreach ($messages as $message) {

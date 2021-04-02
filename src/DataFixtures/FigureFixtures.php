@@ -65,10 +65,35 @@ class FigureFixtures extends Fixture implements DependentFixtureInterface
                 'description' => 'C\'est un jib que le rider effectue sur le nose de la planche, soit la spatule qui se trouve devant lui. La spatule arrière s\'appelle le tail. Le noseslide peut être frontside ou backside.',
                 'group' => 'Slide',
             ],
+            [
+                'name' => 'Switch',
+                'description' => 'Lorsque l\'on ride de son mauvais côté, tous les noms de figures sont précédées de la dénomination switch. Un regular fera donc ses tricks en switch, comme un goofie, et inversement.',
+                'group' => 'Switch',
+            ],
+            [
+                'name' => 'Cork',
+                'description' => 'Le diminutif de corkscrew qui signifie littéralement tire-bouchon et désignait les premières simples rotations têtes en bas en frontside. Désormais, on utilise le mot cork à toute les sauces pour qualifier les figures où le rider passe la tête en bas, peu importe le sens de rotation. Et dorénavant en compétition, on parle souvent de double cork, triple cork et certains riders vont jusqu\'au quadruple cork !',
+                'group' => 'Rotation',
+            ],
+            [
+                'name' => '270',
+                'description' => 'Désigne le degré de rotation, soit 3/4 de tour, fait en entrée ou en sortie sur un jib. Certains riders font également des rotations en 450 degrés avant ou après les jibs.',
+                'group' => 'Rotation',
+            ],
+            [
+                'name' => 'Revert',
+                'description' => 'Un revert n\'est pas une figure à part entière mais c\'est le fait de continuer à tourner sur la neige après une rotation aérienne. Cela montre ainsi que la rotation n\'est pas contrôlée et ça fait perdre des points en compétition.',
+                'group' => 'Revert',
+            ],
+            [
+                'name' => 'Handplant',
+                'description' => 'Un trick inspiré du skate qui consiste à tenir en équilibre sur une ou deux mains au sommet d\'une courbe. Existe avec de nombreuses variantes dans les grabs et les rotations.',
+                'group' => 'Handplant'
+            ]
+
         ];
 
         $pictures = [
-            'https://images.unsplash.com/photo-1478700485868-972b69dc3fc4?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format',
             'https://images.unsplash.com/photo-1518630045166-e3cbc72e3e1c?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1307&q=80',
             'https://images.unsplash.com/photo-1522445263200-1b4b91053db8?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80',
             'https://images.unsplash.com/photo-1487777266562-c209de215ec2?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1950&q=80',

@@ -27,11 +27,11 @@ function fetchLastComment(counter = 0, origin) {
             message =>
                 html += messageBox(message));
 
-        if (countMessage <= 5) {
+        if (countMessage <= 10) {
             btn.classList.add('hidden');
         }
 
-        if (countMessage <= counter + 5) {
+        if (countMessage <= counter + 10) {
             btn.classList.add('hidden');
         }
 
@@ -43,7 +43,7 @@ function fetchLastComment(counter = 0, origin) {
 }
 
 btn.addEventListener('click', () => {
-    counter = counter + 5;
+    counter = counter + 10;
     fetchLastComment(counter, 1);
     fetchLastSentComment();
 })

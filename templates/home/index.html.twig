@@ -33,27 +33,27 @@
                         {% endif %}
                 >
                     {% if figure.pictures.count != 0 %}
-                        <a href="{{ path('snowtricks_figure', {'figure': figure.id}) }}">
+                        <a href="{{ path('snowtricks_figure', {'slug': figure.name|replace({' ': '-', '/': ''})}) }}">
                             <img class="h-64" src="{{ figure.pictures.first.link }}" alt="{{ figure.name }}">
                         </a>
                     {% else %}
-                        <a href="{{ path('snowtricks_figure', {'figure': figure.id}) }}">
+                        <a href="{{ path('snowtricks_figure', {'slug': figure.name|replace({' ': '-', '/': ''})}) }}">
                             <img class="h-64" src="{{ asset('/image/img-header.jpg') }}" alt="{{ figure.name }}">
                         </a>
                     {% endif %}
                     <div class="px-6 py-4">
                         <div class="font-bold text-xl mb-2">
-                            <a href="{{ path('snowtricks_figure', {'figure': figure.id}) }}">
+                            <a href="{{ path('snowtricks_figure', {'slug': figure.name|replace({' ': '-', '/': ''})}) }}">
                                 {{ figure.name }}
                             </a>
                             <span class="float-right space-x-3">
                                     {% if app.user %}
-                                        <a href="{{ path('snowtricks_figure_edit', {'figure': figure.id}) }}"
+                                        <a href="{{ path('snowtricks_figure_edit', {'slug': figure.name|replace({' ': '-', '/': ''})}) }}"
                                            class="hover:text-blue-300">
                                             <span class="hidden">Modifier</span>
                                             <i class="fa fa-pen"></i>
                                         </a>
-                                        <button id="delete-figure" data-id="{{ figure.id }}"
+                                        <button id="delete-figure" data-id="{{ figure.name|replace({' ': '-', '/': ''}) }}"
                                                 data-name="{{ figure.name }}" class="hover:text-red-600">
                                             <span class="hidden">Supprimer</span>
                                             <i class="fa fa-trash"></i>

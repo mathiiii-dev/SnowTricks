@@ -30,7 +30,7 @@ class DiscussionFixtures extends Fixture implements DependentFixtureInterface
         ];
 
         foreach($figures as $figure){
-            for($i = 0; $i < rand(3, 18); $i++) {
+            for($i = 0; $i < rand(9, 25); $i++) {
                 $discussion = new Discussion();
 
                 $user = $users[array_rand($users)];

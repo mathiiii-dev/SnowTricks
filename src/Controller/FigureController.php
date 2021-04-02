@@ -6,6 +6,7 @@ use App\Entity\Figure;
 use App\Entity\User;
 use App\Form\FigureType;
 use App\Repository\DiscussionRepository;
+use App\Repository\FigureRepository;
 use App\Services\FlashService;
 use App\Services\FigureManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,6 +16,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 class FigureController extends AbstractController
 {
@@ -23,30 +25,39 @@ class FigureController extends AbstractController
     private $figureManager;
     private $discussion;
     private $formDiscussion;
+    private $figureRepository;
+    private $slugger;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         FlashService $flash,
         FigureManager $figureManager,
         DiscussionRepository $discussion,
-        DiscussionController $formDiscussion
+        DiscussionController $formDiscussion,
+        FigureRepository $figureRepository,
+        SluggerInterface $slugger
     ) {
         $this->entityManager = $entityManager;
         $this->flash = $flash;
         $this->figureManager = $figureManager;
         $this->discussion = $discussion;
         $this->formDiscussion = $formDiscussion;
+        $this->figureRepository = $figureRepository;
+        $this->slugger = $slugger;
     }
 
     /**
-     * @Route("/figure/{figure}",
+     * @Route("/figure/{slug}",
      *     name="snowtricks_figure",
-     *     requirements={"figure"="\d+"},
      *     methods={"GET"})
      */
-    public function index(Figure $figure): Response
+    public function index(string $slug): Response
     {
+        $slug = str_replace('-', ' ', $slug);
+
         $formDiscussion = $this->formDiscussion->createFormDiscussion();
+
+        $figure = $this->figureRepository->findOneBy(['name' => $slug]);
 
         if ($figure === null) {
             throw $this->createNotFoundException('La figure n\'a pas été trouvée');
@@ -86,7 +97,7 @@ class FigureController extends AbstractController
 
             $this->flash->setFlashMessages(http_response_code(), 'Création de la figure avec succès !');
 
-            return $this->redirectToRoute('snowtricks_figure', ['figure' => $figure->getId()]);
+            return $this->redirectToRoute('snowtricks_figure', ['slug' => $this->slugger->slug($figure->getName())]);
 
         }
 
@@ -97,14 +108,16 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/figure/edit/{figure}",
+     * @Route("/figure/edit/{slug}",
      *     name="snowtricks_figure_edit",
-     *     requirements={"figure"="\d+"},
      *     methods={"POST","GET"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      */
-    public function modifyFigure(Figure $figure, Request $request): Response
+    public function modifyFigure(string $slug, Request $request): Response
     {
+        $slug = str_replace('-', ' ', $slug);
+
+        $figure = $this->figureRepository->findOneBy(['name' => $slug]);
         if ($figure === null) {
             throw $this->createNotFoundException('No figure found for id ' . $figure);
         }
@@ -123,7 +136,7 @@ class FigureController extends AbstractController
 
             $this->flash->setFlashMessages(http_response_code(), 'Modification de la figure avec succès !');
 
-            return $this->redirectToRoute('snowtricks_figure', ['figure' => $figure->getId()]);
+            return $this->redirectToRoute('snowtricks_figure', ['slug' => $this->slugger->slug($figure->getName())]);
         }
 
         return $this->render('figure/formFigure.html.twig', [
@@ -133,13 +146,20 @@ class FigureController extends AbstractController
     }
 
     /**
-     * @Route("/figure/delete/{figure}",
+     * @Route("/figure/delete/{slug}",
      *     name="snowtricks_figure_delete",
      *     methods={"POST","GET"})
      * @IsGranted("IS_AUTHENTICATED_REMEMBERED")
      */
-    public function deleteFigure(Figure $figure): RedirectResponse
+    public function deleteFigure(string $slug): RedirectResponse
     {
+        $slug = str_replace('-', ' ', $slug);
+
+        $figure = $this->figureRepository->findOneBy(['name' => $slug]);
+        if ($figure === null) {
+            throw $this->createNotFoundException('No figure found for id ' . $figure);
+        }
+
         $this->figureManager->removeMedia($figure);
 
         $this->entityManager->remove($figure);
