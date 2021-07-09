@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Video
 {
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Figure", cascade="persist", inversedBy="videos")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Figure")
      */
     private $figure;
 

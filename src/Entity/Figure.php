@@ -62,13 +62,13 @@ class Figure
     private $user;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Picture", cascade="persist", mappedBy="figure")
+     * @ORM\OneToMany(targetEntity="App\Entity\Picture", mappedBy="figure")
      * @AppAssert\ConstraintPicture
      */
     private $pictures;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Video", cascade="persist", mappedBy="figure")
+     * @ORM\OneToMany(targetEntity="App\Entity\Video", mappedBy="figure")
      * @AppAssert\ConstraintVideo
      */
     private $videos;
