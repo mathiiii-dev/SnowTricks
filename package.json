@@ -18,9 +18,9 @@
     "scripts": {
         "dev-server": "encore dev-server",
         "dev": "encore dev",
-       "build": "webpack -p --config ./resources/webpack/webpack.config.js --display-error-details",
-  "watch": "webpack -d --watch --config ./resources/webpack/webpack.config.js --display-error-details",
-  "heroku-postbuild": "webpack -p --config ./resources/webpack/webpack.config.js"
+        "watch": "encore dev --watch",
+        "build": "encore production --progress",
+        "heroku-postbuild": "encore production --progress"
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.15.2",
