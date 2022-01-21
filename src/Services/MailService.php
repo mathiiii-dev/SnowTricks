@@ -12,7 +12,7 @@ class MailService
     {
         $email = (new TemplatedEmail())
             ->from('snowtricks@mail.com')
-            ->to('mat.micheli99@gmail.com')
+            ->to($user->getEmail())
             ->subject($subject)
             ->htmlTemplate($template)
 
